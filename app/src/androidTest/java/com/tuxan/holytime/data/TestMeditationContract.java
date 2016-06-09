@@ -7,6 +7,9 @@ import com.tuxan.holytime.data.provider.MeditationProvider;
 
 public class TestMeditationContract extends AndroidTestCase{
 
+    /**
+     * Method to test Uri generation
+     */
     public void testBuildMeditationUri() {
 
         String meditationId = "1234";

@@ -19,7 +19,7 @@
             android:syncable="true"
             />
 
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MeditationsActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -74,4 +74,5 @@ public class TestMeditationProvider extends AndroidTestCase {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/meditation", type);
 
     }
+
 }

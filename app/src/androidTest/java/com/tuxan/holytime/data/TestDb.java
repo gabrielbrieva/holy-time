@@ -21,6 +21,9 @@ public class TestDb extends AndroidTestCase {
         mContext.deleteDatabase(HolyTimeDatabase.DATABASE_FILE_NAME);
     }
 
+    /**
+     * Test to create Table and check the result of created table
+     */
     public void testCreateDb() {
 
         SQLiteDatabase db =
@@ -69,6 +72,9 @@ public class TestDb extends AndroidTestCase {
         db.close();
     }
 
+    /**
+     * Method to test insert of meditation data
+     */
     public void testMeditationTable() {
         SQLiteDatabase db =
                 com.tuxan.holytime.data.provider.generated.HolyTimeDatabase.getInstance(mContext)
@@ -93,6 +99,11 @@ public class TestDb extends AndroidTestCase {
         db.close();
     }
 
+    /**
+     * Create dummy data to fill meditation
+     * @param meditationId
+     * @return
+     */
     static ContentValues createMeditationValues(String meditationId) {
         ContentValues movieValues = new ContentValues();
 
@@ -105,6 +116,12 @@ public class TestDb extends AndroidTestCase {
         return movieValues;
     }
 
+    /**
+     * Method to test meditation content inserted
+     * @param error
+     * @param valueCursor
+     * @param expectedValues
+     */
     static void validateCurrentRecord(String error, Cursor valueCursor, ContentValues expectedValues) {
         Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
         for (Map.Entry<String, Object> entry : valueSet) {
