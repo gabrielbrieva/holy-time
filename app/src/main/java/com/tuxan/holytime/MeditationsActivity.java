@@ -6,6 +6,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.tuxan.holytime.adapter.MeditationsAdapter;
@@ -30,20 +31,6 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
 
         ButterKnife.bind(this);
 
-        try {
-            ContentValues movieValues = new ContentValues();
-
-            movieValues.put(MeditationColumns._ID, 1234);
-            movieValues.put(MeditationColumns.AUTHOR, "author");
-            movieValues.put(MeditationColumns.WEEK_NUMBER, 1);
-            movieValues.put(MeditationColumns.TITLE, "title");
-            movieValues.put(MeditationColumns.BODY, "body");
-
-            getContentResolver().insert(MeditationProvider.Meditations.MEDITATIONS, movieValues);
-        } catch (Exception ignore) {
-
-        }
-
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
@@ -58,6 +45,7 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
         adapter.setHasStableIds(true);
 
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

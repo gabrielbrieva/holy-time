@@ -1,16 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_margin="5dp">
 
-    <TextView
-        android:id="@+id/tv_meditation_title"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tv_meditation_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="7dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_date">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tv_date_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Month"
+                android:gravity="center_horizontal"
+                android:textColor="#FFFFFFFF"
+                android:textSize="8sp" />
+
+            <TextView
+                android:id="@+id/tv_date_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="00"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_meditation_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Title"
+                android:textSize="20sp"
+                android:lines="1"
+                android:singleLine="true"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tv_meditation_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Content extract extract extract extract extract extract extract extract extract extract"
+                android:lines="1"
+                android:singleLine="true"
+                android:ellipsize="end" />
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

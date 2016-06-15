@@ -55,7 +55,7 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
 
         public ListItemViewHolder(View view) {
             super(view);
-            ButterKnife.bind(view);
+            ButterKnife.bind(this, view);
         }
     }
 
