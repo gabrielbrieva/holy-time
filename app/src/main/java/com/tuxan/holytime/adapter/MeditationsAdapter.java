@@ -37,7 +37,12 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
         mCursor.moveToPosition(position);
 
         holder.titleView.setText(mCursor.getString(MeditationsLoader.Query.TITLE));
-        holder.subtitleView.setText(mCursor.getString(MeditationsLoader.Query.AUTHOR));
+
+        String body = mCursor.getString(MeditationsLoader.Query.BODY);
+        if (body != null && body.length() >= 250)
+            body = body.substring(0, 250);
+
+        holder.textView.setText(body);
     }
 
     @Override
@@ -51,7 +56,7 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
         public TextView titleView;
 
         @BindView(R.id.tv_meditation_text)
-        public TextView subtitleView;
+        public TextView textView;
 
         public ListItemViewHolder(View view) {
             super(view);

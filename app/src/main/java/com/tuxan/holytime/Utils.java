@@ -1,8 +1,18 @@
 package com.tuxan.holytime;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.ActivityCompat;
+
+import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+import com.luckycatlabs.sunrisesunset.dto.Location;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Utilities class ...
@@ -29,5 +39,18 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static Calendar getTimeOfSunset(Context context) {
+
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            android.location.Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(new Location(loc.getLatitude(), loc.getLongitude()), TimeZone.getDefault());
+            return calculator.getOfficialSunsetCalendarForDate(Calendar.getInstance());
+        }
+
+        return null;
     }
 }
