@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.tuxan.holytime.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -17,6 +20,8 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
 
     Cursor mCursor;
     Context mContext;
+
+    SimpleDateFormat mDateFormater = new SimpleDateFormat("MMM");
 
     public MeditationsAdapter(Cursor cursor, Context context) {
         this.mCursor = cursor;
@@ -43,6 +48,16 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
             body = body.substring(0, 250);
 
         holder.textView.setText(body);
+
+        int weekNumber = mCursor.getInt(MeditationsLoader.Query.WEEK_NUMBER);
+
+        Calendar c = Calendar.getInstance();
+
+        c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        c.set(Calendar.WEEK_OF_YEAR, weekNumber);
+
+        holder.monthView.setText(mDateFormater.format(c.getTime()).toUpperCase().replace(".", ""));
+        holder.dayView.setText(String.format("%02d", c.get(Calendar.DAY_OF_MONTH)));
     }
 
     @Override
@@ -51,6 +66,12 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
     }
 
     public static class ListItemViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_date_month)
+        public TextView monthView;
+
+        @BindView(R.id.tv_date_day)
+        public TextView dayView;
 
         @BindView(R.id.tv_meditation_title)
         public TextView titleView;
