@@ -11,38 +11,35 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIServiceFactory {
 
     public static APIService createService(final String apiKey) {
 
-        OkHttpClient okHttpClient = new OkHttpClient();
-
         // logging for http requests
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        okHttpClient.interceptors().add(httpLoggingInterceptor);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
 
-        // add apikey query parameter to all API requests
-        okHttpClient.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
+                        HttpUrl url = request.url().newBuilder().addQueryParameter("apikey", apiKey).build();
+                        request = request.newBuilder().url(url).build();
+                        request = request.newBuilder().header("Accept", "application/json").build();
 
-                HttpUrl url = request.url().newBuilder()
-                        .addQueryParameter("apikey", apiKey).build();
-                request = request.newBuilder().url(url).build();
-
-                request = request.newBuilder().header("Accept", "application/json").build();
-
-                return chain.proceed(request);
-            }
-        });
+                        return chain.proceed(request);
+                    }
+                }).build();
 
         return new Retrofit.Builder()
                 .baseUrl(Utils.API_BASE_URL)
                 .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(APIService.class);
     }

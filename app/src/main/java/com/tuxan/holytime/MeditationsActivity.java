@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.tuxan.holytime.adapter.MeditationsAdapter;
 import com.tuxan.holytime.adapter.MeditationsLoader;
 import com.tuxan.holytime.data.provider.MeditationProvider;
+import com.tuxan.holytime.sync.MeditationSyncAdapter;
 
 import java.util.Calendar;
 
@@ -50,6 +51,8 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
         }
 
         getLoaderManager().initLoader(LOADER_ID, null, this);
+
+        MeditationSyncAdapter.initializeSyncAdapter(this);
     }
 
     private void calculateSunsetDateTime() {

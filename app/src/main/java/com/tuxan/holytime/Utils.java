@@ -19,7 +19,7 @@ import java.util.TimeZone;
  */
 public class Utils {
 
-    public static final String API_BASE_URL = "https://holytime.gabrielbrieva.cl/api";
+    public static final String API_BASE_URL = "http://holytime.gabrielbrieva.cl/api/";
 
     /**
      * Method to check if the device have access to internet
