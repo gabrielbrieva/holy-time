@@ -3,4 +3,9 @@
 
     <string name="sync_account_type">holytime.tuxan.com</string>
     <string name="content_authority">com.tuxan.holytime</string>
+
+    <string name="swipe_instruction">Swipe to Refresh</string>
+
+    <string name="main_title_holy">Holy</string>
+    <string name="main_title_time">Time</string>
 </resources>

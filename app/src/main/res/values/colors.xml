@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#ff9c40</color>
+    <color name="colorPrimary">#ff9800</color>
+    <color name="colorPrimaryDark">#c84a00</color>
+    <color name="colorAccent">#ff4f2f</color>
+
+    <color name="mainValleyFill">#632d0b</color>
+    <color name="mainSunFill">#ffe506</color>
+    <color name="mainTitleHoly">@color/mainValleyFill</color>
+    <color name="mainTitleTime">@color/colorPrimary</color>
+    <color name="mainTitleCollapsed">@android:color/white</color>
 </resources>

@@ -1,14 +1,17 @@
 package com.tuxan.holytime.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tuxan.holytime.R;
+import com.tuxan.holytime.data.provider.MeditationProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,11 +31,28 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
         this.mContext = context;
     }
 
+    private String getMeditationId(int position) {
+        mCursor.moveToPosition(position);
+        return mCursor.getString(MeditationsLoader.Query._ID);
+    }
+
     @Override
     public ListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.meditation_item_list, parent, false);
 
-        ListItemViewHolder viewHolder = new ListItemViewHolder(view);
+        final ListItemViewHolder viewHolder = new ListItemViewHolder(view);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String meditationId = getMeditationId(viewHolder.getAdapterPosition());
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, MeditationProvider.Meditations.withId(meditationId));
+
+                mContext.startActivity(intent);
+            }
+        });
 
         return viewHolder;
     }
@@ -47,7 +67,7 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
         if (body != null && body.length() >= 250)
             body = body.substring(0, 250);
 
-        holder.textView.setText(body);
+        holder.textView.setText(Html.fromHtml(body));
 
         int weekNumber = mCursor.getInt(MeditationsLoader.Query.WEEK_NUMBER);
 

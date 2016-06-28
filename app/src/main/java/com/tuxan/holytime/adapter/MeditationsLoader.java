@@ -9,7 +9,7 @@ import com.tuxan.holytime.data.provider.MeditationColumns;
 public class MeditationsLoader extends CursorLoader {
 
     public MeditationsLoader(Context context, Uri uri) {
-        super(context, uri, Query.PROJECTION, null, null, Query.WEEK_NUMBER + " DESC");
+        super(context, uri, Query.PROJECTION, null, null, MeditationColumns.WEEK_NUMBER + " DESC");
     }
 
     public interface Query {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="170dp"
+    android:height="170dp"
+    android:viewportWidth="150"
+    android:viewportHeight="150">
+
+    <group
+        android:translateX="-222.54618"
+        android:translateY="20.158553">
+
+        <path
+            android:name="sun"
+            android:fillColor="#ffe506"
+            android:strokeWidth="0"
+            android:pathData="M 297.5462 20.341442 C 312.18174808 20.341442 324.046204 32.2058979203 324.046204 46.841446 C 324.046204 61.4769940797 312.18174808 73.34145 297.5462 73.34145 C 282.91065192 73.34145 271.046196 61.4769940797 271.046196 46.841446 C 271.046196 32.2058979203 282.91065192 20.341442 297.5462 20.341442 Z" />
+
+    </group>
+</vector>
