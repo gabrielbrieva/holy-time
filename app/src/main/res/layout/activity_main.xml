@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:scrollbarStyle="outsideOverlay"
+            android:scrollbarStyle="insideOverlay"
             tools:listitem="@layout/meditation_item_list"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>

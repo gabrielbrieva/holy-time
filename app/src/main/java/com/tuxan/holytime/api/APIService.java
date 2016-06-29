@@ -15,7 +15,7 @@ public interface APIService {
     @GET("sync/{weekNumber}")
     Call<List<MeditationContent>> getSyncList(@Path("weekNumber") int weekNumber);
 
-    @GET("meditations/{weeknumber}")
+    @GET("meditations/{weekNumber}")
     Call<Page<MeditationContent>> getPaginatedContent(@Path("weekNumber") int weekNumber,
                                                       @Query("page") int page);
 

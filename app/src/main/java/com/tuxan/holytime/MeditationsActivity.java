@@ -9,6 +9,7 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -29,14 +30,21 @@ import android.widget.TextView;
 
 import com.tuxan.holytime.adapter.MeditationsAdapter;
 import com.tuxan.holytime.adapter.MeditationsLoader;
+import com.tuxan.holytime.api.APIService;
+import com.tuxan.holytime.api.APIServiceFactory;
+import com.tuxan.holytime.data.dto.MeditationContent;
+import com.tuxan.holytime.data.dto.Page;
 import com.tuxan.holytime.data.provider.MeditationProvider;
 import com.tuxan.holytime.sync.MeditationSyncAdapter;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Response;
 
 public class MeditationsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         AppBarLayout.OnOffsetChangedListener {
@@ -47,6 +55,8 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
 
     @BindView(R.id.rv_meditations)
     RecyclerView mRecyclerView;
+
+    MeditationsAdapter mMeditationsAdapter;
 
     @BindView(R.id.tbSunset)
     Toolbar mToolbar;
@@ -96,6 +106,23 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
 
         mAppBarLayout.addOnOffsetChangedListener(this);
 
+        LinearLayoutManager rvLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(rvLinearLayoutManager);
+
+        mMeditationsAdapter = new MeditationsAdapter(this);
+        mMeditationsAdapter.setHasStableIds(true);
+
+        mRecyclerView.setAdapter(mMeditationsAdapter);
+
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(rvLinearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                Log.d(LOG_TAG, "endless page = " + page + " totalCount = " + totalItemsCount);
+
+                loadMeditationsFromApi(page);
+            }
+        });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
@@ -109,6 +136,37 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
         MeditationSyncAdapter.initializeSyncAdapter(this);
+    }
+
+    private void loadMeditationsFromApi(final int page) {
+        new AsyncTask<Void, Void, List<MeditationContent>>() {
+            @Override
+            protected List<MeditationContent> doInBackground(Void... params) {
+                APIService apiService = APIServiceFactory.createService(getString(R.string.api_key));
+
+                Calendar c = Calendar.getInstance();
+                int weekNumber = c.get(Calendar.WEEK_OF_YEAR);
+
+                try {
+                    Response<Page<MeditationContent>> result = apiService.getPaginatedContent(weekNumber, page).execute();
+
+                    if (result.isSuccessful()) {
+                        return result.body().getItems();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(List<MeditationContent> meditationContents) {
+                if (meditationContents != null)
+                    mMeditationsAdapter.addMeditations(meditationContents);
+            }
+        }.execute();
     }
 
     @Override
@@ -136,11 +194,7 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        MeditationsAdapter adapter = new MeditationsAdapter(data, this);
-        adapter.setHasStableIds(true);
-
-        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mMeditationsAdapter.setCursor(data);
     }
 
     @Override
