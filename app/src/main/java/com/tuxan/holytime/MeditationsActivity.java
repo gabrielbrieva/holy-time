@@ -13,7 +13,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,11 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tuxan.holytime.adapter.MeditationsAdapter;
@@ -63,9 +58,6 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
 
     @BindView(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
-
-    /*@BindView(R.id.fl_main_title_container)
-    FrameLayout flMainTitleContainer;*/
 
     @BindView(R.id.tv_main_title_holy)
     TextView tvTitleHoly;

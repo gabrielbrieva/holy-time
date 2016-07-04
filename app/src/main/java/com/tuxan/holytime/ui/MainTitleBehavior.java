@@ -20,16 +20,9 @@ import com.tuxan.holytime.R;
 
 public class MainTitleBehavior extends CoordinatorLayout.Behavior<LinearLayout> {
 
-    private static final String IS_VALLEY_VISIBLE = "IS_VALLEY_VISIBLE";
-    private static final float PERCENTAGE_TO_ANIMATE_SUN = 0.3f;
-    private static final int ANIMATION_DURATION = 200;
-    private boolean mIsValleyVisible = true;
-
     int mainToolbarHeight;
     int mainTitleTimeHeight;
     int titleContainerMarginLeft;
-
-    float mStartAppBarLayoutPosition;
 
     private Context mContext;
 
@@ -75,39 +68,7 @@ public class MainTitleBehavior extends CoordinatorLayout.Behavior<LinearLayout> 
 
         child.setLayoutParams(containerLayoutParams);
 
-        /*if (percentage >= PERCENTAGE_TO_ANIMATE_SUN) {
-            if (mIsValleyVisible) {
-                animateColor(tvTitleHoly, ANIMATION_DURATION, ContextCompat.getColor(mContext, R.color.mainTitleCollapsed));
-                animateColor(tvTitleTime, ANIMATION_DURATION, ContextCompat.getColor(mContext, R.color.mainTitleCollapsed));
-                mIsValleyVisible = false;
-            }
-
-        } else if (!mIsValleyVisible) {
-            animateColor(tvTitleHoly, ANIMATION_DURATION, ContextCompat.getColor(mContext, R.color.mainTitleHoly));
-            animateColor(tvTitleTime, ANIMATION_DURATION, ContextCompat.getColor(mContext, R.color.mainTitleTime));
-            mIsValleyVisible = true;
-        }
-
-        if (percentage < 1) {
-            //tvToolbarTitleHoly.setVisibility(View.INVISIBLE);
-            //tvToolbarTitleTime.setVisibility(View.INVISIBLE);
-            tvTitleHoly.setVisibility(View.VISIBLE);
-            tvTitleTime.setVisibility(View.VISIBLE);
-        } else {
-            //tvToolbarTitleHoly.setVisibility(View.VISIBLE);
-            //tvToolbarTitleTime.setVisibility(View.VISIBLE);
-            tvTitleHoly.setVisibility(View.INVISIBLE);
-            tvTitleTime.setVisibility(View.INVISIBLE);
-        }*/
-
         return true;
-    }
-
-    private void animateColor(TextView tv, long duration, int toColor) {
-        ValueAnimator valueAnimator = ObjectAnimator.ofInt(tv, "textColor", tv.getCurrentTextColor(), toColor);
-        valueAnimator.setDuration(duration);
-        valueAnimator.setEvaluator(new ArgbEvaluator());
-        valueAnimator.start();
     }
 
     private int dpToPixels(int dp) {
