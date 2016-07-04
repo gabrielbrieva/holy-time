@@ -10,6 +10,7 @@
     <dimen name="main_title_container_margin_left">16dp</dimen>
     <dimen name="main_title_container_margin_top">30dp</dimen>
     <dimen name="main_title_time_height">75dp</dimen>
+    <dimen name="main_title_line_height">37dp</dimen>
 
     <dimen name="main_title_size">20sp</dimen>
 

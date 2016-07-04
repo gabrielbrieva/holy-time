@@ -64,8 +64,8 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
     @BindView(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
 
-    @BindView(R.id.fl_main_title_container)
-    FrameLayout flMainTitleContainer;
+    /*@BindView(R.id.fl_main_title_container)
+    FrameLayout flMainTitleContainer;*/
 
     @BindView(R.id.tv_main_title_holy)
     TextView tvTitleHoly;
@@ -102,7 +102,9 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mAppBarLayout.addOnOffsetChangedListener(this);
 
@@ -213,19 +215,6 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
 
     private void updateTitleContainer(float percentage) {
 
-        tvTitleTime.setPadding((int)Math.ceil(tvTitleHoly.getWidth() + (dpToPixels(5) * percentage)), 0, 0, 0);
-        tvTitleTime.getLayoutParams().height = (int)Math.ceil((tvTitleHoly.getHeight() * 2) - (tvTitleHoly.getHeight() * percentage));
-
-        int currentTileSize = (int)Math.ceil(30 - (10 * percentage));
-
-        tvTitleTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, currentTileSize);
-        tvTitleHoly.setTextSize(TypedValue.COMPLEX_UNIT_SP, currentTileSize);
-
-        CoordinatorLayout.LayoutParams containerLayoutParams = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        containerLayoutParams.setMargins(titleContainerMarginLeft, (int)Math.ceil(((mainToolbarHeight - (tvTitleHoly.getWidth() * 2))/2) * (1 - percentage)) + dpToPixels(16), 0, 0);
-
-        flMainTitleContainer.setLayoutParams(containerLayoutParams);
-
         if (percentage >= PERCENTAGE_TO_ANIMATE_SUN) {
             if (mIsValleyVisible) {
                 animateColor(tvTitleHoly, ANIMATION_DURATION, ContextCompat.getColor(this, R.color.mainTitleCollapsed));
@@ -251,10 +240,6 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
             tvTitleTime.setVisibility(View.INVISIBLE);
         }
 
-    }
-
-    private int dpToPixels(int dp) {
-        return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
     }
 
     private void animateColor(TextView tv, long duration, int toColor) {
