@@ -31,14 +31,15 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:scrollbarStyle="insideOverlay"
-            tools:listitem="@layout/meditation_item_list"/>
+            tools:listitem="@layout/meditation_item_list"
+            android:scrollbars="vertical"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_sunset_valley_size"
+        android:layout_height="@dimen/main_toolbar_height"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
 
@@ -49,7 +50,7 @@
             android:fitsSystemWindows="true"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:titleEnabled="false">
+            app:titleEnabled="false" >
 
             <View
                 android:layout_width="match_parent"
@@ -72,9 +73,10 @@
 
                 <ImageView
                     android:layout_width="@dimen/main_sunset_valley_size"
-                    android:layout_height="@dimen/main_sunset_valley_size"
+                    android:layout_height="match_parent"
                     android:id="@+id/vSun"
-                    android:src="@drawable/main_sun" />
+                    android:src="@drawable/main_sun"
+                    android:cropToPadding="false" />
 
                 <View
                     android:layout_weight="2"
@@ -93,21 +95,21 @@
                 <View
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/main_sunset_valley_size_half"
+                    android:layout_height="@dimen/main_sunset_valley_fill_size"
                     android:layout_gravity="bottom"
                     android:background="@color/mainValleyFill"
                     />
 
                 <ImageView
                     android:layout_width="@dimen/main_sunset_valley_size"
-                    android:layout_height="@dimen/main_sunset_valley_size"
+                    android:layout_height="@dimen/main_toolbar_height"
                     android:id="@+id/vValley"
                     android:src="@drawable/main_valley" />
 
                 <View
                     android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/main_sunset_valley_size_half"
+                    android:layout_height="@dimen/main_sunset_valley_fill_size"
                     android:layout_gravity="bottom"
                     android:background="@color/mainValleyFill"
                     />
@@ -117,10 +119,12 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tbSunset"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="100dp"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
+                android:gravity="top"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:titleMarginTop="16dp"
                 android:title="" >
 
                 <TextView
@@ -145,7 +149,27 @@
 
             </android.support.v7.widget.Toolbar>
 
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="bottom"
+                app:tabMode="fixed">
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current"/>
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Favorites"/>
+
+            </android.support.design.widget.TabLayout>
+
         </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout

@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="170dp"
-    android:height="170dp"
-    android:viewportWidth="150"
-    android:viewportHeight="150">
+    android:width="160dp"
+    android:height="250dp"
+    android:viewportWidth="160"
+    android:viewportHeight="250">
 
     <group
         android:translateX="-222.54618"
-        android:translateY="20.158553">
+        android:translateY="120.10082">
 
         <path
-            android:name="sun"
             android:fillColor="#ffe506"
             android:strokeWidth="0"
-            android:pathData="M 297.5462 20.341442 C 312.18174808 20.341442 324.046204 32.2058979203 324.046204 46.841446 C 324.046204 61.4769940797 312.18174808 73.34145 297.5462 73.34145 C 282.91065192 73.34145 271.046196 61.4769940797 271.046196 46.841446 C 271.046196 32.2058979203 282.91065192 20.341442 297.5462 20.341442 Z" />
-
+            android:pathData="M 302.5462 -69.013905 C 317.18174808 -69.013905 329.046204 -57.1494490797 329.046204 -42.513901 C 329.046204 -27.8783529203 317.18174808 -16.013897 302.5462 -16.013897 C 287.91065192 -16.013897 276.046196 -27.8783529203 276.046196 -42.513901 C 276.046196 -57.1494490797 287.91065192 -69.013905 302.5462 -69.013905 Z" />
     </group>
 </vector>

@@ -3,8 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="main_toolbar_height">250dp</dimen>
+
     <dimen name="main_sunset_valley_size">160dp</dimen>
-    <dimen name="main_sunset_valley_size_half">80dp</dimen>
+    <dimen name="main_sunset_valley_fill_size">170dp</dimen>
 
     <!-- custom main title -->
     <dimen name="main_title_container_margin_left">16dp</dimen>

@@ -26,7 +26,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.ListItemViewHolder> {
+public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    static final int VIEWHOLDER_MEDITATION_TYPE = 0;
+    static final int VIEWHOLDER_LOADING_TYPE = 1;
+
+    private boolean isLoading = false;
 
     Cursor mCursor;
     Context mContext;
@@ -55,6 +60,8 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
             });
         }
 
+        //setIsLoading(false);
+
         int countBeforeMerge = mCursor.getCount();
 
         mCursor = new MergeCursor(new Cursor[] { mCursor, matrixCursor });
@@ -62,59 +69,85 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
         notifyItemRangeInserted(countBeforeMerge, matrixCursor.getCount());
     }
 
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setIsLoading(boolean isLoading) {
+        if (isLoading) {
+            this.isLoading = isLoading;
+            notifyItemInserted(mCursor.getCount());
+        } else {
+            notifyItemRemoved(mCursor.getCount());
+            this.isLoading = isLoading;
+        }
+    }
+
     @Override
-    public ListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.meditation_item_list, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        final ListItemViewHolder viewHolder = new ListItemViewHolder(view);
+        RecyclerView.ViewHolder viewHolder = null;
 
-        /*view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (viewType == VIEWHOLDER_MEDITATION_TYPE) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.meditation_item_list, parent, false);
+            viewHolder = new ListItemViewHolder(view);
 
-                String meditationId = getMeditationId(viewHolder.getAdapterPosition());
+            /*view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                Intent intent = new Intent(Intent.ACTION_VIEW, MeditationProvider.Meditations.withId(meditationId));
+                    String meditationId = getMeditationId(viewHolder.getAdapterPosition());
 
-                mContext.startActivity(intent);
-            }
-        });*/
+                    Intent intent = new Intent(Intent.ACTION_VIEW, MeditationProvider.Meditations.withId(meditationId));
+
+                    mContext.startActivity(intent);
+                }
+            });*/
+        } else {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.loading_item_list, parent, false);
+            viewHolder = new LoadingViewHolder(view);
+        }
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ListItemViewHolder holder, int position) {
-        mCursor.moveToPosition(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 
-        holder.titleView.setText(mCursor.getString(MeditationsLoader.Query.TITLE));
+        if (viewHolder instanceof ListItemViewHolder) {
 
-        String body = mCursor.getString(MeditationsLoader.Query.BODY);
-        if (body != null) {
-            if (body.length() >= 250)
-                body = body.substring(0, 250);
+            mCursor.moveToPosition(position);
 
-            holder.textView.setText(Html.fromHtml(body));
-        } else {
-            holder.textView.setText("");
+            ListItemViewHolder holder = (ListItemViewHolder) viewHolder;
+
+            holder.titleView.setText(mCursor.getString(MeditationsLoader.Query.TITLE));
+
+            String body = mCursor.getString(MeditationsLoader.Query.BODY);
+            if (body != null) {
+                if (body.length() >= 250)
+                    body = body.substring(0, 250);
+
+                holder.textView.setText(Html.fromHtml(body));
+            } else {
+                holder.textView.setText("");
+            }
+
+            int weekNumber = mCursor.getInt(MeditationsLoader.Query.WEEK_NUMBER);
+
+            Calendar c = Calendar.getInstance();
+
+            c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+            c.set(Calendar.WEEK_OF_YEAR, weekNumber);
+
+            holder.monthView.setText(mDateFormater.format(c.getTime()).toUpperCase().replace(".", ""));
+            holder.dayView.setText(String.format("%02d", c.get(Calendar.DAY_OF_MONTH)));
         }
-
-        int weekNumber = mCursor.getInt(MeditationsLoader.Query.WEEK_NUMBER);
-
-        Calendar c = Calendar.getInstance();
-
-        c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-        c.set(Calendar.WEEK_OF_YEAR, weekNumber);
-
-        holder.monthView.setText(mDateFormater.format(c.getTime()).toUpperCase().replace(".", ""));
-        holder.dayView.setText(String.format("%02d", c.get(Calendar.DAY_OF_MONTH)));
-
     }
 
     @Override
     public int getItemCount() {
         if (mCursor != null)
-            return mCursor.getCount();
+            return mCursor.getCount() + (isLoading ? 1 : 0);
 
         return 0;
     }
@@ -122,6 +155,26 @@ public class MeditationsAdapter extends RecyclerView.Adapter<MeditationsAdapter.
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position > (mCursor.getCount() - 1) && isLoading)
+            return VIEWHOLDER_LOADING_TYPE;
+
+        return VIEWHOLDER_MEDITATION_TYPE;
+    }
+
+    public static class LoadingViewHolder extends RecyclerView.ViewHolder {
+
+        // attrs...
+
+        public LoadingViewHolder(View view) {
+            super(view);
+
+            ButterKnife.bind(this, view);
+        }
+
     }
 
     public static class ListItemViewHolder extends RecyclerView.ViewHolder {

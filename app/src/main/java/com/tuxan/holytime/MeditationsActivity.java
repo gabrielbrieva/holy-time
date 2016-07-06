@@ -71,11 +71,6 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
     @BindView(R.id.tv_toolbar_main_title_time)
     TextView tvToolbarTitleTime;
 
-    @BindDimen(R.dimen.main_sunset_valley_size) int mainToolbarHeight;
-    @BindDimen(R.dimen.main_title_container_margin_top) int titleContainerMarginTop;
-    @BindDimen(R.dimen.main_title_container_margin_left) int titleContainerMarginLeft;
-    @BindDimen(R.dimen.main_title_time_height) int titleHeight;
-
     private static final String IS_VALLEY_VISIBLE = "IS_VALLEY_VISIBLE";
 
     private static final float PERCENTAGE_TO_ANIMATE_SUN = 0.3f;
@@ -100,20 +95,27 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
 
         mAppBarLayout.addOnOffsetChangedListener(this);
 
-        LinearLayoutManager rvLinearLayoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager rvLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(rvLinearLayoutManager);
 
         mMeditationsAdapter = new MeditationsAdapter(this);
         mMeditationsAdapter.setHasStableIds(true);
 
         mRecyclerView.setAdapter(mMeditationsAdapter);
-
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(rvLinearLayoutManager) {
+
+            @Override
+            public boolean isLoading() {
+                return mMeditationsAdapter.isLoading();
+            }
+
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                Log.d(LOG_TAG, "endless page = " + page + " totalCount = " + totalItemsCount);
+                if (!mMeditationsAdapter.isLoading()) {
+                    Log.d(LOG_TAG, "endless page = " + page + " totalCount = " + totalItemsCount);
 
-                loadMeditationsFromApi(page);
+                    loadMeditationsFromApi(page);
+                }
             }
         });
 
@@ -133,9 +135,13 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
     }
 
     private void loadMeditationsFromApi(final int page) {
+
+        mMeditationsAdapter.setIsLoading(true);
+
         new AsyncTask<Void, Void, List<MeditationContent>>() {
             @Override
             protected List<MeditationContent> doInBackground(Void... params) {
+
                 APIService apiService = APIServiceFactory.createService(getString(R.string.api_key));
 
                 Calendar c = Calendar.getInstance();
@@ -157,6 +163,7 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
 
             @Override
             protected void onPostExecute(List<MeditationContent> meditationContents) {
+                mMeditationsAdapter.setIsLoading(false);
                 if (meditationContents != null)
                     mMeditationsAdapter.addMeditations(meditationContents);
             }
