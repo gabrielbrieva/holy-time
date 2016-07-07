@@ -19,7 +19,18 @@
         android:padding="10dp"
         android:visibility="gone"/>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <!--<fragment android:id="@+id/main_list_fragment_container"
+        android:name="com.tuxan.holytime.MainListFragment"
+        tools:layout="@layout/fragment_main_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+
+    <FrameLayout
+        android:id="@+id/main_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--<android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +45,7 @@
             tools:listitem="@layout/meditation_item_list"
             android:scrollbars="vertical"/>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>-->
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"

@@ -41,17 +41,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Response;
 
-public class MeditationsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+public class MeditationsActivity extends AppCompatActivity implements /*LoaderManager.LoaderCallbacks<Cursor>,*/
         AppBarLayout.OnOffsetChangedListener {
 
     private static final String LOG_TAG = "MeditationsActivity";
-
-    private int LOADER_ID = 0;
-
-    @BindView(R.id.rv_meditations)
-    RecyclerView mRecyclerView;
-
-    MeditationsAdapter mMeditationsAdapter;
 
     @BindView(R.id.tbSunset)
     Toolbar mToolbar;
@@ -71,6 +64,9 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
     @BindView(R.id.tv_toolbar_main_title_time)
     TextView tvToolbarTitleTime;
 
+    static final String FRAGMENT_TAG = "FRAGMENT_TAG";
+    MainListFragment mMainListFragment;
+
     private static final String IS_VALLEY_VISIBLE = "IS_VALLEY_VISIBLE";
 
     private static final float PERCENTAGE_TO_ANIMATE_SUN = 0.3f;
@@ -83,41 +79,31 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState != null)
+        if (savedInstanceState != null){
             mIsValleyVisible = savedInstanceState.getBoolean(IS_VALLEY_VISIBLE);
+            //mMainListFragment = (MainListFragment) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_TAG);
+
+        } else {
+            mMainListFragment = MainListFragment.newInstance();
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_list_container, mMainListFragment, FRAGMENT_TAG)
+                    .commit();
+
+            MeditationSyncAdapter.initializeSyncAdapter(this);
+        }
+
+
 
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
 
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         mAppBarLayout.addOnOffsetChangedListener(this);
-
-        final LinearLayoutManager rvLinearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(rvLinearLayoutManager);
-
-        mMeditationsAdapter = new MeditationsAdapter(this);
-        mMeditationsAdapter.setHasStableIds(true);
-
-        mRecyclerView.setAdapter(mMeditationsAdapter);
-        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(rvLinearLayoutManager) {
-
-            @Override
-            public boolean isLoading() {
-                return mMeditationsAdapter.isLoading();
-            }
-
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                if (!mMeditationsAdapter.isLoading()) {
-                    Log.d(LOG_TAG, "endless page = " + page + " totalCount = " + totalItemsCount);
-
-                    loadMeditationsFromApi(page);
-                }
-            }
-        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -129,50 +115,12 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
             calculateSunsetDateTime();
         }
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
-
-        MeditationSyncAdapter.initializeSyncAdapter(this);
-    }
-
-    private void loadMeditationsFromApi(final int page) {
-
-        mMeditationsAdapter.setIsLoading(true);
-
-        new AsyncTask<Void, Void, List<MeditationContent>>() {
-            @Override
-            protected List<MeditationContent> doInBackground(Void... params) {
-
-                APIService apiService = APIServiceFactory.createService(getString(R.string.api_key));
-
-                Calendar c = Calendar.getInstance();
-                int weekNumber = c.get(Calendar.WEEK_OF_YEAR);
-
-                try {
-                    Response<Page<MeditationContent>> result = apiService.getPaginatedContent(weekNumber, page).execute();
-
-                    if (result.isSuccessful()) {
-                        return result.body().getItems();
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(List<MeditationContent> meditationContents) {
-                mMeditationsAdapter.setIsLoading(false);
-                if (meditationContents != null)
-                    mMeditationsAdapter.addMeditations(meditationContents);
-            }
-        }.execute();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(IS_VALLEY_VISIBLE, mIsValleyVisible);
+        // getSupportFragmentManager().putFragment(outState, FRAGMENT_TAG, mMainListFragment);
         super.onSaveInstanceState(outState);
     }
 
@@ -186,21 +134,6 @@ public class MeditationsActivity extends AppCompatActivity implements LoaderMana
         if (requestCode == 0 && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             calculateSunsetDateTime();
         }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new MeditationsLoader(this, MeditationProvider.Meditations.MEDITATIONS);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mMeditationsAdapter.setCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mRecyclerView.setAdapter(null);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.tuxan.holytime.adapter;
 
 import android.content.Context;
-import android.content.CursorLoader;
 import android.net.Uri;
+import android.support.v4.content.CursorLoader;
 
 import com.tuxan.holytime.data.provider.MeditationColumns;
 
