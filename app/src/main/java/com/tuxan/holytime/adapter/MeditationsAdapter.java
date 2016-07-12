@@ -166,9 +166,6 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public static class LoadingViewHolder extends RecyclerView.ViewHolder {
-
-        // attrs...
-
         public LoadingViewHolder(View view) {
             super(view);
 

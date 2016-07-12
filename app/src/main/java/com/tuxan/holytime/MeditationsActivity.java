@@ -81,7 +81,6 @@ public class MeditationsActivity extends AppCompatActivity implements /*LoaderMa
 
         if (savedInstanceState != null){
             mIsValleyVisible = savedInstanceState.getBoolean(IS_VALLEY_VISIBLE);
-            //mMainListFragment = (MainListFragment) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_TAG);
 
         } else {
             mMainListFragment = MainListFragment.newInstance();
@@ -92,8 +91,6 @@ public class MeditationsActivity extends AppCompatActivity implements /*LoaderMa
 
             MeditationSyncAdapter.initializeSyncAdapter(this);
         }
-
-
 
         ButterKnife.bind(this);
 
@@ -120,7 +117,6 @@ public class MeditationsActivity extends AppCompatActivity implements /*LoaderMa
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(IS_VALLEY_VISIBLE, mIsValleyVisible);
-        // getSupportFragmentManager().putFragment(outState, FRAGMENT_TAG, mMainListFragment);
         super.onSaveInstanceState(outState);
     }
 

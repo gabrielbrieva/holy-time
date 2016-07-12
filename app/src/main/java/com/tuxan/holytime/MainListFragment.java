@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,22 +34,26 @@ import retrofit2.Response;
 public class MainListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = "MainListFragment";
+    private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
 
     private int LOADER_ID = 0;
 
     @BindView(R.id.rv_meditations)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     MeditationsAdapter mMeditationsAdapter;
     LinearLayoutManager mLinearLayoutManager;
+    EndlessRecyclerViewScrollListener mEndlessScrollListener;
+    SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
+
 
     public MainListFragment() { }
 
     public static MainListFragment newInstance() {
         MainListFragment fragment = new MainListFragment();
-
-        // TODO: set params ...
-
         return fragment;
     }
 
@@ -56,29 +61,12 @@ public class MainListFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(LOG_TAG, "onCreate with save instance " + (savedInstanceState == null ? "null" : "not null"));
-
-    }
-
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        Log.d(LOG_TAG, "onCreateView with save instance " + (savedInstanceState == null ? "null" : "not null"));
-
-        View view = inflater.inflate(R.layout.fragment_main_list, container, false);
-
-        ButterKnife.bind(this, view);
-
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        setRetainInstance(true);
 
         mMeditationsAdapter = new MeditationsAdapter(getActivity());
         mMeditationsAdapter.setHasStableIds(true);
-
-        mRecyclerView.setAdapter(mMeditationsAdapter);
-        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLinearLayoutManager) {
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mLinearLayoutManager) {
 
             @Override
             public boolean isLoading() {
@@ -93,11 +81,61 @@ public class MainListFragment extends Fragment implements LoaderManager.LoaderCa
                     loadMeditationsFromApi(page);
                 }
             }
-        });
+        };
+
+        mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mEndlessScrollListener.restart();
+                getLoaderManager().restartLoader(LOADER_ID, null, MainListFragment.this);
+            }
+        };
 
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
+    }
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_main_list, container, false);
+
+        ButterKnife.bind(this, view);
+
+        mRecyclerView.setAdapter(mMeditationsAdapter);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.addOnScrollListener(mEndlessScrollListener);
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
+        mRecyclerView.removeOnScrollListener(mEndlessScrollListener);
+        mSwipeRefreshLayout.setOnRefreshListener(null);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SCROLL_POSITION_KEY, mLinearLayoutManager.findFirstCompletelyVisibleItemPosition());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            int lastPosition = savedInstanceState.getInt(SCROLL_POSITION_KEY);
+            mLinearLayoutManager.scrollToPosition(lastPosition);
+        }
     }
 
     private void loadMeditationsFromApi(final int page) {
@@ -144,6 +182,10 @@ public class MainListFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mMeditationsAdapter.setCursor(data);
+
+        if (mSwipeRefreshLayout.isRefreshing())
+            mSwipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override
