@@ -62,16 +62,16 @@ public class TestMeditationProvider extends AndroidTestCase {
         // content://com.tuxan.holytime/meditations/
         String type =  mContext.getContentResolver().getType(MeditationProvider.Meditations.MEDITATIONS);
 
-        // vnd.android.cursor.dir/com.tuxan.holytime/meditation
+        // vnd.android.cursor.dir/vnd.com.tuxan.holytime.meditation
         assertEquals("Error: the MeditationEntry CONTENT_URI should return MeditationEntry.CONTENT_TYPE",
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/meditation", type);
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation", type);
 
         String meditationId = "1234";
         // content://com.tuxan.holytime/meditations/1234
         type = mContext.getContentResolver().getType(MeditationProvider.Meditations.withId(meditationId));
-        // vnd.android.cursor.item/com.tuxan.holytime/meditation
+        // vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation
         assertEquals("Error: the MeditationEntry CONTENT_URI with meditationId should return MeditationEntry.CONTENT_ITEM_TYPE",
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/meditation", type);
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation", type);
 
     }
 

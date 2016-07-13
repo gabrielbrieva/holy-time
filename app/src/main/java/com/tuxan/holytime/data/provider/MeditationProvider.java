@@ -18,7 +18,8 @@ public final class MeditationProvider {
 
         @ContentUri(path = "meditations",
                 type = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation",
-                defaultSort = MeditationColumns.WEEK_NUMBER + " DESC"
+                defaultSort = MeditationColumns.WEEK_NUMBER + " DESC",
+                limit = "10"
         )
         public static final Uri MEDITATIONS = Uri.parse("content://" + AUTHORITY + "/meditations");
 
