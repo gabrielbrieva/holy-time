@@ -10,9 +10,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.tuxan.holytime.R;
@@ -48,19 +45,16 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addMeditations(List<MeditationContent> meditations) {
 
-        MatrixCursor matrixCursor = new MatrixCursor(MeditationsLoader.Query.PROJECTION);
+        MatrixCursor matrixCursor = new MatrixCursor(MeditationsLoader.ResumeQuery.PROJECTION);
 
         for (MeditationContent m : meditations) {
             matrixCursor.addRow(new Object[] {
                     m.getId(),
                     m.getTitle(),
-                    m.getAuthor(),
                     m.getWeekNumber(),
-                    m.getBody()
+                    m.getVerse()
             });
         }
-
-        //setIsLoading(false);
 
         int countBeforeMerge = mCursor.getCount();
 
@@ -86,29 +80,31 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        RecyclerView.ViewHolder viewHolder = null;
-
         if (viewType == VIEWHOLDER_MEDITATION_TYPE) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.meditation_item_list, parent, false);
-            viewHolder = new ListItemViewHolder(view);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.meditations_list_item, parent, false);
+            final RecyclerView.ViewHolder viewHolder = new ListItemViewHolder(view);
 
-            /*view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    String meditationId = getMeditationId(viewHolder.getAdapterPosition());
-
+                    String meditationId =  getMeditationId(viewHolder.getAdapterPosition());
                     Intent intent = new Intent(Intent.ACTION_VIEW, MeditationProvider.Meditations.withId(meditationId));
 
                     mContext.startActivity(intent);
                 }
-            });*/
-        } else {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.loading_item_list, parent, false);
-            viewHolder = new LoadingViewHolder(view);
-        }
+            });
 
-        return viewHolder;
+            return viewHolder;
+        } else {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.meditations_loading_list_item, parent, false);
+            return new LoadingViewHolder(view);
+        }
+    }
+
+    private String getMeditationId(int position) {
+        mCursor.moveToPosition(position);
+        return mCursor.getString(MeditationsLoader.ResumeQuery._ID);
     }
 
     @Override
@@ -120,19 +116,19 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             ListItemViewHolder holder = (ListItemViewHolder) viewHolder;
 
-            holder.titleView.setText(mCursor.getString(MeditationsLoader.Query.TITLE));
+            holder.titleView.setText(mCursor.getString(MeditationsLoader.ResumeQuery.TITLE));
 
-            String body = mCursor.getString(MeditationsLoader.Query.BODY);
-            if (body != null) {
-                if (body.length() >= 250)
-                    body = body.substring(0, 250);
+            String verse = mCursor.getString(MeditationsLoader.ResumeQuery.VERSE);
+            if (verse != null) {
+                if (verse.length() >= 250)
+                    verse = verse.substring(0, 250);
 
-                holder.textView.setText(Html.fromHtml(body));
+                holder.textView.setText(Html.fromHtml(verse));
             } else {
                 holder.textView.setText("");
             }
 
-            int weekNumber = mCursor.getInt(MeditationsLoader.Query.WEEK_NUMBER);
+            int weekNumber = mCursor.getInt(MeditationsLoader.ResumeQuery.WEEK_NUMBER);
 
             Calendar c = Calendar.getInstance();
 

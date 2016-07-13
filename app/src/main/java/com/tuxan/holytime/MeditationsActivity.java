@@ -5,43 +5,25 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.tuxan.holytime.adapter.MeditationsAdapter;
-import com.tuxan.holytime.adapter.MeditationsLoader;
-import com.tuxan.holytime.api.APIService;
-import com.tuxan.holytime.api.APIServiceFactory;
-import com.tuxan.holytime.data.dto.MeditationContent;
-import com.tuxan.holytime.data.dto.Page;
-import com.tuxan.holytime.data.provider.MeditationProvider;
 import com.tuxan.holytime.sync.MeditationSyncAdapter;
 
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.List;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Response;
 
-public class MeditationsActivity extends AppCompatActivity implements /*LoaderManager.LoaderCallbacks<Cursor>,*/
+public class MeditationsActivity extends AppCompatActivity implements
         AppBarLayout.OnOffsetChangedListener {
 
     private static final String LOG_TAG = "MeditationsActivity";
@@ -65,7 +47,7 @@ public class MeditationsActivity extends AppCompatActivity implements /*LoaderMa
     TextView tvToolbarTitleTime;
 
     static final String FRAGMENT_TAG = "FRAGMENT_TAG";
-    MainListFragment mMainListFragment;
+    MeditationsFragment mMainListFragment;
 
     private static final String IS_VALLEY_VISIBLE = "IS_VALLEY_VISIBLE";
 
@@ -77,13 +59,13 @@ public class MeditationsActivity extends AppCompatActivity implements /*LoaderMa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.meditations_activity);
 
         if (savedInstanceState != null){
             mIsValleyVisible = savedInstanceState.getBoolean(IS_VALLEY_VISIBLE);
 
         } else {
-            mMainListFragment = MainListFragment.newInstance();
+            mMainListFragment = MeditationsFragment.newInstance();
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_list_container, mMainListFragment, FRAGMENT_TAG)

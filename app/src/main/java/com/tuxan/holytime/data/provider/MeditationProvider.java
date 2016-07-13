@@ -17,7 +17,7 @@ public final class MeditationProvider {
     public static class Meditations {
 
         @ContentUri(path = "meditations",
-                type = ContentResolver.CURSOR_DIR_BASE_TYPE + "/com.tuxan.holytime.meditation",
+                type = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation",
                 defaultSort = MeditationColumns.WEEK_NUMBER + " DESC"
         )
         public static final Uri MEDITATIONS = Uri.parse("content://" + AUTHORITY + "/meditations");
@@ -25,7 +25,7 @@ public final class MeditationProvider {
 
         @InexactContentUri(
                 path = "meditations/#",
-                type = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/com.tuxan.holytime.meditation",
+                type = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation",
                 name = "MEDITATION",
                 whereColumn = MeditationColumns._ID,
                 pathSegment = 1

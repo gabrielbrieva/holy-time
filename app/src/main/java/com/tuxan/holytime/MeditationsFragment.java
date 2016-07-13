@@ -31,9 +31,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Response;
 
-public class MainListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MeditationsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String LOG_TAG = "MainListFragment";
+    private static final String LOG_TAG = "MeditationsFragment";
     private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
 
     private int LOADER_ID = 0;
@@ -50,10 +50,10 @@ public class MainListFragment extends Fragment implements LoaderManager.LoaderCa
     SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
 
 
-    public MainListFragment() { }
+    public MeditationsFragment() { }
 
-    public static MainListFragment newInstance() {
-        MainListFragment fragment = new MainListFragment();
+    public static MeditationsFragment newInstance() {
+        MeditationsFragment fragment = new MeditationsFragment();
         return fragment;
     }
 
@@ -87,7 +87,7 @@ public class MainListFragment extends Fragment implements LoaderManager.LoaderCa
             @Override
             public void onRefresh() {
                 mEndlessScrollListener.restart();
-                getLoaderManager().restartLoader(LOADER_ID, null, MainListFragment.this);
+                getLoaderManager().restartLoader(LOADER_ID, null, MeditationsFragment.this);
             }
         };
 
@@ -100,7 +100,7 @@ public class MainListFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_main_list, container, false);
+        View view = inflater.inflate(R.layout.meditations_fragment, container, false);
 
         ButterKnife.bind(this, view);
 

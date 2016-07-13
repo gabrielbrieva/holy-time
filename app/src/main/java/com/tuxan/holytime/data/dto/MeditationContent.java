@@ -6,6 +6,7 @@ public class MeditationContent {
     private int weekNumber;
     private String title;
     private String author;
+    private String verse;
     private String body;
 
     public MeditationContent() {};
@@ -40,6 +41,14 @@ public class MeditationContent {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getVerse() {
+        return verse;
+    }
+
+    public void setVerse(String verse) {
+        this.verse = verse;
     }
 
     public String getBody() {

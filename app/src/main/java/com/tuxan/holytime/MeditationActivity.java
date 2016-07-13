@@ -1,49 +1,65 @@
 package com.tuxan.holytime;
 
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ViewGroup;
+import android.support.v7.widget.Toolbar;
 
-import com.tuxan.holytime.adapter.MeditationsLoader;
+import com.tuxan.holytime.adapter.MeditationLoader;
 import com.tuxan.holytime.data.provider.MeditationProvider;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MeditationActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    String mMeditationId;
-    String mStartId;
+    private final int LOADER_ID = 1;
 
-    Cursor mCursor;
+    @BindView(R.id.tbDetail)
+    Toolbar mToolbar;
+
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout mAppBarLayout;
+
+    String mMeditationId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_meditation_detail);
+        setContentView(R.layout.meditation_detail_activity);
 
-        getLoaderManager().initLoader(0, null, this);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
 
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {
-                mStartId = getIntent().getData().getPathSegments().get(1);
+                mMeditationId = getIntent().getData().getPathSegments().get(1);
             }
         }
+
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null; //new MeditationsLoader(this, MeditationProvider.Meditations.withId(mMeditationId));
+        if (mMeditationId != null)
+            return new MeditationLoader(this, MeditationProvider.Meditations.withId(mMeditationId));
+
+        return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null && data.moveToFirst()) {
+
+        }
 
     }
 
@@ -51,28 +67,4 @@ public class MeditationActivity extends AppCompatActivity
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
-    /*private class MeditationsPagerAdapter extends FragmentStatePagerAdapter {
-
-        public MeditationsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            mCursor.moveToPosition(position);
-            return MeditationDetailFragment.newInstance(mCursor.getString(MeditationsLoader.Query._ID), position);
-        }
-
-        @Override
-        public int getCount() {
-            return (mCursor != null) ? mCursor.getCount() : 0;
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-            mCurrentMeditationDetailFragment = (MeditationDetailFragment) object;
-        }
-    }*/
 }
