@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -30,17 +31,13 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private boolean isLoading = false;
 
-    Cursor mCursor;
-    Context mContext;
+    private Cursor mCursor;
+    final private Context mContext;
 
     SimpleDateFormat mDateFormater = new SimpleDateFormat("MMM");
 
     public MeditationsAdapter(Context context) {
         this.mContext = context;
-    }
-
-    public void setCursor(Cursor cursor) {
-        this.mCursor = cursor;
     }
 
     public void addMeditations(List<MeditationContent> meditations) {
@@ -56,9 +53,12 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
         }
 
-        int countBeforeMerge = mCursor.getCount();
+        int countBeforeMerge = mCursor == null ? 0 : mCursor.getCount();
 
-        mCursor = new MergeCursor(new Cursor[] { mCursor, matrixCursor });
+        if (mCursor != null)
+            mCursor = new MergeCursor(new Cursor[] { mCursor, matrixCursor });
+        else
+            mCursor = matrixCursor;
 
         notifyItemRangeInserted(countBeforeMerge, matrixCursor.getCount());
     }
@@ -68,11 +68,14 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void setIsLoading(boolean isLoading) {
+
+        int itemsCount = mCursor == null ? 0 : mCursor.getCount();
+
         if (isLoading) {
             this.isLoading = isLoading;
-            notifyItemInserted(mCursor.getCount());
+            notifyItemInserted(itemsCount);
         } else {
-            notifyItemRemoved(mCursor.getCount());
+            notifyItemRemoved(itemsCount);
             this.isLoading = isLoading;
         }
     }
@@ -89,7 +92,9 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(View v) {
 
                     String meditationId =  getMeditationId(viewHolder.getAdapterPosition());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, MeditationProvider.Meditations.withId(meditationId));
+                    Uri uri = MeditationProvider.Meditations.withId(meditationId);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.setType("vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation");
 
                     mContext.startActivity(intent);
                 }
@@ -159,6 +164,19 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return VIEWHOLDER_LOADING_TYPE;
 
         return VIEWHOLDER_MEDITATION_TYPE;
+    }
+
+    public Cursor getCursor() {
+        return this.mCursor;
+    }
+
+    public void swapCursor(Cursor newCursor) {
+        if (newCursor != mCursor && mCursor != null && !mCursor.isClosed())
+            mCursor.close();
+
+        mCursor = newCursor;
+
+        notifyDataSetChanged();
     }
 
     public static class LoadingViewHolder extends RecyclerView.ViewHolder {

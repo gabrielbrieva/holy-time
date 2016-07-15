@@ -46,7 +46,6 @@ public class MeditationsActivity extends AppCompatActivity implements
     @BindView(R.id.tv_toolbar_main_title_time)
     TextView tvToolbarTitleTime;
 
-    static final String FRAGMENT_TAG = "FRAGMENT_TAG";
     MeditationsFragment mMainListFragment;
 
     private static final String IS_VALLEY_VISIBLE = "IS_VALLEY_VISIBLE";
@@ -68,7 +67,7 @@ public class MeditationsActivity extends AppCompatActivity implements
             mMainListFragment = MeditationsFragment.newInstance();
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_list_container, mMainListFragment, FRAGMENT_TAG)
+                    .replace(R.id.main_list_container, mMainListFragment, MeditationsFragment.FRAGMENT_TAG)
                     .commit();
 
             MeditationSyncAdapter.initializeSyncAdapter(this);

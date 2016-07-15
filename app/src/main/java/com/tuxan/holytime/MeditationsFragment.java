@@ -1,6 +1,7 @@
 package com.tuxan.holytime;
 
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,6 +35,7 @@ import retrofit2.Response;
 public class MeditationsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = "MeditationsFragment";
+    static final String FRAGMENT_TAG = "MEDITATIONS_FRAGMENT_TAG";
     private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
 
     private int LOADER_ID = 0;
@@ -66,6 +68,7 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
         mMeditationsAdapter = new MeditationsAdapter(getActivity());
         mMeditationsAdapter.setHasStableIds(true);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
+
         mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mLinearLayoutManager) {
 
             @Override
@@ -95,7 +98,6 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,9 +109,13 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
         mRecyclerView.setAdapter(mMeditationsAdapter);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(mEndlessScrollListener);
-
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+
+        if (savedInstanceState != null) {
+            int lastPosition = savedInstanceState.getInt(SCROLL_POSITION_KEY);
+            mLinearLayoutManager.scrollToPosition(lastPosition);
+        }
 
         return view;
     }
@@ -127,15 +133,6 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SCROLL_POSITION_KEY, mLinearLayoutManager.findFirstCompletelyVisibleItemPosition());
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null) {
-            int lastPosition = savedInstanceState.getInt(SCROLL_POSITION_KEY);
-            mLinearLayoutManager.scrollToPosition(lastPosition);
-        }
     }
 
     private void loadMeditationsFromApi(final int page) {
@@ -181,7 +178,8 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mMeditationsAdapter.setCursor(data);
+
+        mMeditationsAdapter.swapCursor(data);
 
         if (mSwipeRefreshLayout.isRefreshing())
             mSwipeRefreshLayout.setRefreshing(false);
@@ -190,6 +188,6 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mRecyclerView.setAdapter(null);
+        mMeditationsAdapter.swapCursor(null);
     }
 }
