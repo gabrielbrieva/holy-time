@@ -93,8 +93,9 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     String meditationId =  getMeditationId(viewHolder.getAdapterPosition());
                     Uri uri = MeditationProvider.Meditations.withId(meditationId);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    intent.setType("vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation");
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(uri, "vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation");
+                    //intent.setType("vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation");
 
                     mContext.startActivity(intent);
                 }
