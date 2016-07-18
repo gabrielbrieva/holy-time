@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,11 +31,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Response;
 
-public class MeditationFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MeditationFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        AppBarLayout.OnOffsetChangedListener {
 
     public static final String MEDITATION_ID_KEY = "MEDITATION_ID_KEY";
     public static final String MEDITATION_TITLE_KEY = "MEDITATION_TITLE_KEY";
@@ -48,8 +51,15 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout mAppBarLayout;
+
+
     @BindView(R.id.tv_meditation_content)
     TextView mTvMeditationContent;
+
+    @BindView(R.id.tv_detail_title)
+    TextView mTvDetailTitle;
 
     @BindView(R.id.tv_meditation_date)
     TextView mTvMeditationDate;
@@ -57,11 +67,17 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     @BindView(R.id.tv_meditation_author)
     TextView mTvMeditationAuthor;
 
+
+    @BindDimen(R.dimen.margin_left_detail_title) int titleLeft;
+    @BindDimen(R.dimen.margin_right_detail_title) int titleRight;
+    @BindDimen(R.dimen.margin_bottom_detail_title) int titleBottom;
+
     String mMeditationId;
     String mMeditationTitle;
     MeditationContent mMeditationContent;
 
-    static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    int titleCollapsedSize = 45;
 
     public MeditationFragment() {
         setHasOptionsMenu(true);
@@ -90,20 +106,26 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.meditation_detail_fragment, container, false);
 
+        TypedValue tv = new TypedValue();
+        if (getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+            titleCollapsedSize = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+
         if (savedInstanceState != null) {
             mMeditationContent = savedInstanceState.getParcelable(MEDITATION_CONTENT_KEY);
         }
 
         ButterKnife.bind(this, view);
 
-        mCollapsingToolbarLayout.setTitleEnabled(true);
-        //mToolbar.setTitle("");
+        mAppBarLayout.addOnOffsetChangedListener(this);
+
+        mCollapsingToolbarLayout.setTitleEnabled(false);
+        mToolbar.setTitle("");
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (mMeditationTitle != null) {
-            mCollapsingToolbarLayout.setTitle(mMeditationTitle);
+            mTvDetailTitle.setText(mMeditationTitle);
             // init transition ... using current title
         } else {
             fillMeditationContent();
@@ -115,7 +137,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     private void fillMeditationContent() {
         if (mMeditationContent != null)
         {
-            mCollapsingToolbarLayout.setTitle(mMeditationContent.getTitle());
+            mTvDetailTitle.setText(mMeditationContent.getTitle());
 
             Calendar c = Calendar.getInstance();
             c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
@@ -213,6 +235,26 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
                     }
                 }
             }.execute();
+        }
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+        if (mTvDetailTitle != null) {
+            int maxScroll = appBarLayout.getTotalScrollRange();
+            float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+
+            mTvDetailTitle.setTextSize(30 - (10 * percentage));
+            CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) mTvDetailTitle.getLayoutParams();
+
+            int start = (titleLeft / 2) + (int)((titleLeft / 2) * percentage);
+            layoutParams.setMargins(start, 0, titleRight, (int)(titleBottom * (1 - percentage)));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                layoutParams.setMarginStart(start);
+                layoutParams.setMarginEnd(titleRight);
+            }
         }
     }
 }

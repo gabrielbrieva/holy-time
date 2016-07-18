@@ -17,4 +17,8 @@
     <dimen name="main_title_size">20sp</dimen>
 
 
+    <!-- custom detail title -->
+    <dimen name="margin_left_detail_title">60dp</dimen>
+    <dimen name="margin_right_detail_title">16dp</dimen>
+    <dimen name="margin_bottom_detail_title">16dp</dimen>
 </resources>
