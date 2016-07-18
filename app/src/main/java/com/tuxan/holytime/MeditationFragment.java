@@ -54,6 +54,8 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     @BindView(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
 
+    @BindView(R.id.toolbarBackground)
+    View toolbarBackground;
 
     @BindView(R.id.tv_meditation_content)
     TextView mTvMeditationContent;
@@ -125,6 +127,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (mMeditationTitle != null) {
+            mCollapsingToolbarLayout.setTitle(mMeditationTitle);
             mTvDetailTitle.setText(mMeditationTitle);
             // init transition ... using current title
         } else {
@@ -138,6 +141,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
         if (mMeditationContent != null)
         {
             mTvDetailTitle.setText(mMeditationContent.getTitle());
+            mCollapsingToolbarLayout.setTitle(mMeditationContent.getTitle());
 
             Calendar c = Calendar.getInstance();
             c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
@@ -241,7 +245,16 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
-        if (mTvDetailTitle != null) {
+        if (mCollapsingToolbarLayout != null) {
+            int maxScroll = appBarLayout.getTotalScrollRange();
+            float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+
+            mCollapsingToolbarLayout.setTitleEnabled(percentage == 1);
+
+            toolbarBackground.setAlpha(percentage);
+        }
+
+        /*if (mTvDetailTitle != null) {
             int maxScroll = appBarLayout.getTotalScrollRange();
             float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
 
@@ -255,6 +268,6 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
                 layoutParams.setMarginStart(start);
                 layoutParams.setMarginEnd(titleRight);
             }
-        }
+        }*/
     }
 }
