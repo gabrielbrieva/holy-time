@@ -21,17 +21,17 @@ public final class MeditationProvider {
                 defaultSort = MeditationColumns.WEEK_NUMBER + " DESC",
                 limit = "10"
         )
-        public static final Uri MEDITATIONS = Uri.parse("content://" + AUTHORITY + "/meditations");
+        public static final Uri meditationList = Uri.parse("content://" + AUTHORITY + "/meditations");
 
 
         @InexactContentUri(
-                path = "meditations/#",
+                path = "meditations/*",
                 type = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation",
-                name = "MEDITATION",
+                name = "withId",
                 whereColumn = MeditationColumns._ID,
                 pathSegment = 1
         )
-        public static Uri withId(String id) {
+        public static final Uri withId(String id) {
             return Uri.parse("content://" + AUTHORITY + "/meditations/" + id);
         }
 

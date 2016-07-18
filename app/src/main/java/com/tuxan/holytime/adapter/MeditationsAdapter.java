@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.tuxan.holytime.MeditationActivity;
+import com.tuxan.holytime.MeditationFragment;
 import com.tuxan.holytime.R;
 import com.tuxan.holytime.data.dto.MeditationContent;
 import com.tuxan.holytime.data.provider.MeditationProvider;
@@ -93,9 +95,8 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     String meditationId =  getMeditationId(viewHolder.getAdapterPosition());
                     Uri uri = MeditationProvider.Meditations.withId(meditationId);
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(uri, "vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation");
-                    //intent.setType("vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.putExtra(MeditationFragment.MEDITATION_TITLE_KEY, getMeditationTitle(viewHolder.getAdapterPosition()));
 
                     mContext.startActivity(intent);
                 }
@@ -111,6 +112,11 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private String getMeditationId(int position) {
         mCursor.moveToPosition(position);
         return mCursor.getString(MeditationsLoader.ResumeQuery._ID);
+    }
+
+    private String getMeditationTitle(int position) {
+        mCursor.moveToPosition(position);
+        return mCursor.getString(MeditationsLoader.ResumeQuery.TITLE);
     }
 
     @Override

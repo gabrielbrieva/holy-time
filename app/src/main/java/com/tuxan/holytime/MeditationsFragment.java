@@ -1,7 +1,6 @@
 package com.tuxan.holytime;
 
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -173,7 +172,7 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new MeditationsLoader(getActivity(), MeditationProvider.Meditations.MEDITATIONS);
+        return new MeditationsLoader(getActivity(), MeditationProvider.Meditations.meditationList);
     }
 
     @Override

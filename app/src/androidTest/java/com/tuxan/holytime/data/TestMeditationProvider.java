@@ -15,9 +15,9 @@ public class TestMeditationProvider extends AndroidTestCase {
      * Delete all from Meditations table and test if all was deleted.
      */
     private void deleteAllFromProvider() {
-        mContext.getContentResolver().delete(MeditationProvider.Meditations.MEDITATIONS, null, null);
+        mContext.getContentResolver().delete(MeditationProvider.Meditations.meditationList, null, null);
 
-        Cursor c = mContext.getContentResolver().query(MeditationProvider.Meditations.MEDITATIONS,
+        Cursor c = mContext.getContentResolver().query(MeditationProvider.Meditations.meditationList,
                 null,
                 null,
                 null,
@@ -60,7 +60,7 @@ public class TestMeditationProvider extends AndroidTestCase {
      */
     public void testGetType() {
         // content://com.tuxan.holytime/meditations/
-        String type =  mContext.getContentResolver().getType(MeditationProvider.Meditations.MEDITATIONS);
+        String type =  mContext.getContentResolver().getType(MeditationProvider.Meditations.meditationList);
 
         // vnd.android.cursor.dir/vnd.com.tuxan.holytime.meditation
         assertEquals("Error: the MeditationEntry CONTENT_URI should return MeditationEntry.CONTENT_TYPE",

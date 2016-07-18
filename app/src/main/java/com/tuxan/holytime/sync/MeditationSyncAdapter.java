@@ -99,7 +99,7 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
             ContentValues[] cvArray = new ContentValues[vMeditations.size()];
             vMeditations.toArray(cvArray);
 
-            insertedMeditationsCount = mContentResolver.bulkInsert(MeditationProvider.Meditations.MEDITATIONS,  cvArray);
+            insertedMeditationsCount = mContentResolver.bulkInsert(MeditationProvider.Meditations.meditationList,  cvArray);
         }
 
 
