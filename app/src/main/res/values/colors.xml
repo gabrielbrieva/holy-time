@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#c84a00</color>
     <color name="colorAccent">#ff4f2f</color>
 
+    <color name="textPrimary">#cc000000</color>
+    <color name="textSecondary">#cc000000</color>
+
     <color name="mainValleyFill">#632d0b</color>
     <color name="mainSunFill">#ffe506</color>
     <color name="mainTitleHoly">@color/mainValleyFill</color>

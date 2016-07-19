@@ -25,17 +25,21 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_meditation_date"/>
+                android:id="@+id/tv_meditation_date"
+                style="@style/HolyTime.DetailBody" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_meditation_content"/>
+                android:id="@+id/tv_meditation_content"
+                style="@style/HolyTime.DetailBody"
+                tools:text="Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed to float in the middle of an immense dark sphere, whose upper half was strewn with silver. Looking down into the dark gulf below, I could see a ruddy light streaming through a rift in the clouds."/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_meditation_author"/>
+                android:id="@+id/tv_meditation_author"
+                style="@style/HolyTime.DetailBody" />
 
         </LinearLayout>
 
@@ -67,7 +71,7 @@
                     android:id="@+id/tv_detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/TextAppearance.AppCompat.Large.Inverse"
+                    style="@style/HolyTime.DetailTitle"
                     android:gravity="center"
                     android:layout_marginTop="?attr/actionBarSize"
                     android:layout_marginBottom="16dp"
@@ -77,8 +81,10 @@
                     android:id="@+id/tv_meditation_verse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/HolyTime.DetailVerse"
                     android:text="verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso."
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_marginBottom="16dp"
+                    android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
 
@@ -108,18 +114,6 @@
                 app:layout_collapseMode="pin"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-            <!--<TextView
-                android:id="@+id/tv_detail_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:maxLines="2"
-                android:lines="2"
-                android:ellipsize="end"
-                style="@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:minHeight="?attr/actionBarSize"
-                android:gravity="center_vertical"/>-->
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

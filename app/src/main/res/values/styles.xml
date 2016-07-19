@@ -7,4 +7,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="HolyTime.DetailTitle" parent="Base.TextAppearance.AppCompat.Inverse">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HolyTime.DetailVerse" parent="Base.TextAppearance.AppCompat.Inverse">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="HolyTime.DetailBody" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
 </resources>
