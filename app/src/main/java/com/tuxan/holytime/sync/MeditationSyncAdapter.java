@@ -85,6 +85,7 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
 
             v.put(MeditationColumns._ID, m.getId());
             v.put(MeditationColumns.TITLE, m.getTitle());
+            v.put(MeditationColumns.VERSE, m.getVerse());
             v.put(MeditationColumns.AUTHOR, m.getAuthor());
             v.put(MeditationColumns.BODY, m.getBody());
             v.put(MeditationColumns.WEEK_NUMBER, m.getWeekNumber());

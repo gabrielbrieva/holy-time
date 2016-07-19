@@ -1,6 +1,7 @@
 package com.tuxan.holytime;
 
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,14 +58,17 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     @BindView(R.id.toolbarBackground)
     View toolbarBackground;
 
-    @BindView(R.id.tv_meditation_content)
-    TextView mTvMeditationContent;
-
     @BindView(R.id.tv_detail_title)
     TextView mTvDetailTitle;
 
+    @BindView(R.id.tv_meditation_verse)
+    TextView mTvDetailVerse;
+
     @BindView(R.id.tv_meditation_date)
     TextView mTvMeditationDate;
+
+    @BindView(R.id.tv_meditation_content)
+    TextView mTvMeditationContent;
 
     @BindView(R.id.tv_meditation_author)
     TextView mTvMeditationAuthor;
@@ -118,6 +122,15 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
         ButterKnife.bind(this, view);
 
+        Typeface titleTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "RobotoSlab-Bold.ttf");
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "RobotoSlab-Regular.ttf");
+
+        mTvDetailTitle.setTypeface(titleTypeFace);
+        mTvDetailVerse.setTypeface(typeFace);
+        mTvMeditationDate.setTypeface(typeFace);
+        mTvMeditationContent.setTypeface(typeFace);
+        mTvMeditationAuthor.setTypeface(typeFace);
+
         mAppBarLayout.addOnOffsetChangedListener(this);
 
         mCollapsingToolbarLayout.setTitleEnabled(false);
@@ -129,6 +142,8 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
         if (mMeditationTitle != null) {
             mCollapsingToolbarLayout.setTitle(mMeditationTitle);
             mTvDetailTitle.setText(mMeditationTitle);
+            // verse too ??
+
             // init transition ... using current title
         } else {
             fillMeditationContent();
@@ -148,11 +163,12 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
             c.set(Calendar.WEEK_OF_YEAR, mMeditationContent.getWeekNumber());
             mTvMeditationDate.setText(dateFormat.format(c.getTime()));
 
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTvMeditationContent.setText(Html.fromHtml(mMeditationContent.getBody(), Html.FROM_HTML_MODE_LEGACY));
+                mTvDetailVerse.setText(Html.fromHtml(mMeditationContent.getVerse().trim(), Html.FROM_HTML_MODE_LEGACY));
+                mTvMeditationContent.setText(Html.fromHtml(mMeditationContent.getBody().trim(), Html.FROM_HTML_MODE_LEGACY));
             } else {
-                mTvMeditationContent.setText(Html.fromHtml(mMeditationContent.getBody()));
+                mTvDetailVerse.setText(Html.fromHtml(mMeditationContent.getVerse().trim()));
+                mTvMeditationContent.setText(Html.fromHtml(mMeditationContent.getBody().trim()));
             }
 
             mTvMeditationAuthor.setText(mMeditationContent.getAuthor());

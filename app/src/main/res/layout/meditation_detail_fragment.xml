@@ -20,20 +20,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:padding="16dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_meditation_date"
-                style="@style/HolyTime.DetailBody" />
+                style="@style/HolyTime.DetailBody"
+                android:layout_marginBottom="15dp"
+                tools:text="19/07/2016"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_meditation_content"
                 style="@style/HolyTime.DetailBody"
-                tools:text="Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed to float in the middle of an immense dark sphere, whose upper half was strewn with silver. Looking down into the dark gulf below, I could see a ruddy light streaming through a rift in the clouds."/>
+                tools:text="Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed to float in the middle of an immense dark sphere, whose upper half was strewn with silver. Looking down into the dark gulf below, I could see a ruddy light streaming through a rift in the clouds."
+                 />
 
             <TextView
                 android:layout_width="match_parent"
@@ -65,7 +69,7 @@
                 android:orientation="vertical"
                 android:layout_gravity="bottom"
                 android:padding="20dp"
-                android:background="#2d866a45">
+                android:background="#5affddaf">
 
                 <TextView
                     android:id="@+id/tv_detail_title"
@@ -82,8 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/HolyTime.DetailVerse"
-                    android:text="verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso verso."
-                    android:layout_marginBottom="16dp"
+                    tools:text="verso verso verso verso verso verso verso verso verso verso verso."
                     android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
