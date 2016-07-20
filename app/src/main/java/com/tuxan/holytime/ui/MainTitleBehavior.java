@@ -57,10 +57,10 @@ public class MainTitleBehavior extends CoordinatorLayout.Behavior<LinearLayout> 
         tvTitleTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, currentTileSize);
         tvTitleHoly.setTextSize(TypedValue.COMPLEX_UNIT_SP, currentTileSize);
 
-        CoordinatorLayout.LayoutParams containerLayoutParams = (CoordinatorLayout.LayoutParams)child.getLayoutParams();
-        containerLayoutParams.setMargins(titleContainerMarginLeft, (int) Math.ceil(((mainToolbarHeight - child.getHeight()) / 2) * (1 - percentage) + (percentage * dpToPixels(16))), 0, 0);
+        //CoordinatorLayout.LayoutParams containerLayoutParams = (CoordinatorLayout.LayoutParams)child.getLayoutParams();
+        //containerLayoutParams.setMargins(titleContainerMarginLeft, (int) Math.ceil(((mainToolbarHeight - child.getHeight()) / 2) * (1 - percentage) + (percentage * dpToPixels(16))), 0, 0);
 
-        child.setLayoutParams(containerLayoutParams);
+        //child.setLayoutParams(containerLayoutParams);
 
         return true;
     }

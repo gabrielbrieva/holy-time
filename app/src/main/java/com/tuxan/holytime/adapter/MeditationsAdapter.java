@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.tuxan.holytime.MeditationActivity;
 import com.tuxan.holytime.MeditationFragment;
 import com.tuxan.holytime.R;
 import com.tuxan.holytime.data.dto.MeditationContent;
@@ -93,10 +92,11 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
 
-                    String meditationId =  getMeditationId(viewHolder.getAdapterPosition());
+                    String meditationId =  getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery._ID);
                     Uri uri = MeditationProvider.Meditations.withId(meditationId);
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    intent.putExtra(MeditationFragment.MEDITATION_TITLE_KEY, getMeditationTitle(viewHolder.getAdapterPosition()));
+                    intent.putExtra(MeditationFragment.MEDITATION_TITLE_KEY, getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.TITLE));
+                    intent.putExtra(MeditationFragment.MEDITATION_VERSE_KEY, getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.VERSE));
 
                     mContext.startActivity(intent);
                 }
@@ -109,14 +109,9 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private String getMeditationId(int position) {
+    private String getMeditationData(int position, int rowIndex) {
         mCursor.moveToPosition(position);
-        return mCursor.getString(MeditationsLoader.ResumeQuery._ID);
-    }
-
-    private String getMeditationTitle(int position) {
-        mCursor.moveToPosition(position);
-        return mCursor.getString(MeditationsLoader.ResumeQuery.TITLE);
+        return mCursor.getString(rowIndex);
     }
 
     @Override

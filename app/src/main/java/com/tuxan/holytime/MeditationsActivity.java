@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.tuxan.holytime.sync.MeditationSyncAdapter;
 
 import java.util.Calendar;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -27,6 +29,9 @@ public class MeditationsActivity extends AppCompatActivity implements
         AppBarLayout.OnOffsetChangedListener {
 
     private static final String LOG_TAG = "MeditationsActivity";
+
+    @BindView(R.id.collapsingToolbarLayout)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     @BindView(R.id.tbSunset)
     Toolbar mToolbar;
@@ -50,8 +55,11 @@ public class MeditationsActivity extends AppCompatActivity implements
 
     private static final String IS_VALLEY_VISIBLE = "IS_VALLEY_VISIBLE";
 
-    private static final float PERCENTAGE_TO_ANIMATE_SUN = 0.3f;
+    private static final float PERCENTAGE_TO_ANIMATE_SUN = 0.6f;
     private static final int ANIMATION_DURATION = 200;
+
+    @BindDimen(R.dimen.main_scrim_height)
+    int scrimHeight;
 
     private boolean mIsValleyVisible = true;
 
@@ -74,6 +82,8 @@ public class MeditationsActivity extends AppCompatActivity implements
         }
 
         ButterKnife.bind(this);
+
+        mCollapsingToolbarLayout.setScrimVisibleHeightTrigger(scrimHeight);
 
         setSupportActionBar(mToolbar);
 

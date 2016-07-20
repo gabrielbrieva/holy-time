@@ -19,13 +19,14 @@ public class MeditationActivity extends AppCompatActivity {
 
             if (getIntent() != null) {
 
-                if (getIntent().hasExtra(MeditationFragment.MEDITATION_TITLE_KEY)) {
+                if (getIntent().hasExtra(MeditationFragment.MEDITATION_TITLE_KEY))
                     arguments.putString(MeditationFragment.MEDITATION_TITLE_KEY, getIntent().getStringExtra(MeditationFragment.MEDITATION_TITLE_KEY));
-                }
 
-                if (getIntent().getData() != null) {
+                if (getIntent().hasExtra(MeditationFragment.MEDITATION_VERSE_KEY))
+                    arguments.putString(MeditationFragment.MEDITATION_VERSE_KEY, getIntent().getStringExtra(MeditationFragment.MEDITATION_VERSE_KEY));
+
+                if (getIntent().getData() != null)
                     arguments.putString(MeditationFragment.MEDITATION_ID_KEY, getIntent().getData().getPathSegments().get(1));
-                }
             }
 
             fragment.setArguments(arguments);

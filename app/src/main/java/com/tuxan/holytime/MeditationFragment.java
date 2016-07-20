@@ -42,6 +42,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
     public static final String MEDITATION_ID_KEY = "MEDITATION_ID_KEY";
     public static final String MEDITATION_TITLE_KEY = "MEDITATION_TITLE_KEY";
+    public static final String MEDITATION_VERSE_KEY = "MEDITATION_VERSE_KEY";
     private static final String MEDITATION_CONTENT_KEY = "MEDITATION_CONTENT_KEY";
 
     private final int LOADER_ID = 1;
@@ -80,6 +81,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
     String mMeditationId;
     String mMeditationTitle;
+    String mMeditationVerse;
     MeditationContent mMeditationContent;
 
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -101,6 +103,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
         Bundle arguments = getArguments();
         if (arguments != null && savedInstanceState == null) {
             mMeditationTitle = arguments.getString(MEDITATION_TITLE_KEY);
+            mMeditationVerse = arguments.getString(MEDITATION_VERSE_KEY);
             mMeditationId = arguments.getString(MEDITATION_ID_KEY);
 
             getLoaderManager().initLoader(LOADER_ID, null, this);
@@ -139,10 +142,20 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (mMeditationTitle != null) {
-            mCollapsingToolbarLayout.setTitle(mMeditationTitle);
-            mTvDetailTitle.setText(mMeditationTitle);
-            // verse too ??
+        if (mMeditationContent == null) {
+            if (mMeditationTitle != null) {
+                mCollapsingToolbarLayout.setTitle(mMeditationTitle);
+                mTvDetailTitle.setText(mMeditationTitle);
+            }
+
+            if (mMeditationVerse != null) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    mTvDetailVerse.setText(Html.fromHtml(mMeditationVerse.trim(), Html.FROM_HTML_MODE_LEGACY));
+                } else {
+                    mTvDetailVerse.setText(Html.fromHtml(mMeditationVerse.trim()));
+                }
+            }
 
             // init transition ... using current title
         } else {
@@ -269,21 +282,5 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
             toolbarBackground.setAlpha(percentage);
         }
-
-        /*if (mTvDetailTitle != null) {
-            int maxScroll = appBarLayout.getTotalScrollRange();
-            float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
-
-            mTvDetailTitle.setTextSize(30 - (10 * percentage));
-            CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) mTvDetailTitle.getLayoutParams();
-
-            int start = (titleLeft / 2) + (int)((titleLeft / 2) * percentage);
-            layoutParams.setMargins(start, 0, titleRight, (int)(titleBottom * (1 - percentage)));
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                layoutParams.setMarginStart(start);
-                layoutParams.setMarginEnd(titleRight);
-            }
-        }*/
     }
 }

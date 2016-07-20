@@ -39,7 +39,7 @@
             android:fitsSystemWindows="true"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:titleEnabled="false" >
+            app:titleEnabled="false">
 
             <View
                 android:layout_width="match_parent"
@@ -108,7 +108,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tbSunset"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="110dp"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 android:gravity="top"
@@ -165,6 +165,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         app:layout_behavior=".ui.MainTitleBehavior">
 
         <TextView

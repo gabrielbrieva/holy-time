@@ -29,6 +29,7 @@
                 android:id="@+id/tv_meditation_date"
                 style="@style/HolyTime.DetailBody"
                 android:layout_marginBottom="15dp"
+                android:alpha="0.6"
                 tools:text="19/07/2016"/>
 
             <TextView
@@ -43,7 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_meditation_author"
-                style="@style/HolyTime.DetailBody" />
+                style="@style/HolyTime.DetailBody"
+                android:alpha="0.6"
+                tools:text="Author - author" />
 
         </LinearLayout>
 
@@ -68,7 +71,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="bottom"
-                android:padding="20dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:background="#5affddaf">
 
                 <TextView
@@ -87,6 +92,12 @@
                     android:layout_height="wrap_content"
                     style="@style/HolyTime.DetailVerse"
                     tools:text="verso verso verso verso verso verso verso verso verso verso verso."
+                    android:layout_gravity="center_horizontal" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/detail_separator"
                     android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
