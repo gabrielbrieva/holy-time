@@ -32,7 +32,7 @@ public class MeditationActivity extends AppCompatActivity {
             fragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.meditation_detail_container, fragment)
+                    .add(R.id.meditation_detail_container, fragment)
                     .commit();
 
         }

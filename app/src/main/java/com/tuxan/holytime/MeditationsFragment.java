@@ -105,6 +105,9 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
         ButterKnife.bind(this, view);
 
+        // to fix transition issue
+        mMeditationsAdapter.setContext(getActivity());
+
         mRecyclerView.setAdapter(mMeditationsAdapter);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.addOnScrollListener(mEndlessScrollListener);

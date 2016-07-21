@@ -93,7 +93,7 @@ public class MeditationsActivity extends AppCompatActivity implements
 
         mAppBarLayout.addOnOffsetChangedListener(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
             } else {
@@ -101,7 +101,7 @@ public class MeditationsActivity extends AppCompatActivity implements
             }
         } else {
             calculateSunsetDateTime();
-        }
+        }*/
 
     }
 
@@ -111,7 +111,7 @@ public class MeditationsActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
     }
 
-    private void calculateSunsetDateTime() {
+    /*private void calculateSunsetDateTime() {
         Calendar c = Utils.getTimeOfSunset(this);
     }
 
@@ -121,7 +121,7 @@ public class MeditationsActivity extends AppCompatActivity implements
         if (requestCode == 0 && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             calculateSunsetDateTime();
         }
-    }
+    }*/
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {

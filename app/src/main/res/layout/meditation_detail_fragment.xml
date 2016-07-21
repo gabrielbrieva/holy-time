@@ -17,6 +17,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/ll_body_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -74,7 +75,8 @@
                 android:paddingTop="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:background="#5affddaf">
+                android:background="#5affddaf"
+                android:transitionName="@string/meditation_container_share_element" >
 
                 <TextView
                     android:id="@+id/tv_detail_title"
@@ -84,6 +86,7 @@
                     android:gravity="center"
                     android:layout_marginTop="?attr/actionBarSize"
                     android:layout_marginBottom="16dp"
+                    android:transitionName="@string/meditation_title_share_element"
                     tools:text="Titulo"/>
 
                 <TextView
@@ -91,8 +94,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/HolyTime.DetailVerse"
-                    tools:text="verso verso verso verso verso verso verso verso verso verso verso."
-                    android:layout_gravity="center_horizontal" />
+                    android:transitionName="@string/meditation_verse_share_element"
+                    tools:text="verso verso verso verso verso verso verso verso verso verso verso." />
 
                 <ImageView
                     android:layout_width="wrap_content"

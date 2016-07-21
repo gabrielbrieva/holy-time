@@ -44,7 +44,8 @@
             android:syncable="true"
             />
 
-        <activity android:name=".MeditationsActivity" >
+        <activity android:name=".MeditationsActivity"
+            android:theme="@style/AppTheme.Meditations">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -53,6 +54,7 @@
 
         <activity
             android:name=".MeditationActivity"
+            android:theme="@style/AppTheme.Meditation"
             android:parentActivityName=".MeditationsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

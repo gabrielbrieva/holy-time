@@ -105,8 +105,6 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
             mMeditationTitle = arguments.getString(MEDITATION_TITLE_KEY);
             mMeditationVerse = arguments.getString(MEDITATION_VERSE_KEY);
             mMeditationId = arguments.getString(MEDITATION_ID_KEY);
-
-            getLoaderManager().initLoader(LOADER_ID, null, this);
         }
     }
 
@@ -149,15 +147,12 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
             }
 
             if (mMeditationVerse != null) {
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     mTvDetailVerse.setText(Html.fromHtml(mMeditationVerse.trim(), Html.FROM_HTML_MODE_LEGACY));
                 } else {
                     mTvDetailVerse.setText(Html.fromHtml(mMeditationVerse.trim()));
                 }
             }
-
-            // init transition ... using current title
         } else {
             fillMeditationContent();
         }
@@ -186,6 +181,14 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
             mTvMeditationAuthor.setText(mMeditationContent.getAuthor());
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null)
+            getLoaderManager().initLoader(LOADER_ID, null, this);
+
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

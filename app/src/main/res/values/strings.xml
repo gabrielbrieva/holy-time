@@ -7,5 +7,10 @@
     <string name="swipe_instruction">Swipe to Refresh</string>
 
     <string name="main_title_holy">Holy</string>
-    <string name="main_title_time">Time</string>¿
+    <string name="main_title_time">Time</string>
+
+    <!-- transitions -->
+    <string name="meditation_container_share_element">meditation_container_share_element</string>
+    <string name="meditation_title_share_element">meditation_title_share_element</string>
+    <string name="meditation_verse_share_element">meditation_verse_share_element</string>
 </resources>

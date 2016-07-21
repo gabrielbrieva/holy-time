@@ -5,9 +5,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +22,7 @@ import android.widget.TextView;
 
 import com.tuxan.holytime.MeditationFragment;
 import com.tuxan.holytime.R;
+import com.tuxan.holytime.Utils;
 import com.tuxan.holytime.data.dto.MeditationContent;
 import com.tuxan.holytime.data.provider.MeditationProvider;
 
@@ -33,11 +41,15 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean isLoading = false;
 
     private Cursor mCursor;
-    final private Context mContext;
+    protected Context mContext;
 
     SimpleDateFormat mDateFormater = new SimpleDateFormat("MMM");
 
     public MeditationsAdapter(Context context) {
+        this.mContext = context;
+    }
+
+    public void setContext(Context context) {
         this.mContext = context;
     }
 
@@ -85,7 +97,7 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == VIEWHOLDER_MEDITATION_TYPE) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.meditations_list_item, parent, false);
+            final View view = LayoutInflater.from(mContext).inflate(R.layout.meditations_list_item, parent, false);
             final RecyclerView.ViewHolder viewHolder = new ListItemViewHolder(view);
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +110,29 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     intent.putExtra(MeditationFragment.MEDITATION_TITLE_KEY, getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.TITLE));
                     intent.putExtra(MeditationFragment.MEDITATION_VERSE_KEY, getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.VERSE));
 
-                    mContext.startActivity(intent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && view != null) {
+
+                        View containerShared = view.findViewById(R.id.ll_shared_container);
+                        View titleShared = view.findViewById(R.id.tv_meditation_title);
+                        View verseShared = view.findViewById(R.id.tv_meditation_verse);
+
+                        Pair<View, String> containerTransition = new Pair<>(containerShared, containerShared.getTransitionName());
+                        Pair<View, String> titleTransition = new Pair<>(titleShared, titleShared.getTransitionName());
+                        Pair<View, String> verseTransition = new Pair<>(verseShared, verseShared.getTransitionName());
+
+                        Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                (AppCompatActivity) mContext,
+                                containerTransition,
+                                titleTransition,
+                                verseTransition
+                        ).toBundle();
+
+                        mContext.startActivity(intent, bundle);
+
+                    } else {
+                        mContext.startActivity(intent);
+                    }
+
                 }
             });
 
@@ -127,10 +161,12 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             String verse = mCursor.getString(MeditationsLoader.ResumeQuery.VERSE);
             if (verse != null) {
-                if (verse.length() >= 250)
-                    verse = verse.substring(0, 250);
 
-                holder.textView.setText(Html.fromHtml(verse));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                    holder.textView.setText(Utils.trimSpannable((SpannableStringBuilder) Html.fromHtml(verse.trim(), Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)));
+                else
+                    holder.textView.setText(Utils.trimSpannable((SpannableStringBuilder) Html.fromHtml(verse.trim())));
+
             } else {
                 holder.textView.setText("");
             }
@@ -142,8 +178,8 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
             c.set(Calendar.WEEK_OF_YEAR, weekNumber);
 
-            holder.monthView.setText(mDateFormater.format(c.getTime()).toUpperCase().replace(".", ""));
-            holder.dayView.setText(String.format("%02d", c.get(Calendar.DAY_OF_MONTH)));
+            //holder.monthView.setText(mDateFormater.format(c.getTime()).toUpperCase().replace(".", ""));
+            //holder.dayView.setText(String.format("%02d", c.get(Calendar.DAY_OF_MONTH)));
         }
     }
 
@@ -190,24 +226,30 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-    public static class ListItemViewHolder extends RecyclerView.ViewHolder {
+    public class ListItemViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_date_month)
+        /*@BindView(R.id.tv_date_month)
         public TextView monthView;
 
         @BindView(R.id.tv_date_day)
-        public TextView dayView;
+        public TextView dayView;*/
 
         @BindView(R.id.tv_meditation_title)
         public TextView titleView;
 
-        @BindView(R.id.tv_meditation_text)
+        @BindView(R.id.tv_meditation_verse)
         public TextView textView;
 
         public ListItemViewHolder(View view) {
             super(view);
 
             ButterKnife.bind(this, view);
+
+            Typeface titleTypeFace = Typeface.createFromAsset(mContext.getAssets(), "RobotoSlab-Bold.ttf");
+            Typeface typeFace = Typeface.createFromAsset(mContext.getAssets(), "RobotoSlab-Regular.ttf");
+
+            titleView.setTypeface(titleTypeFace);
+            textView.setTypeface(typeFace);
         }
     }
 
