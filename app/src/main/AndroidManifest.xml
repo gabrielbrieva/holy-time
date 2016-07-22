@@ -52,6 +52,16 @@
             </intent-filter>
         </activity>
 
+        <!--<activity
+            android:name=".preferences.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MeditationsActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MeditationsActivity" />
+        </activity>-->
+
         <activity
             android:name=".MeditationActivity"
             android:theme="@style/AppTheme.Meditation"

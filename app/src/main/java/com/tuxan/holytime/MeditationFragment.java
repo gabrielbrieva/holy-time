@@ -123,11 +123,11 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
         ButterKnife.bind(this, view);
 
-        Typeface titleTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "RobotoSlab-Bold.ttf");
+        //Typeface titleTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "RobotoSlab-Bold.ttf");
         Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "RobotoSlab-Regular.ttf");
 
-        mTvDetailTitle.setTypeface(titleTypeFace);
-        mTvDetailVerse.setTypeface(typeFace);
+        //mTvDetailTitle.setTypeface(titleTypeFace);
+        //mTvDetailVerse.setTypeface(typeFace);
         mTvMeditationDate.setTypeface(typeFace);
         mTvMeditationContent.setTypeface(typeFace);
         mTvMeditationAuthor.setTypeface(typeFace);
