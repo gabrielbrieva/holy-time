@@ -108,6 +108,7 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
                 mContentResolver.insert(MeditationProvider.Meditations.meditationList, v);
                 newItems++;
             } else {
+                v.remove(MeditationColumns._ID);
                 updatedItems += mContentResolver.update(MeditationProvider.Meditations.withId(m.getId()), v, null, null);
             }
         }
@@ -119,8 +120,8 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.d(LOG_TAG, updatedItems + " Meditation Synchronized (updated)");
 
         int deletedItems = mContentResolver.delete(MeditationProvider.Meditations.meditationList,
-                MeditationColumns._ID + " NOT IN ( \"" + TextUtils.join("\",\"", meditationsId) + "\" ) ",
-                // TODO: prevent delete favorite items
+                MeditationColumns._ID + " NOT IN ( \"" + TextUtils.join("\",\"", meditationsId) + "\" ) " +
+                " AND " + MeditationColumns.IS_FAVORITE + " = 0 ",
                 null);
 
         if (deletedItems > 0)

@@ -11,5 +11,6 @@ public interface MeditationColumns {
     @DataType(DataType.Type.TEXT) String VERSE = "verse";
     @DataType(DataType.Type.TEXT) String BODY = "body";
     @DataType(DataType.Type.INTEGER) String WEEK_NUMBER = "week_number";
-    // TODO: add IS_FAVORITE column
+    @DataType(DataType.Type.INTEGER) String IS_FAVORITE = "is_favorite";
+    
 }
