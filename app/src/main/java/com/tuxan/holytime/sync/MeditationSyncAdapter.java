@@ -9,8 +9,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.tuxan.holytime.R;
@@ -22,9 +24,9 @@ import com.tuxan.holytime.data.provider.MeditationColumns;
 import com.tuxan.holytime.data.provider.MeditationProvider;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Vector;
 
 import retrofit2.Response;
 
@@ -77,9 +79,14 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
         if (meditations == null || meditations.isEmpty())
             return;
 
-        Vector<ContentValues> vMeditations = new Vector<>(meditations.size());
+        List<String> meditationsId = new ArrayList<>();
+
+        int newItems = 0;
+        int updatedItems = 0;
 
         for (MeditationContent m : meditations) {
+
+            meditationsId.add(m.getId());
 
             ContentValues v = new ContentValues();
 
@@ -90,21 +97,34 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
             v.put(MeditationColumns.BODY, m.getBody());
             v.put(MeditationColumns.WEEK_NUMBER, m.getWeekNumber());
 
-            vMeditations.add(v);
+            Cursor result = mContentResolver.query(MeditationProvider.Meditations.withId(m.getId()),
+                    new String[]{ MeditationColumns._ID },
+                    null,
+                    null,
+                    null);
+
+            // insert or update each meditation result
+            if (result == null || result.getCount() == 0) {
+                mContentResolver.insert(MeditationProvider.Meditations.meditationList, v);
+                newItems++;
+            } else {
+                updatedItems += mContentResolver.update(MeditationProvider.Meditations.withId(m.getId()), v, null, null);
+            }
         }
 
+        if (newItems > 0)
+            Log.d(LOG_TAG, newItems + " New Meditation Synchronized (inserted)");
 
-        int insertedMeditationsCount = 0;
+        if (updatedItems > 0)
+            Log.d(LOG_TAG, updatedItems + " Meditation Synchronized (updated)");
 
-        if (vMeditations.size() > 0) {
-            ContentValues[] cvArray = new ContentValues[vMeditations.size()];
-            vMeditations.toArray(cvArray);
+        int deletedItems = mContentResolver.delete(MeditationProvider.Meditations.meditationList,
+                MeditationColumns._ID + " NOT IN ( \"" + TextUtils.join("\",\"", meditationsId) + "\" ) ",
+                // TODO: prevent delete favorite items
+                null);
 
-            insertedMeditationsCount = mContentResolver.bulkInsert(MeditationProvider.Meditations.meditationList,  cvArray);
-        }
-
-
-        Log.d(LOG_TAG, insertedMeditationsCount + " inserted from Holy Time API");
+        if (deletedItems > 0)
+            Log.d(LOG_TAG, deletedItems + " old meditations was deleted by MeditationSyncAdapter");
     }
 
     /**
