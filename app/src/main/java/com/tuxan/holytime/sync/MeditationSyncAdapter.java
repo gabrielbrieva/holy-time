@@ -111,6 +111,9 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
                 v.remove(MeditationColumns._ID);
                 updatedItems += mContentResolver.update(MeditationProvider.Meditations.withId(m.getId()), v, null, null);
             }
+
+            if (result != null)
+                result.close();
         }
 
         if (newItems > 0)
