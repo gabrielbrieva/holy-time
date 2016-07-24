@@ -13,4 +13,13 @@
     <string name="meditation_container_share_element">meditation_container_share_element</string>
     <string name="meditation_title_share_element">meditation_title_share_element</string>
     <string name="meditation_verse_share_element">meditation_verse_share_element</string>
+
+    <!-- Share URL -->
+    <string name="share_url">http://holytime.gabrielbrieva.cl/</string>
+    <string name="share_title">Share Meditation</string>
+    <string name="action_share">Share</string>
+
+    <string name="action_favorite">Favorite</string>
+
+
 </resources>

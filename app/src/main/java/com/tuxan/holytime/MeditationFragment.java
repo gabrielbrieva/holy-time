@@ -1,5 +1,6 @@
 package com.tuxan.holytime;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -11,18 +12,21 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tuxan.holytime.adapter.MeditationLoader;
-import com.tuxan.holytime.adapter.MeditationsLoader;
 import com.tuxan.holytime.api.APIService;
 import com.tuxan.holytime.api.APIServiceFactory;
 import com.tuxan.holytime.data.dto.MeditationContent;
@@ -123,11 +127,8 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
         ButterKnife.bind(this, view);
 
-        //Typeface titleTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "RobotoSlab-Bold.ttf");
         Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "RobotoSlab-Regular.ttf");
 
-        //mTvDetailTitle.setTypeface(titleTypeFace);
-        //mTvDetailVerse.setTypeface(typeFace);
         mTvMeditationDate.setTypeface(typeFace);
         mTvMeditationContent.setTypeface(typeFace);
         mTvMeditationAuthor.setTypeface(typeFace);
@@ -161,26 +162,27 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     }
 
     private void fillMeditationContent() {
-        if (mMeditationContent != null)
-        {
-            mTvDetailTitle.setText(mMeditationContent.getTitle());
-            mCollapsingToolbarLayout.setTitle(mMeditationContent.getTitle());
 
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-            c.set(Calendar.WEEK_OF_YEAR, mMeditationContent.getWeekNumber());
-            mTvMeditationDate.setText(dateFormat.format(c.getTime()));
+        if (mMeditationContent == null)
+            return;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mTvDetailVerse.setText(Html.fromHtml(mMeditationContent.getVerse().trim(), Html.FROM_HTML_MODE_LEGACY));
-                mTvMeditationContent.setText(Html.fromHtml(mMeditationContent.getBody().trim(), Html.FROM_HTML_MODE_LEGACY));
-            } else {
-                mTvDetailVerse.setText(Html.fromHtml(mMeditationContent.getVerse().trim()));
-                mTvMeditationContent.setText(Html.fromHtml(mMeditationContent.getBody().trim()));
-            }
+        mTvDetailTitle.setText(mMeditationContent.getTitle());
+        mCollapsingToolbarLayout.setTitle(mMeditationContent.getTitle());
 
-            mTvMeditationAuthor.setText(mMeditationContent.getAuthor());
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        c.set(Calendar.WEEK_OF_YEAR, mMeditationContent.getWeekNumber());
+        mTvMeditationDate.setText(dateFormat.format(c.getTime()));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mTvDetailVerse.setText(Html.fromHtml(mMeditationContent.getVerse().trim(), Html.FROM_HTML_MODE_LEGACY));
+            mTvMeditationContent.setText(Html.fromHtml(mMeditationContent.getBody().trim(), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            mTvDetailVerse.setText(Html.fromHtml(mMeditationContent.getVerse().trim()));
+            mTvMeditationContent.setText(Html.fromHtml(mMeditationContent.getBody().trim()));
         }
+
+        mTvMeditationAuthor.setText(mMeditationContent.getAuthor());
     }
 
     @Override
@@ -198,10 +200,26 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.meditation_detail, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             getActivity().onBackPressed(); //Call the back button's method
             return true;
+        } else if(item.getItemId() == R.id.action_share) {
+            if (mMeditationContent == null)
+                return true;
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_url) + mMeditationContent.getId());
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_title)));
+        } else if (item.getItemId() == R.id.action_favorite){
+            // TODO: update or create favorite flag
         }
 
         return super.onOptionsItemSelected(item);
