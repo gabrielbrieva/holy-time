@@ -59,8 +59,7 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
 
             APIService apiService = APIServiceFactory.createService(getContext().getString(R.string.api_key));
 
-            Calendar c = Calendar.getInstance();
-            int weekNumber = c.get(Calendar.WEEK_OF_YEAR);
+            int weekNumber = Utils.getCurrentWeekNumber();
 
             try {
                 Response<List<MeditationContent>> result = apiService.getSyncList(weekNumber).execute();
