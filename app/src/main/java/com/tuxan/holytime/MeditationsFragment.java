@@ -175,7 +175,7 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new MeditationsLoader(getActivity(), MeditationProvider.Meditations.meditationList);
+        return new MeditationsLoader(getActivity(), MeditationProvider.Meditations.meditationList, Utils.getCurrentWeekNumber());
     }
 
     @Override

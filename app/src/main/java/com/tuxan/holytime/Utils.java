@@ -42,6 +42,12 @@ public class Utils {
         return false;
     }
 
+    public static int getCurrentWeekNumber() {
+        Calendar c = Calendar.getInstance();
+        c.setFirstDayOfWeek(Calendar.SUNDAY);
+        return c.get(Calendar.WEEK_OF_YEAR);
+    }
+
     public static Calendar getTimeOfSunset(Context context) {
 
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

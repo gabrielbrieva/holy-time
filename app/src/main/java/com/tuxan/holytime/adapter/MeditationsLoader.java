@@ -8,8 +8,11 @@ import com.tuxan.holytime.data.provider.MeditationColumns;
 
 public class MeditationsLoader extends CursorLoader {
 
-    public MeditationsLoader(Context context, Uri uri) {
-        super(context, uri, ResumeQuery.PROJECTION, null, null, MeditationColumns.WEEK_NUMBER + " DESC");
+    public MeditationsLoader(Context context, Uri uri, int weekNumber) {
+        super(context, uri, ResumeQuery.PROJECTION,
+                MeditationColumns.WEEK_NUMBER + " <= ? AND " + MeditationColumns.WEEK_NUMBER + " > ?",
+                new String[] { Integer.toString(weekNumber), Integer.toString(weekNumber - 10) },
+                MeditationColumns.WEEK_NUMBER + " DESC");
     }
 
     public interface ResumeQuery {
