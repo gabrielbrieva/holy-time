@@ -11,8 +11,9 @@ public class MeditationContent implements Parcelable {
     private String author;
     private String verse;
     private String body;
+    private boolean isFavorite;
 
-    public MeditationContent() {};
+    public MeditationContent() {}
 
     public MeditationContent(Parcel source) {
         id = source.readString();
@@ -21,6 +22,7 @@ public class MeditationContent implements Parcelable {
         author = source.readString();
         verse = source.readString();
         body = source.readString();
+        isFavorite = source.readInt() <= 0 ? false : true;
     }
 
     public String getId() {
@@ -71,6 +73,14 @@ public class MeditationContent implements Parcelable {
         this.body = body;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     public static final Parcelable.Creator<MeditationContent> CREATOR = new Creator<MeditationContent>() {
         @Override
         public MeditationContent createFromParcel(Parcel source) {
@@ -96,5 +106,6 @@ public class MeditationContent implements Parcelable {
         dest.writeString(author);
         dest.writeString(verse);
         dest.writeString(body);
+        dest.writeInt(isFavorite ? 1 : 0);
     }
 }

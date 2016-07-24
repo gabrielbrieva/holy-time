@@ -19,7 +19,8 @@ public class MeditationLoader extends CursorLoader {
                 MeditationColumns.AUTHOR,
                 MeditationColumns.WEEK_NUMBER,
                 MeditationColumns.VERSE,
-                MeditationColumns.BODY
+                MeditationColumns.BODY,
+                MeditationColumns.IS_FAVORITE
         };
 
         int _ID = 0;
@@ -28,5 +29,6 @@ public class MeditationLoader extends CursorLoader {
         int WEEK_NUMBER = 3;
         int VERSE = 4;
         int BODY = 5;
+        int IS_FAVORITE = 6;
     }
 }

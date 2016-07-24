@@ -1,5 +1,6 @@
 package com.tuxan.holytime;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -12,9 +13,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.TypedValue;
@@ -30,6 +29,7 @@ import com.tuxan.holytime.adapter.MeditationLoader;
 import com.tuxan.holytime.api.APIService;
 import com.tuxan.holytime.api.APIServiceFactory;
 import com.tuxan.holytime.data.dto.MeditationContent;
+import com.tuxan.holytime.data.provider.MeditationColumns;
 import com.tuxan.holytime.data.provider.MeditationProvider;
 
 import java.io.IOException;
@@ -202,6 +202,16 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.meditation_detail, menu);
+
+        if (mMeditationContent != null) {
+            MenuItem item = menu.findItem(R.id.action_favorite);
+
+            if (mMeditationContent.isFavorite())
+                item.setIcon(R.drawable.ic_favorite);
+            else
+                item.setIcon(R.drawable.ic_favorite_border);
+        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -219,7 +229,48 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_url) + mMeditationContent.getId());
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_title)));
         } else if (item.getItemId() == R.id.action_favorite){
-            // TODO: update or create favorite flag
+
+            if (mMeditationContent == null)
+                return true;
+
+            Cursor result = getActivity().getContentResolver().query(MeditationProvider.Meditations.withId(mMeditationContent.getId()),
+                    new String[]{ MeditationColumns._ID },
+                    null,
+                    null,
+                    null);
+
+            ContentValues v = new ContentValues();
+
+            if (result == null || result.getCount() == 0) {
+
+                v.put(MeditationColumns._ID, mMeditationContent.getId());
+                v.put(MeditationColumns.TITLE, mMeditationContent.getTitle());
+                v.put(MeditationColumns.VERSE, mMeditationContent.getVerse());
+                v.put(MeditationColumns.AUTHOR, mMeditationContent.getAuthor());
+                v.put(MeditationColumns.BODY, mMeditationContent.getBody());
+                v.put(MeditationColumns.WEEK_NUMBER, mMeditationContent.getWeekNumber());
+                v.put(MeditationColumns.IS_FAVORITE, 1);
+
+                getActivity().getContentResolver().insert(MeditationProvider.Meditations.meditationList, v);
+
+                mMeditationContent.setFavorite(true);
+            } else {
+
+                v.put(MeditationColumns.IS_FAVORITE, mMeditationContent.isFavorite() ? 0 : 1);
+
+                int updates = getActivity().getContentResolver().update(MeditationProvider.Meditations.withId(mMeditationContent.getId()), v, null, null);
+
+                if (updates > 0)
+                    mMeditationContent.setFavorite(!mMeditationContent.isFavorite());
+            }
+
+            if (result != null && !result.isClosed())
+                result.close();
+
+            if (mMeditationContent.isFavorite())
+                item.setIcon(R.drawable.ic_favorite);
+            else
+                item.setIcon(R.drawable.ic_favorite_border);
         }
 
         return super.onOptionsItemSelected(item);
@@ -245,6 +296,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
             mMeditationContent.setAuthor(data.getString(MeditationLoader.DetailQuery.AUTHOR));
             mMeditationContent.setVerse(data.getString(MeditationLoader.DetailQuery.VERSE));
             mMeditationContent.setBody(data.getString(MeditationLoader.DetailQuery.BODY));
+            mMeditationContent.setFavorite(data.getInt(MeditationLoader.DetailQuery.IS_FAVORITE) <= 0 ? false : true);
 
             fillMeditationContent();
 
