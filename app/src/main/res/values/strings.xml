@@ -15,11 +15,26 @@
     <string name="meditation_verse_share_element">meditation_verse_share_element</string>
 
     <!-- Share URL -->
-    <string name="share_url">http://holytime.gabrielbrieva.cl/</string>
     <string name="share_title">Share Meditation</string>
     <string name="action_share">Share</string>
-
     <string name="action_favorite">Favorite</string>
 
+    <string name="meditation_detail_url">http://holytime.gabrielbrieva.cl/m/</string>
 
+    <!-- Preferences -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="pref_notifications_category">Notifications</string>
+    <string name="pref_information_category">Information</string>
+    <string name="pref_summary_notification">Show a notification when start and ends Sabbath</string>
+    <string name="pref_title_notification">Notifications Enabled</string>
+    <string name="pref_summary_notification_vibrate">Vibrate with each notification</string>
+    <string name="pref_title_notification_vibrate">Vibrate Enabled</string>
+    <string name="pref_summary_notification_led">Notification Led bink with each notification</string>
+    <string name="pref_title_notification_led">Notification Led Enabled</string>
+    <string name="pref_summary_notification_ledcolor">Led notification color</string>
+    <string name="pref_title_notification_ledcolor">Notification Led Color</string>
+    <string name="pref_summary_sunset">Resume of sunset time calculated</string>
+    <string name="pref_title_sunset">Sunset times</string>
+    <string name="pref_title_about">About</string>
 </resources>

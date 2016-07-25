@@ -1,0 +1,54 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_notifications_category">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification"
+            android:summary="@string/pref_summary_notification"
+            android:title="@string/pref_title_notification" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification_vibrate"
+            android:summary="@string/pref_summary_notification_vibrate"
+            android:title="@string/pref_title_notification_vibrate"
+            android:dependency="notification" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="notification_led"
+            android:summary="@string/pref_summary_notification_led"
+            android:title="@string/pref_title_notification_led"
+            android:dependency="notification" />
+
+        <Preference
+            android:title="@string/pref_title_notification_ledcolor"
+            android:summary="@string/pref_summary_notification_ledcolor"
+            android:dependency="notification_led" >
+
+            <!-- TODO: start color select fragment configuration -->
+
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_information_category" >
+
+        <Preference
+            android:title="@string/pref_title_sunset"
+            android:summary="@string/pref_summary_sunset" >
+
+            <!-- TODO: start color select fragment configuration -->
+
+        </Preference>
+
+        <Preference
+            android:title="@string/pref_title_about" >
+
+            <!-- TODO: start color select fragment configuration -->
+
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -52,15 +52,15 @@
             </intent-filter>
         </activity>
 
-        <!--<activity
+        <activity
             android:name=".preferences.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MeditationsActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+            android:theme="@style/AppTheme.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MeditationsActivity" />
-        </activity>-->
+        </activity>
 
         <activity
             android:name=".MeditationActivity"
@@ -70,6 +70,14 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation" />
+            </intent-filter>
+            <intent-filter>
+                <data android:host="holytime.gabrielbrieva.cl"
+                    android:pathPrefix="/m/"
+                    android:scheme="http" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

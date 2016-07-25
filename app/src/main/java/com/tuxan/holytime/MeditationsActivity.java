@@ -5,6 +5,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -14,9 +15,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tuxan.holytime.preferences.SettingsActivity;
 import com.tuxan.holytime.sync.MeditationSyncAdapter;
 
 import java.util.Calendar;
@@ -103,6 +108,22 @@ public class MeditationsActivity extends AppCompatActivity implements
             calculateSunsetDateTime();
         }*/
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

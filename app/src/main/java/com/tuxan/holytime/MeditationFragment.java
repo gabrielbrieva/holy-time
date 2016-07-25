@@ -226,7 +226,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_url) + mMeditationContent.getId());
+            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.meditation_detail_url) + mMeditationContent.getId());
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_title)));
         } else if (item.getItemId() == R.id.action_favorite){
 

@@ -57,8 +57,6 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addMeditations(List<MeditationContent> meditations) {
 
-        //MatrixCursor matrixCursor = new MatrixCursor(MeditationsLoader.ResumeQuery.PROJECTION);
-
         for (MeditationContent m : meditations) {
             mApiCursor.addRow(new Object[] {
                     m.getId(),

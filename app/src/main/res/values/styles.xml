@@ -1,13 +1,18 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Settings" parent="@style/AppTheme">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
     </style>
 
     <style name="AppTheme.Meditations" parent="@style/AppTheme">
