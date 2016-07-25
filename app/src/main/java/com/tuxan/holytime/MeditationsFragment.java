@@ -50,7 +50,6 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
     EndlessRecyclerViewScrollListener mEndlessScrollListener;
     SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
 
-
     public MeditationsFragment() { }
 
     public static MeditationsFragment newInstance() {
@@ -147,8 +146,7 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
                 APIService apiService = APIServiceFactory.createService(getString(R.string.api_key));
 
-                Calendar c = Calendar.getInstance();
-                int weekNumber = c.get(Calendar.WEEK_OF_YEAR);
+                int weekNumber = Utils.getCurrentWeekNumber();
 
                 try {
                     Response<Page<MeditationContent>> result = apiService.getPaginatedContent(weekNumber, page).execute();
@@ -181,7 +179,9 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        mMeditationsAdapter.swapCursor(data);
+        boolean resetApiCursor = mEndlessScrollListener != null && mEndlessScrollListener.getCurrentPage() == 0;
+
+        mMeditationsAdapter.swapCursor(data, resetApiCursor);
 
         if (mSwipeRefreshLayout.isRefreshing())
             mSwipeRefreshLayout.setRefreshing(false);
@@ -190,6 +190,7 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mMeditationsAdapter.swapCursor(null);
+        mEndlessScrollListener.restart();
+        mMeditationsAdapter.swapCursor(null, true);
     }
 }

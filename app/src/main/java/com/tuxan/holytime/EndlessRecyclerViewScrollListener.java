@@ -43,6 +43,10 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         startingPageIndex = 0;
     }
 
+    public int getCurrentPage(){
+        return currentPage;
+    }
+
     public int getLastVisibleItem(int[] lastVisibleItemPositions) {
         int maxSize = 0;
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {

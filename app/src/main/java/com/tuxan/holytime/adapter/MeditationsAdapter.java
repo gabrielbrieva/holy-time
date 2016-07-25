@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,11 +40,14 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean isLoading = false;
 
     private Cursor mCursor;
+    private Cursor mDbCursor;
+    private MatrixCursor mApiCursor;
     protected Context mContext;
 
     SimpleDateFormat mDateFormater = new SimpleDateFormat("MMM");
 
     public MeditationsAdapter(Context context) {
+        this.mApiCursor = new MatrixCursor(MeditationsLoader.ResumeQuery.PROJECTION);
         this.mContext = context;
     }
 
@@ -55,10 +57,10 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addMeditations(List<MeditationContent> meditations) {
 
-        MatrixCursor matrixCursor = new MatrixCursor(MeditationsLoader.ResumeQuery.PROJECTION);
+        //MatrixCursor matrixCursor = new MatrixCursor(MeditationsLoader.ResumeQuery.PROJECTION);
 
         for (MeditationContent m : meditations) {
-            matrixCursor.addRow(new Object[] {
+            mApiCursor.addRow(new Object[] {
                     m.getId(),
                     m.getTitle(),
                     m.getWeekNumber(),
@@ -68,12 +70,16 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         int countBeforeMerge = mCursor == null ? 0 : mCursor.getCount();
 
-        if (mCursor != null)
-            mCursor = new MergeCursor(new Cursor[] { mCursor, matrixCursor });
-        else
-            mCursor = matrixCursor;
+        Cursor[] resultCursors;
 
-        notifyItemRangeInserted(countBeforeMerge, matrixCursor.getCount());
+        if (mDbCursor != null)
+            resultCursors = new Cursor[] { mDbCursor, mApiCursor };
+        else
+            resultCursors = new Cursor[] { mApiCursor };
+
+        mCursor = new MergeCursor(resultCursors);
+
+        notifyItemRangeInserted(countBeforeMerge, mApiCursor.getCount());
     }
 
     public boolean isLoading() {
@@ -204,15 +210,16 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return VIEWHOLDER_MEDITATION_TYPE;
     }
 
-    public Cursor getCursor() {
-        return this.mCursor;
-    }
-
-    public void swapCursor(Cursor newCursor) {
+    public void swapCursor(Cursor newCursor, boolean resetApiCursor) {
         if (newCursor != mCursor && mCursor != null && !mCursor.isClosed())
             mCursor.close();
 
-        mCursor = newCursor;
+        if (resetApiCursor)
+            mApiCursor = new MatrixCursor(MeditationsLoader.ResumeQuery.PROJECTION);
+
+        mDbCursor = newCursor;
+
+        mCursor = new MergeCursor(new Cursor[]{ newCursor, mApiCursor });
 
         notifyDataSetChanged();
     }
