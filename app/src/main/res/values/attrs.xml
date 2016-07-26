@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SunsetView">
-
+        <attr name="horizonColor" format="color" />
+        <attr name="timelineColor" format="color" />
+        <attr name="nightColor" format="color" />
+        <attr name="dayColor" format="color" />
+        <attr name="sunColor" format="color" />
+        <attr name="moonColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="showText" format="boolean" />
     </declare-styleable>
 </resources>
