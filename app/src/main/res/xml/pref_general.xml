@@ -39,6 +39,10 @@
             android:summary="@string/pref_summary_sunset" >
 
             <!-- TODO: start color select fragment configuration -->
+            <intent
+                android:action="com.tuxan.holytime.SunsetInfoActivity"
+                android:targetPackage="com.tuxan.holytime"
+                android:targetClass="com.tuxan.holytime.SunsetInfoActivity" />
 
         </Preference>
 
@@ -46,6 +50,10 @@
             android:title="@string/pref_title_about" >
 
             <!-- TODO: start color select fragment configuration -->
+            <intent
+                android:action="com.tuxan.holytime.AboutActivity"
+                android:targetPackage="com.tuxan.holytime"
+                android:targetClass="com.tuxan.holytime.AboutActivity" />
 
         </Preference>
 

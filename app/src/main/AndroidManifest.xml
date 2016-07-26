@@ -1,53 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tuxan.holytime" >
+    package="com.tuxan.holytime">
 
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
-        <service
-            android:name="com.tuxan.holytime.sync.MeditationSyncAuthSrv" >
+        <service android:name=".sync.MeditationSyncAuthSrv">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
 
         <service
-            android:name="com.tuxan.holytime.sync.MeditationSyncSrv"
-            android:exported="true" >
+            android:name=".sync.MeditationSyncSrv"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
+                <action android:name="android.content.SyncAdapter" />
             </intent-filter>
-            <meta-data android:name="android.content.SyncAdapter"
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
 
         <provider
-            android:authorities="com.tuxan.holytime"
             android:name=".data.provider.generated.MeditationProvider"
+            android:authorities="com.tuxan.holytime"
             android:exported="false"
-            android:syncable="true"
-            />
+            android:syncable="true" />
 
-        <activity android:name=".MeditationsActivity"
+        <activity
+            android:name=".MeditationsActivity"
             android:theme="@style/AppTheme.Meditations">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -64,24 +65,48 @@
 
         <activity
             android:name=".MeditationActivity"
-            android:theme="@style/AppTheme.Meditation"
-            android:parentActivityName=".MeditationsActivity">
+            android:parentActivityName=".MeditationsActivity"
+            android:theme="@style/AppTheme.Meditation">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation" />
             </intent-filter>
             <intent-filter>
-                <data android:host="holytime.gabrielbrieva.cl"
+                <data
+                    android:host="holytime.gabrielbrieva.cl"
                     android:pathPrefix="/m/"
                     android:scheme="http" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MeditationsActivity" />
+        </activity>
+
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".SunsetInfoActivity"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
     </application>
