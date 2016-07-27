@@ -38,7 +38,8 @@ public class SunriseSunsetView extends View {
 
     public SunriseSunsetView(Context context) {
         super(context);
-        init();
+
+        init(context, null);
     }
 
     public SunriseSunsetView(Context context, AttributeSet attrs) {
@@ -46,34 +47,39 @@ public class SunriseSunsetView extends View {
     }
 
     public SunriseSunsetView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        super(context, attrs, defStyleAttr);
+
+        init(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public SunriseSunsetView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SunriseSunsetView);
-
-        try {
-            horizonColor = typedArray.getColor(R.styleable.SunriseSunsetView_horizonColor, 0xff000000);
-            timelineColor = typedArray.getColor(R.styleable.SunriseSunsetView_timelineColor, 0xff000000);
-            taglineColor = typedArray.getColor(R.styleable.SunriseSunsetView_taglineColor, 0xff000000);
-            nightColor = typedArray.getColor(R.styleable.SunriseSunsetView_nightColor, 0xff000000);
-            dayColor = typedArray.getColor(R.styleable.SunriseSunsetView_dayColor, 0xff000000);
-            sunColor = typedArray.getColor(R.styleable.SunriseSunsetView_sunColor, 0xff000000);
-        } finally {
-            typedArray.recycle();
-        }
-
-        init();
+        init(context, attrs);
     }
 
-    private void init() {
+    private void init(Context context, AttributeSet attrs) {
+
+        if (attrs != null) {
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SunriseSunsetView);
+
+            try {
+                horizonColor = typedArray.getColor(R.styleable.SunriseSunsetView_horizonColor, 0xff000000);
+                timelineColor = typedArray.getColor(R.styleable.SunriseSunsetView_timelineColor, 0xff000000);
+                taglineColor = typedArray.getColor(R.styleable.SunriseSunsetView_taglineColor, 0xff000000);
+                nightColor = typedArray.getColor(R.styleable.SunriseSunsetView_nightColor, 0xff000000);
+                dayColor = typedArray.getColor(R.styleable.SunriseSunsetView_dayColor, 0xff000000);
+                sunColor = typedArray.getColor(R.styleable.SunriseSunsetView_sunColor, 0xff000000);
+            } finally {
+                typedArray.recycle();
+            }
+        }
+
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            setLayerType(LAYER_TYPE_SOFTWARE, mPaint);
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            setLayerType(LAYER_TYPE_SOFTWARE, mPaint);*/
     }
 
     @Override
@@ -139,9 +145,9 @@ public class SunriseSunsetView extends View {
         if (current >= 0.17f && current <= 0.83f) {
             mPaint.setColor(sunColor);
             mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setShadowLayer(1.0f, 1.0f, 2.0f, 0x33000000);
+            //mPaint.setShadowLayer(1.0f, 1.0f, 2.0f, 0x33000000);
             canvas.drawCircle(width * current, getY((int) (width * current), segmentByPixel, (int) (height * 0.9f)), height * 0.08f, mPaint);
-            mPaint.clearShadowLayer();
+            //mPaint.clearShadowLayer();
         }
 
     }
