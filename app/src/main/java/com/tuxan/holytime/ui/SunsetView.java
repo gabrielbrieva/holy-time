@@ -6,17 +6,14 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.graphics.Region;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.tuxan.holytime.R;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class SunsetView extends View {
