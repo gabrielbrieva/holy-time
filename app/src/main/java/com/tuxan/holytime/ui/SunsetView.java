@@ -4,8 +4,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.Region;
@@ -22,12 +24,10 @@ public class SunsetView extends View {
 
     int horizonColor;
     int timelineColor;
+    int taglineColor;
     int nightColor;
     int dayColor;
     int sunColor;
-    int moonColor;
-    int textColor;
-    boolean showText;
 
     public SunsetView(Context context) {
         super(context);
@@ -51,12 +51,10 @@ public class SunsetView extends View {
         try {
             horizonColor = typedArray.getColor(R.styleable.SunsetView_horizonColor, 0xff000000);
             timelineColor = typedArray.getColor(R.styleable.SunsetView_timelineColor, 0xff000000);
-            nightColor = typedArray.getColor(R.styleable.SunsetView_nightColor, 0xff0000ff);
-            dayColor = typedArray.getColor(R.styleable.SunsetView_dayColor, 0xffaaaa00);
-            sunColor = typedArray.getColor(R.styleable.SunsetView_sunColor, 0xffffff00);
-            moonColor = typedArray.getColor(R.styleable.SunsetView_moonColor, 0xff3333ff);
-            textColor = typedArray.getColor(R.styleable.SunsetView_textColor, 0xff000000);
-            showText = typedArray.getBoolean(R.styleable.SunsetView_showText, true);
+            taglineColor = typedArray.getColor(R.styleable.SunsetView_taglineColor, 0xff000000);
+            nightColor = typedArray.getColor(R.styleable.SunsetView_nightColor, 0xff000000);
+            dayColor = typedArray.getColor(R.styleable.SunsetView_dayColor, 0xff000000);
+            sunColor = typedArray.getColor(R.styleable.SunsetView_sunColor, 0xff000000);
         } finally {
             typedArray.recycle();
         }
@@ -69,6 +67,9 @@ public class SunsetView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStrokeWidth(3);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            setLayerType(LAYER_TYPE_SOFTWARE, mPaint);
+
     }
 
     @Override
@@ -78,17 +79,17 @@ public class SunsetView extends View {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
-        Log.d("SunsetView", "canvas width: " + canvas.getWidth());
-
         float current = 0.5f;
 
         Path curvePath = new Path();
 
-        mPaint.setColor(0xff000000);
-
         curvePath.moveTo(0, height);
-        curvePath.cubicTo(width * 0.25f, height, width * 0.25f, height * 0.1f, width * 0.5f, height * 0.1f);
-        curvePath.cubicTo(width * 0.75f, height * 0.1f, width * 0.75f, height, width, height);
+
+        double segment = (2 * Math.PI) / width;
+
+        for (int x = 0; x <= width; x++) {
+            curvePath.lineTo(x, getY(x, segment, (int)(height * 0.9f)));
+        }
 
         Path nightPath = new Path(curvePath);
         nightPath.setLastPoint(width, height);
@@ -96,16 +97,18 @@ public class SunsetView extends View {
         nightPath.lineTo(0, 0);
         nightPath.close();
 
+
         mPaint.setStyle(Paint.Style.FILL);
 
         mPaint.setColor(nightColor);
-        canvas.clipRect(new RectF(0, height * 0.75f, width, height));
+        canvas.clipRect(new RectF(0, height * 0.75f, width* current, height));
         canvas.drawPath(nightPath, mPaint);
 
         mPaint.setColor(dayColor);
         canvas.clipRect(0, 0, width, height, Region.Op.REPLACE);
-        canvas.clipRect(new RectF(0, 0, width, height * 0.75f));
+        canvas.clipRect(new RectF(0, 0, width* current, height * 0.75f));
         canvas.drawPath(curvePath, mPaint);
+
 
         canvas.clipRect(0, 0, width, height, Region.Op.REPLACE);
         mPaint.setStyle(Paint.Style.STROKE);
@@ -116,6 +119,22 @@ public class SunsetView extends View {
         mPaint.setColor(horizonColor);
         canvas.drawLine(0, height * 0.75f, width, height * 0.75f, mPaint);
 
-        canvas.drawLine(width * 0.25f, 0, width * 0.25f, height, mPaint);
+        mPaint.setColor(taglineColor);
+        canvas.drawLine(width * 0.17f, height * 0.2f, width * 0.17f, height * 0.7f, mPaint);
+        canvas.drawLine(width * 0.83f, height * 0.2f, width * 0.83f, height * 0.7f, mPaint);
+
+
+        mPaint.setColor(sunColor);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setShadowLayer(3.5f, 3.0f, 6.0f, 0x33000000);
+
+        canvas.drawCircle(width * current, getY((int)(width * current), segment, height), height * 0.08f,  mPaint);
+
+        mPaint.clearShadowLayer();
+    }
+
+    private float getY(int x, double segment, int height) {
+        double cos = (Math.cos(-Math.PI + (x * segment)) + 1) / 2;
+        return height - (height * (float)cos) + (height * 0.1f);
     }
 }

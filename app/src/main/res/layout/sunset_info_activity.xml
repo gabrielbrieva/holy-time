@@ -3,11 +3,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/activity_vertical_margin"
     tools:context=".SunsetInfoActivity">
 
     <com.tuxan.holytime.ui.SunsetView
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="100dp"
+        app:horizonColor="#32000000"
+        app:timelineColor="#32000000"
+        app:taglineColor="#14000000"
+        app:sunColor="#ffcc00"
+        app:dayColor="#62a5e4ff"
+        app:nightColor="#6d302873"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="88:88"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sunrise"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="88:88"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sunrise"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
