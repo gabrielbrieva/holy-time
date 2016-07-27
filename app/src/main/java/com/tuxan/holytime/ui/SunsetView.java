@@ -120,13 +120,15 @@ public class SunsetView extends View {
         canvas.drawLine(0, height * 0.75f, width, height * 0.75f, mPaint);
 
         mPaint.setColor(taglineColor);
+        mPaint.setStrokeWidth(2);
         canvas.drawLine(width * 0.17f, height * 0.2f, width * 0.17f, height * 0.7f, mPaint);
         canvas.drawLine(width * 0.83f, height * 0.2f, width * 0.83f, height * 0.7f, mPaint);
+        mPaint.setStrokeWidth(3);
 
 
         mPaint.setColor(sunColor);
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setShadowLayer(3.5f, 3.0f, 6.0f, 0x33000000);
+        mPaint.setShadowLayer(1.0f, 1.0f, 2.0f, 0x33000000);
 
         canvas.drawCircle(width * current, getY((int)(width * current), segment, height), height * 0.08f,  mPaint);
 
