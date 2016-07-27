@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground" >
 
     <!--<LinearLayout
         android:orientation="horizontal"

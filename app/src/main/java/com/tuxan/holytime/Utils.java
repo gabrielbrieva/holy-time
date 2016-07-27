@@ -48,17 +48,24 @@ public class Utils {
         return c.get(Calendar.WEEK_OF_YEAR);
     }
 
-    public static Calendar getTimeOfSunset(Context context) {
-
+    public static SunriseSunsetCalculator getSunriseSunsetCalculator(Context context) {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             android.location.Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(new Location(loc.getLatitude(), loc.getLongitude()), TimeZone.getDefault());
-            return calculator.getOfficialSunsetCalendarForDate(Calendar.getInstance());
+            return new SunriseSunsetCalculator(new Location(loc.getLatitude(), loc.getLongitude()), TimeZone.getDefault());
         }
 
         return null;
+    }
+
+    public static Calendar getTimeOfSunset(Context context) {
+        SunriseSunsetCalculator calculator = getSunriseSunsetCalculator(context);
+
+        if (calculator == null)
+            return null;
+
+        return calculator.getOfficialSunsetCalendarForDate(Calendar.getInstance());
     }
 
     public static SpannableStringBuilder trimSpannable(SpannableStringBuilder spannable) {
