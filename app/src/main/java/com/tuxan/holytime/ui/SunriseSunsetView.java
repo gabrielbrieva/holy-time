@@ -16,7 +16,7 @@ import com.tuxan.holytime.R;
 
 import java.util.Calendar;
 
-public class SunsetView extends View {
+public class SunriseSunsetView extends View {
 
     Paint mPaint;
 
@@ -36,32 +36,32 @@ public class SunsetView extends View {
 
     SunriseSunsetCalculator mSSCalculator;
 
-    public SunsetView(Context context) {
+    public SunriseSunsetView(Context context) {
         super(context);
         init();
     }
 
-    public SunsetView(Context context, AttributeSet attrs) {
+    public SunriseSunsetView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SunsetView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SunriseSunsetView(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SunsetView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SunriseSunsetView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SunsetView);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SunriseSunsetView);
 
         try {
-            horizonColor = typedArray.getColor(R.styleable.SunsetView_horizonColor, 0xff000000);
-            timelineColor = typedArray.getColor(R.styleable.SunsetView_timelineColor, 0xff000000);
-            taglineColor = typedArray.getColor(R.styleable.SunsetView_taglineColor, 0xff000000);
-            nightColor = typedArray.getColor(R.styleable.SunsetView_nightColor, 0xff000000);
-            dayColor = typedArray.getColor(R.styleable.SunsetView_dayColor, 0xff000000);
-            sunColor = typedArray.getColor(R.styleable.SunsetView_sunColor, 0xff000000);
+            horizonColor = typedArray.getColor(R.styleable.SunriseSunsetView_horizonColor, 0xff000000);
+            timelineColor = typedArray.getColor(R.styleable.SunriseSunsetView_timelineColor, 0xff000000);
+            taglineColor = typedArray.getColor(R.styleable.SunriseSunsetView_taglineColor, 0xff000000);
+            nightColor = typedArray.getColor(R.styleable.SunriseSunsetView_nightColor, 0xff000000);
+            dayColor = typedArray.getColor(R.styleable.SunriseSunsetView_dayColor, 0xff000000);
+            sunColor = typedArray.getColor(R.styleable.SunriseSunsetView_sunColor, 0xff000000);
         } finally {
             typedArray.recycle();
         }

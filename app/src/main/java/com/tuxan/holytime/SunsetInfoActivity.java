@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
-import com.tuxan.holytime.ui.SunsetView;
+import com.tuxan.holytime.ui.SunriseSunsetView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,7 +32,7 @@ public class SunsetInfoActivity extends AppCompatActivity {
     TextView mTvSunset;
 
     @BindView(R.id.sv_plot)
-    SunsetView mSunsetView;
+    SunriseSunsetView mSunriseSunsetView;
 
     SimpleDateFormat formater;
 
@@ -82,6 +82,6 @@ public class SunsetInfoActivity extends AppCompatActivity {
     private void initTime(SunriseSunsetCalculator calculator) {
         mTvSunrise.setText(calculator.getOfficialSunriseForDate(Calendar.getInstance()));
         mTvSunset.setText(calculator.getOfficialSunsetForDate(Calendar.getInstance()));
-        mSunsetView.setSunriseSunsetCalculator(calculator);
+        mSunriseSunsetView.setSunriseSunsetCalculator(calculator);
     }
 }
