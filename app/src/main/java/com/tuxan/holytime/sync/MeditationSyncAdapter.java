@@ -16,7 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.tuxan.holytime.R;
-import com.tuxan.holytime.Utils;
+import com.tuxan.holytime.utils.Utils;
 import com.tuxan.holytime.api.APIService;
 import com.tuxan.holytime.api.APIServiceFactory;
 import com.tuxan.holytime.data.dto.MeditationContent;
@@ -25,7 +25,6 @@ import com.tuxan.holytime.data.provider.MeditationProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Response;

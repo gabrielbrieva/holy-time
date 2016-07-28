@@ -1,6 +1,6 @@
 package com.tuxan.holytime.api;
 
-import com.tuxan.holytime.Utils;
+import com.tuxan.holytime.utils.Utils;
 
 import java.io.IOException;
 

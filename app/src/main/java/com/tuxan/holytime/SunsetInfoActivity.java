@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.tuxan.holytime.ui.SunriseSunsetView;
+import com.tuxan.holytime.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

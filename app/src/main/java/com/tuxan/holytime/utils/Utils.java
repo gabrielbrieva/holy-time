@@ -1,4 +1,4 @@
-package com.tuxan.holytime;
+package com.tuxan.holytime.utils;
 
 import android.Manifest;
 import android.content.Context;

@@ -35,6 +35,16 @@ public final class MeditationProvider {
             return Uri.parse("content://" + AUTHORITY + "/meditations/" + id);
         }
 
+        @InexactContentUri(
+                path = "meditations/byweek/#",
+                type = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation",
+                name = "byWeekNumber",
+                whereColumn = MeditationColumns.WEEK_NUMBER,
+                pathSegment = 1
+        )
+        public static final Uri byWeekNumber(int weekNumber) {
+            return Uri.parse("content://" + AUTHORITY + "/meditations/byweek/" + weekNumber);
+        }
     }
 
 }

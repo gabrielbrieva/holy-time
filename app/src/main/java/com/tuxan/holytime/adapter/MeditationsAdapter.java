@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.tuxan.holytime.MeditationFragment;
 import com.tuxan.holytime.R;
-import com.tuxan.holytime.Utils;
+import com.tuxan.holytime.utils.Utils;
 import com.tuxan.holytime.data.dto.MeditationContent;
 import com.tuxan.holytime.data.provider.MeditationProvider;
 
