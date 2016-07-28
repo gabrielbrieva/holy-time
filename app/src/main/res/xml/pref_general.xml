@@ -22,14 +22,17 @@
             android:title="@string/pref_title_notification_led"
             android:dependency="notification" />
 
-        <Preference
+        <ListPreference
+            android:defaultValue="WHITE"
+            android:entries="@array/pref_notification_color_key"
+            android:entryValues="@array/pref_notification_color_values"
+            android:key="notification_led_color"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
             android:title="@string/pref_title_notification_ledcolor"
             android:summary="@string/pref_summary_notification_ledcolor"
-            android:dependency="notification_led" >
+            android:dependency="notification_led" />
 
-            <!-- TODO: start color select fragment configuration -->
-
-        </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_information_category" >
@@ -38,7 +41,6 @@
             android:title="@string/pref_title_sunset"
             android:summary="@string/pref_summary_sunset" >
 
-            <!-- TODO: start color select fragment configuration -->
             <intent
                 android:action="com.tuxan.holytime.SunsetInfoActivity"
                 android:targetPackage="com.tuxan.holytime"
@@ -49,7 +51,6 @@
         <Preference
             android:title="@string/pref_title_about" >
 
-            <!-- TODO: start color select fragment configuration -->
             <intent
                 android:action="com.tuxan.holytime.AboutActivity"
                 android:targetPackage="com.tuxan.holytime"

@@ -1,25 +1,29 @@
 <resources>
     <string name="app_name">Holy Time</string>
 
-    <string name="sync_account_type">holytime.tuxan.com</string>
-    <string name="content_authority">com.tuxan.holytime</string>
+    <string name="sync_account_type" translatable="false">holytime.tuxan.com</string>
+    <string name="content_authority" translatable="false">com.tuxan.holytime</string>
 
     <string name="swipe_instruction">Swipe to Refresh</string>
 
     <string name="main_title_holy">Holy</string>
     <string name="main_title_time">Time</string>
 
+    <!-- Tabs -->
+    <string name="tab_current">Current</string>
+    <string name="tab_favorites">Favorites</string>
+
     <!-- transitions -->
-    <string name="meditation_container_share_element">meditation_container_share_element</string>
-    <string name="meditation_title_share_element">meditation_title_share_element</string>
-    <string name="meditation_verse_share_element">meditation_verse_share_element</string>
+    <string name="meditation_container_share_element" translatable="false">meditation_container_share_element</string>
+    <string name="meditation_title_share_element" translatable="false">meditation_title_share_element</string>
+    <string name="meditation_verse_share_element" translatable="false">meditation_verse_share_element</string>
 
     <!-- Share URL -->
     <string name="share_title">Share Meditation</string>
     <string name="action_share">Share</string>
     <string name="action_favorite">Favorite</string>
 
-    <string name="meditation_detail_url">http://holytime.gabrielbrieva.cl/m/</string>
+    <string name="meditation_detail_url" translatable="false">http://holytime.gabrielbrieva.cl/m/</string>
 
     <!-- Sunrise and Sunset Info -->
     <string name="sunrise_sunset_info_title">Sunrise and Sunset</string>
@@ -45,6 +49,19 @@
     <string name="pref_summary_notification_ledcolor">Led notification color</string>
     <string name="pref_title_notification_ledcolor">Notification Led Color</string>
     <string name="pref_summary_sunset">Resume of sunset time calculated</string>
-    <string name="pref_title_sunset">Sunset times</string>
+    <string name="pref_title_sunset">Sunrise and Sunset</string>
     <string name="pref_title_about">About</string>
+
+    <string-array name="pref_notification_color_key">
+        <item>White</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+    </string-array>
+    <string-array name="pref_notification_color_values">
+        <item>WHITE</item>
+        <item>RED</item>
+        <item>GREEN</item>
+        <item>BLUE</item>
+    </string-array>
 </resources>

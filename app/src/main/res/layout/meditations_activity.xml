@@ -148,12 +148,12 @@
                 <android.support.design.widget.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Current"/>
+                    android:text="@string/tab_current"/>
 
                 <android.support.design.widget.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Favorites"/>
+                    android:text="@string/tab_favorites"/>
 
             </android.support.design.widget.TabLayout>
 
