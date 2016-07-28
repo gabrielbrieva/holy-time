@@ -1,30 +1,25 @@
 package com.tuxan.holytime;
 
-import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tuxan.holytime.adapter.MeditationsPagerAdapter;
 import com.tuxan.holytime.preferences.SettingsActivity;
 import com.tuxan.holytime.sync.MeditationSyncAdapter;
-
-import java.util.Calendar;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -56,7 +51,13 @@ public class MeditationsActivity extends AppCompatActivity implements
     @BindView(R.id.tv_toolbar_main_title_time)
     TextView tvToolbarTitleTime;
 
-    MeditationsFragment mMainListFragment;
+    @BindView(R.id.tabs)
+    TabLayout mTabLayout;
+
+    @BindView(R.id.pager)
+    ViewPager mViewPager;
+
+    MeditationsPagerAdapter mPagerAdapter;
 
     private static final String IS_VALLEY_VISIBLE = "IS_VALLEY_VISIBLE";
 
@@ -75,18 +76,16 @@ public class MeditationsActivity extends AppCompatActivity implements
 
         if (savedInstanceState != null){
             mIsValleyVisible = savedInstanceState.getBoolean(IS_VALLEY_VISIBLE);
-
         } else {
-            mMainListFragment = MeditationsFragment.newInstance();
-
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_list_container, mMainListFragment, MeditationsFragment.FRAGMENT_TAG)
-                    .commit();
-
             MeditationSyncAdapter.initializeSyncAdapter(this);
         }
 
         ButterKnife.bind(this);
+
+        mPagerAdapter = new MeditationsPagerAdapter(this, getSupportFragmentManager());
+        mViewPager.setAdapter(mPagerAdapter);
+
+        mTabLayout.setupWithViewPager(mViewPager);
 
         mCollapsingToolbarLayout.setScrimVisibleHeightTrigger(scrimHeight);
 

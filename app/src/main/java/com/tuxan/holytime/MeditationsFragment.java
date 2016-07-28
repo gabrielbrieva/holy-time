@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.tuxan.holytime.adapter.MeditationsAdapter;
 import com.tuxan.holytime.adapter.MeditationsLoader;
+import com.tuxan.holytime.adapter.MeditationsPagerAdapter;
 import com.tuxan.holytime.api.APIService;
 import com.tuxan.holytime.api.APIServiceFactory;
 import com.tuxan.holytime.data.dto.MeditationContent;
@@ -24,7 +25,6 @@ import com.tuxan.holytime.data.dto.Page;
 import com.tuxan.holytime.data.provider.MeditationProvider;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,10 +34,13 @@ import retrofit2.Response;
 public class MeditationsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = "MeditationsFragment";
-    static final String FRAGMENT_TAG = "MEDITATIONS_FRAGMENT_TAG";
+    static final String FRAGMENT_TYPE = "FRAGMENT_TYPE";
     private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
 
-    private int LOADER_ID = 0;
+    private final int CURRENT_LOADER_ID = 0;
+    private final int FAVORITE_LOADER_ID = 1;
+
+    private int fragmentType;
 
     @BindView(R.id.rv_meditations)
     RecyclerView mRecyclerView;
@@ -52,8 +55,11 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     public MeditationsFragment() { }
 
-    public static MeditationsFragment newInstance() {
+    public static MeditationsFragment newInstance(int type) {
         MeditationsFragment fragment = new MeditationsFragment();
+        Bundle args = new Bundle();
+        args.putInt(FRAGMENT_TYPE, type);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -63,36 +69,52 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
         setRetainInstance(true);
 
+        Bundle args = getArguments();
+
+        if (args != null) {
+            fragmentType = args.getInt(FRAGMENT_TYPE);
+        }
+
         mMeditationsAdapter = new MeditationsAdapter(getActivity());
         mMeditationsAdapter.setHasStableIds(true);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
-        mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mLinearLayoutManager) {
+        if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST) {
+            mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mLinearLayoutManager) {
 
-            @Override
-            public boolean isLoading() {
-                return mMeditationsAdapter.isLoading();
-            }
-
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                if (!mMeditationsAdapter.isLoading()) {
-                    Log.d(LOG_TAG, "endless page = " + page + " totalCount = " + totalItemsCount);
-
-                    loadMeditationsFromApi(page);
+                @Override
+                public boolean isLoading() {
+                    return mMeditationsAdapter.isLoading();
                 }
-            }
-        };
+
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    if (!mMeditationsAdapter.isLoading()) {
+                        Log.d(LOG_TAG, "endless page = " + page + " totalCount = " + totalItemsCount);
+
+                        loadMeditationsFromApi(page);
+                    }
+                }
+            };
+        }
 
         mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mEndlessScrollListener.restart();
-                getLoaderManager().restartLoader(LOADER_ID, null, MeditationsFragment.this);
+                if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST) {
+                    mEndlessScrollListener.restart();
+                    getLoaderManager().restartLoader(CURRENT_LOADER_ID, null, MeditationsFragment.this);
+                } else if (fragmentType == MeditationsPagerAdapter.FAVORITE_LIST) {
+                    getLoaderManager().restartLoader(FAVORITE_LOADER_ID, null, MeditationsFragment.this);
+                }
             }
         };
 
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST) {
+            getLoaderManager().restartLoader(CURRENT_LOADER_ID, null, this);
+        } else if (fragmentType == MeditationsPagerAdapter.FAVORITE_LIST) {
+            getLoaderManager().restartLoader(FAVORITE_LOADER_ID, null, this);
+        }
 
     }
 
@@ -109,7 +131,10 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
         mRecyclerView.setAdapter(mMeditationsAdapter);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.addOnScrollListener(mEndlessScrollListener);
+
+        if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST)
+            mRecyclerView.addOnScrollListener(mEndlessScrollListener);
+
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
 
@@ -126,7 +151,10 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
         super.onDestroyView();
         mRecyclerView.setAdapter(null);
         mRecyclerView.setLayoutManager(null);
-        mRecyclerView.removeOnScrollListener(mEndlessScrollListener);
+
+        if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST)
+            mRecyclerView.removeOnScrollListener(mEndlessScrollListener);
+
         mSwipeRefreshLayout.setOnRefreshListener(null);
     }
 
@@ -173,13 +201,14 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new MeditationsLoader(getActivity(), MeditationProvider.Meditations.meditationList, Utils.getCurrentWeekNumber());
+        return new MeditationsLoader(getActivity(), MeditationProvider.Meditations.meditationList, Utils.getCurrentWeekNumber(), id != CURRENT_LOADER_ID);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        boolean resetApiCursor = mEndlessScrollListener != null && mEndlessScrollListener.getCurrentPage() == 0;
+        boolean resetApiCursor = fragmentType == MeditationsPagerAdapter.CURRENT_LIST &&
+                mEndlessScrollListener != null && mEndlessScrollListener.getCurrentPage() == 0;
 
         mMeditationsAdapter.swapCursor(data, resetApiCursor);
 
@@ -190,7 +219,9 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mEndlessScrollListener.restart();
+        if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST)
+            mEndlessScrollListener.restart();
+
         mMeditationsAdapter.swapCursor(null, true);
     }
 }
