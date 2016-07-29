@@ -36,4 +36,5 @@
     </string-array>
     <string name="tab_current">Actuales</string>
     <string name="tab_favorites">Favoritas</string>
+    <string name="location_permission">Para calcular la hora del atardecer es necesario tener acceso a tu ubicación actual.</string>
 </resources>

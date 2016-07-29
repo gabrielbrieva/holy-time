@@ -57,8 +57,7 @@ public class NotificationService extends IntentService implements ActivityCompat
                 Log.d(LOG_TAG, "Using notification to asking for permission");
                 PermissionHelper.requestPermissions(this,
                         new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION },
-                        // TODO: change string to resource value ...
-                        0, getString(R.string.app_name), "Requesting permission to access your current location",
+                        0, getString(R.string.app_name), getString(R.string.location_permission),
                         R.mipmap.ic_launcher);
             } else {
                 handleIntent(intent);
