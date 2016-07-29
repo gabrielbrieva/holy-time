@@ -109,7 +109,7 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(View v) {
 
                     String meditationId =  getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery._ID);
-                    Uri uri = MeditationProvider.Meditations.withId(meditationId);
+                    Uri uri = MeditationProvider.Meditations.byId(meditationId);
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.putExtra(MeditationFragment.MEDITATION_TITLE_KEY, getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.TITLE));
                     intent.putExtra(MeditationFragment.MEDITATION_VERSE_KEY, getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.VERSE));

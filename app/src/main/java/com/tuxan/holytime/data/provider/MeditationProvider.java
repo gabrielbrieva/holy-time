@@ -23,27 +23,26 @@ public final class MeditationProvider {
         )
         public static final Uri meditationList = Uri.parse("content://" + AUTHORITY + "/meditations");
 
+        @InexactContentUri(
+                path = "meditations/weekfilter/#",
+                type = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation",
+                name = "byWeekNumber",
+                whereColumn = MeditationColumns.WEEK_NUMBER,
+                pathSegment = 2
+        )
+        public static final Uri byWeekNumber(int weekNumber) {
+            return Uri.parse("content://" + AUTHORITY + "/meditations/weekfilter/" + weekNumber);
+        }
 
         @InexactContentUri(
                 path = "meditations/*",
                 type = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation",
-                name = "withId",
+                name = "byId",
                 whereColumn = MeditationColumns._ID,
                 pathSegment = 1
         )
-        public static final Uri withId(String id) {
+        public static final Uri byId(String id) {
             return Uri.parse("content://" + AUTHORITY + "/meditations/" + id);
-        }
-
-        @InexactContentUri(
-                path = "meditations/byweek/#",
-                type = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation",
-                name = "byWeekNumber",
-                whereColumn = MeditationColumns.WEEK_NUMBER,
-                pathSegment = 1
-        )
-        public static final Uri byWeekNumber(int weekNumber) {
-            return Uri.parse("content://" + AUTHORITY + "/meditations/byweek/" + weekNumber);
         }
     }
 

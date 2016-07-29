@@ -234,7 +234,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
             if (mMeditationContent == null)
                 return true;
 
-            Cursor result = getActivity().getContentResolver().query(MeditationProvider.Meditations.withId(mMeditationContent.getId()),
+            Cursor result = getActivity().getContentResolver().query(MeditationProvider.Meditations.byId(mMeditationContent.getId()),
                     new String[]{ MeditationColumns._ID },
                     null,
                     null,
@@ -259,7 +259,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
                 v.put(MeditationColumns.IS_FAVORITE, mMeditationContent.isFavorite() ? 0 : 1);
 
-                int updates = getActivity().getContentResolver().update(MeditationProvider.Meditations.withId(mMeditationContent.getId()), v, null, null);
+                int updates = getActivity().getContentResolver().update(MeditationProvider.Meditations.byId(mMeditationContent.getId()), v, null, null);
 
                 if (updates > 0)
                     mMeditationContent.setFavorite(!mMeditationContent.isFavorite());
@@ -281,7 +281,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         if (mMeditationId != null)
-            return new MeditationLoader(getActivity(), MeditationProvider.Meditations.withId(mMeditationId));
+            return new MeditationLoader(getActivity(), MeditationProvider.Meditations.byId(mMeditationId));
 
         return null;
     }

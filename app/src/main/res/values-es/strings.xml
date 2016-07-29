@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Timepo Santo</string>
+    <string name="app_name">Tiempo Santo</string>
     <string name="main_title_holy">Santo</string>
     <string name="main_title_time">Tiempo</string>
     <string name="pref_information_category">Información</string>

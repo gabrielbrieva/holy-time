@@ -68,7 +68,7 @@ public class TestMeditationProvider extends AndroidTestCase {
 
         String meditationId = "1234";
         // content://com.tuxan.holytime/meditations/1234
-        type = mContext.getContentResolver().getType(MeditationProvider.Meditations.withId(meditationId));
+        type = mContext.getContentResolver().getType(MeditationProvider.Meditations.byId(meditationId));
         // vnd.android.cursor.item/vnd.com.tuxan.holytime.meditation
         assertEquals("Error: the MeditationEntry CONTENT_URI with meditationId should return MeditationEntry.CONTENT_ITEM_TYPE",
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.tuxan.holytime.meditation", type);

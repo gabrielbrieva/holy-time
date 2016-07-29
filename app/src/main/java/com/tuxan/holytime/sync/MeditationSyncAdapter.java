@@ -95,7 +95,7 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
             v.put(MeditationColumns.BODY, m.getBody());
             v.put(MeditationColumns.WEEK_NUMBER, m.getWeekNumber());
 
-            Cursor result = mContentResolver.query(MeditationProvider.Meditations.withId(m.getId()),
+            Cursor result = mContentResolver.query(MeditationProvider.Meditations.byId(m.getId()),
                     new String[]{ MeditationColumns._ID },
                     null,
                     null,
@@ -107,7 +107,7 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
                 newItems++;
             } else {
                 v.remove(MeditationColumns._ID);
-                updatedItems += mContentResolver.update(MeditationProvider.Meditations.withId(m.getId()), v, null, null);
+                updatedItems += mContentResolver.update(MeditationProvider.Meditations.byId(m.getId()), v, null, null);
             }
 
             if (result != null)

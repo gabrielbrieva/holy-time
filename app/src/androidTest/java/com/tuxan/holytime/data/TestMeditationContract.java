@@ -14,9 +14,9 @@ public class TestMeditationContract extends AndroidTestCase{
 
         String meditationId = "1234";
 
-        Uri meditationUri = MeditationProvider.Meditations.withId(meditationId);
+        Uri meditationUri = MeditationProvider.Meditations.byId(meditationId);
 
-        assertNotNull("withId method return null :(", meditationUri);
+        assertNotNull("byId method return null :(", meditationUri);
 
         assertEquals("ID don't match", meditationId, meditationUri.getLastPathSegment());
 
