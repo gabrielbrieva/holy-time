@@ -1,7 +1,6 @@
 package com.tuxan.holytime.service;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -15,23 +14,22 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+import com.permissioneverywhere.PermissionEverywhere;
+import com.permissioneverywhere.PermissionResponse;
 import com.tuxan.holytime.R;
 import com.tuxan.holytime.data.provider.MeditationColumns;
 import com.tuxan.holytime.data.provider.MeditationProvider;
-import com.tuxan.holytime.utils.PermissionHelper;
 import com.tuxan.holytime.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class NotificationService extends IntentService implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class NotificationService extends IntentService /*implements ActivityCompat.OnRequestPermissionsResultCallback*/ {
 
     private static final String LOG_TAG = "NotificationService";
 
@@ -59,10 +57,24 @@ public class NotificationService extends IntentService implements ActivityCompat
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 Log.d(LOG_TAG, "Using notification to asking for permission");
-                PermissionHelper.requestPermissions(this,
-                        new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION },
-                        0, getString(R.string.app_name), getString(R.string.location_permission),
-                        R.mipmap.ic_launcher);
+
+                PermissionResponse response = null;
+                try {
+                    response = PermissionEverywhere.getPermission(getApplicationContext(),
+                            new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION },
+                            0, getString(R.string.app_name), getString(R.string.location_permission),
+                            R.mipmap.ic_launcher)
+                            .call();
+
+                    //waits response..
+                    boolean isGranted = response.isGranted();
+
+                    if(isGranted && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                        handleIntent(intent);
+                    }
+                } catch (InterruptedException e) {
+                    Log.e(LOG_TAG, "Error getting access to location: " + e.getMessage());
+                }
             } else {
                 handleIntent(intent);
             }
@@ -76,14 +88,6 @@ public class NotificationService extends IntentService implements ActivityCompat
             case ACTION_SCHEDULE_NOTIFICATION_SERVICE: handleStartSchedule(); break;
             case ACTION_SCHEDULE_NEXT_NOTIFICATION: handleNextNotification(); break;
             case ACTION_SHOW_NOTIFICATION: handleShowNotification(intent); break;
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 0 && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            handleStartSchedule();
         }
     }
 

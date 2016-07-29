@@ -142,8 +142,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".utils.PermissionHelper$PermissionRequestActivity" >
-        </activity>
     </application>
 
 </manifest>
