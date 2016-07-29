@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.tuxan.holytime.adapter.MeditationsPagerAdapter;
 import com.tuxan.holytime.preferences.SettingsActivity;
-import com.tuxan.holytime.receiver.StartUpService;
+import com.tuxan.holytime.receiver.HolyTimeReceiver;
 import com.tuxan.holytime.sync.MeditationSyncAdapter;
 
 import butterknife.BindDimen;
@@ -75,7 +75,7 @@ public class MeditationsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         // starting notification service
-        StartUpService.start(this);
+        HolyTimeReceiver.start(this);
 
         setContentView(R.layout.meditations_activity);
 

@@ -18,10 +18,10 @@
         android:theme="@style/AppTheme">
 
         <receiver
-            android:name=".receiver.StartUpService"
+            android:name=".receiver.HolyTimeReceiver"
             android:enabled="true"
             android:exported="true"
-            android:label="StartUpService">
+            android:label="HolyTimeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
