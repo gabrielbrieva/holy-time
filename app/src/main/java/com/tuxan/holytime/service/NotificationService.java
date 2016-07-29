@@ -7,10 +7,14 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -157,7 +161,11 @@ public class NotificationService extends IntentService implements ActivityCompat
     }
 
     private void handleShowNotification(Intent intent) {
-        if (intent.hasExtra(EXTRA_MEDITATION_ID)) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean notificationEnabled = prefs.getBoolean(getString(R.string.pref_notification_enabled_key), true);
+
+        if (intent.hasExtra(EXTRA_MEDITATION_ID) && notificationEnabled) {
 
             Log.d(LOG_TAG, "Trying to get meditation and show notification using meditation id " + intent.getStringExtra(EXTRA_MEDITATION_ID));
 
@@ -177,12 +185,29 @@ public class NotificationService extends IntentService implements ActivityCompat
 
                 if (c.getCount() > 0 && c.moveToNext()) {
 
-                    // TODO: add compat attributes to notification
+                    // TODO: add better LargeIcon
 
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                    mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_VIBRATE)
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                             .setContentTitle(getString(R.string.app_name))
                             .setContentText(c.getString(2));
+
+                    boolean notificationVibrateEnabled = prefs.getBoolean(getString(R.string.pref_notification_vibrate_key), true);
+                    String notificationLedColor = prefs.getString(getString(R.string.pref_notification_led_color_key), "WHITE");
+
+                    mBuilder.setVibrate(new long[] { notificationVibrateEnabled ? 1000 : 0 });
+
+                    int ledColor = Color.WHITE;
+
+                    switch (notificationLedColor) {
+                        case "RED": ledColor = Color.RED; break;
+                        case "GREEN": ledColor = Color.GREEN; break;
+                        case "BLUE": ledColor = Color.BLUE; break;
+                    }
+
+                    mBuilder.setLights(ledColor, 1500, 3000);
 
                     Uri uri = MeditationProvider.Meditations.byId(intent.getStringExtra(EXTRA_MEDITATION_ID));
                     Intent meditationIntent = new Intent(Intent.ACTION_VIEW, uri);
@@ -203,6 +228,8 @@ public class NotificationService extends IntentService implements ActivityCompat
                 if (c != null && !c.isClosed())
                     c.close();
             }
+        } else {
+            Log.d(LOG_TAG, "Notification is disabled");
         }
     }
 }

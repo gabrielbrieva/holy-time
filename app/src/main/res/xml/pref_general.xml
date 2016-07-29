@@ -4,34 +4,27 @@
 
         <SwitchPreference
             android:defaultValue="true"
-            android:key="notification"
+            android:key="@string/pref_notification_enabled_key"
             android:summary="@string/pref_summary_notification"
             android:title="@string/pref_title_notification" />
 
         <SwitchPreference
             android:defaultValue="true"
-            android:key="notification_vibrate"
+            android:key="@string/pref_notification_vibrate_key"
             android:summary="@string/pref_summary_notification_vibrate"
             android:title="@string/pref_title_notification_vibrate"
-            android:dependency="notification" />
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="notification_led"
-            android:summary="@string/pref_summary_notification_led"
-            android:title="@string/pref_title_notification_led"
-            android:dependency="notification" />
+            android:dependency="@string/pref_notification_enabled_key" />
 
         <ListPreference
             android:defaultValue="WHITE"
             android:entries="@array/pref_notification_color_key"
             android:entryValues="@array/pref_notification_color_values"
-            android:key="notification_led_color"
+            android:key="@string/pref_notification_led_color_key"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
             android:title="@string/pref_title_notification_ledcolor"
             android:summary="@string/pref_summary_notification_ledcolor"
-            android:dependency="notification_led" />
+            android:dependency="@string/pref_notification_enabled_key" />
 
     </PreferenceCategory>
 

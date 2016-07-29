@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tiempo Santo</string>
-    <string name="main_title_holy">Santo</string>
-    <string name="main_title_time">Tiempo</string>
     <string name="pref_information_category">Información</string>
     <string name="pref_notifications_category">Notificaciones</string>
     <string name="pref_summary_notification">Notificar cada vez que comienza o termina el Sábado</string>
@@ -23,7 +20,7 @@
     <string name="sunset">Atardecer</string>
     <string name="swipe_instruction"></string>
     <string name="title_activity_settings">Configuraciones</string>
-    <string name="about_title">Acerca de Tiempo Santo</string>
+    <string name="about_title">Acerca de Holy Time</string>
     <string name="action_favorite">Favoritas</string>
     <string name="action_settings">Configuraciones</string>
     <string name="action_share">Compartir</string>
