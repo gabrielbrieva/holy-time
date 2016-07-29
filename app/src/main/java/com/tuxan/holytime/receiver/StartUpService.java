@@ -9,6 +9,8 @@ import com.tuxan.holytime.service.NotificationService;
 
 public class StartUpService extends BroadcastReceiver {
 
+    private static final String LOG_TAG = "StartUpService";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent == null)
@@ -19,7 +21,7 @@ public class StartUpService extends BroadcastReceiver {
         if (action == null)
             return;
 
-        Log.d("StartUpService", "onReceive broadcast intent: " + action);
+        Log.d(LOG_TAG, "onReceive broadcast intent: " + action);
 
         switch (action) {
             case Intent.ACTION_BOOT_COMPLETED:
