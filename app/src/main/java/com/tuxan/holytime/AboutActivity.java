@@ -1,8 +1,10 @@
 package com.tuxan.holytime;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -28,8 +30,11 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.about_title);
 
-        // TODO: get from HTML format
-        mTvAbout.setText("text");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mTvAbout.setText(Html.fromHtml(getString(R.string.about_text), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            mTvAbout.setText(Html.fromHtml(getString(R.string.about_text)));
+        }
     }
 
     @Override

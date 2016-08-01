@@ -34,4 +34,12 @@
     <string name="tab_current">Actuales</string>
     <string name="tab_favorites">Favoritas</string>
     <string name="location_permission">Para calcular la hora del atardecer es necesario tener acceso a tu ubicación actual.</string>
+    <string name="about_text">
+        <![CDATA[
+        <h2>HolyTime 1.0</h2>
+        <p>Muchas personas reservan tiempo cada Sábado para meditar en Dios (Exodo 20:8-11), pero aveces la rutina diaria hace que olvidemos ese tiempo sagrado (Holy Time) que fue reservado para de las bendiciones y el amor de Dios.</p>
+        <p>La aplicación Holy Time te ayudará a recordar tu comunion con Dios y ofrecerá contenidos para meditar en su amor y perdon para con nosotros.</p>
+        <p>Biblicamente el Sábado comienza con el atardecer del Viernes. Entonces de acuerdo a tu ubicación, Holy Time te notificará el comienzo de cada Sábado para que puedas meditar.</p>
+        ]]>
+    </string>
 </resources>

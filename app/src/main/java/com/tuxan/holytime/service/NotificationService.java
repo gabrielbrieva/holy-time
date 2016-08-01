@@ -189,12 +189,9 @@ public class NotificationService extends IntentService /*implements ActivityComp
 
                 if (c.getCount() > 0 && c.moveToNext()) {
 
-                    // TODO: add better LargeIcon
-
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
                     mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_VIBRATE)
                             .setSmallIcon(R.mipmap.ic_launcher)
-                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                             .setContentTitle(getString(R.string.app_name))
                             .setContentText(c.getString(2));
 

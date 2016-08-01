@@ -34,7 +34,14 @@
 
     <!-- About -->
     <string name="about_title">About Holy Time</string>
-    <string name="about_text">About text ...</string>
+    <string name="about_text">
+        <![CDATA[
+        <h2>HolyTime 1.0</h2>
+        <p>Many people meditate about God and reserve time to Him each Sabbath (Exodus 20:8-11), but sometimes the job or other activities make to forget that Holy Time was reserved to enjoy His bless and company.</p>
+        <p>Holy Time App helps you to not forget your communion with God and give you contents to read and meditate about His greatest love and forgiveness.</p>
+        <p>Biblically the Sabbath begins and ends with sunset. So depends on your location, you will receive a notifications at the beginning the Sabbath to read and meditate.</p>
+        ]]>
+    </string>
 
     <!-- Preferences -->
     <string name="title_activity_settings">Settings</string>
@@ -57,6 +64,8 @@
     <string name="pref_summary_sunset">Resume of sunset time calculated</string>
     <string name="pref_title_sunset">Sunrise and Sunset</string>
     <string name="pref_title_about">About</string>
+
+
 
     <string-array name="pref_notification_color_key">
         <item>White</item>
