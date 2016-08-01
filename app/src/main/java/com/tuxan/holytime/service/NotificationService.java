@@ -66,7 +66,7 @@ public class NotificationService extends IntentService /*implements ActivityComp
                             R.mipmap.ic_launcher)
                             .call();
 
-                    //waits response..
+                    //wait user response..
                     boolean isGranted = response.isGranted();
 
                     if(isGranted && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){

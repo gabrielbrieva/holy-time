@@ -70,4 +70,7 @@
         <item>GREEN</item>
         <item>BLUE</item>
     </string-array>
+
+    <!-- FCM values -->
+    <string name="sync_topic">sync</string>
 </resources>
