@@ -182,8 +182,18 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             c.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
             c.set(Calendar.WEEK_OF_YEAR, weekNumber);
 
-            //holder.monthView.setText(mDateFormater.format(c.getTime()).toUpperCase().replace(".", ""));
-            //holder.dayView.setText(String.format("%02d", c.get(Calendar.DAY_OF_MONTH)));
+            String date = String.format("%02d", c.get(Calendar.DAY_OF_MONTH)) + " " +
+                    mDateFormater.format(c.getTime()).toUpperCase().replace(".", "");
+
+            holder.monthView.setText(date);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setFirstDayOfWeek(Calendar.SUNDAY);
+
+            if (weekNumber != cal.get(Calendar.WEEK_OF_YEAR))
+                holder.monthView.setBackgroundResource(R.color.gray_date_bar);
+            else
+                holder.monthView.setBackgroundResource(R.color.colorPrimaryDark);
         }
     }
 
@@ -233,11 +243,8 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class ListItemViewHolder extends RecyclerView.ViewHolder {
 
-        /*@BindView(R.id.tv_date_month)
+        @BindView(R.id.tv_date_month)
         public TextView monthView;
-
-        @BindView(R.id.tv_date_day)
-        public TextView dayView;*/
 
         @BindView(R.id.tv_meditation_title)
         public TextView titleView;

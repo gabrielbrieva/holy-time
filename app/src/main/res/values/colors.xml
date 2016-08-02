@@ -12,4 +12,5 @@
     <color name="mainTitleHoly">@color/mainValleyFill</color>
     <color name="mainTitleTime">@color/colorPrimary</color>
     <color name="mainTitleCollapsed">@android:color/white</color>
+    <color name="gray_date_bar">#55000000</color>
 </resources>
