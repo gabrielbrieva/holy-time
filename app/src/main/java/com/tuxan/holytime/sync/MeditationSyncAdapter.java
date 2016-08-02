@@ -54,21 +54,21 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        if (Utils.isNetworkConnected(getContext())) {
+        if (!Utils.isNetworkConnected(getContext()))
+            return;
 
-            APIService apiService = APIServiceFactory.createService(getContext().getString(R.string.api_key));
+        APIService apiService = APIServiceFactory.createService(getContext().getString(R.string.api_key));
 
-            int weekNumber = Utils.getCurrentWeekNumber();
+        int weekNumber = Utils.getCurrentWeekNumber();
 
-            try {
-                Response<List<MeditationContent>> result = apiService.getSyncList(weekNumber).execute();
+        try {
+            Response<List<MeditationContent>> result = apiService.getSyncList(weekNumber).execute();
 
-                if (result.isSuccessful())
-                    syncMeditations(result.body());
+            if (result.isSuccessful())
+                syncMeditations(result.body());
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.getMessage());
         }
     }
 

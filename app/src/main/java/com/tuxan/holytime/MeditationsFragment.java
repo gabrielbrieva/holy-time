@@ -8,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tuxan.holytime.adapter.MeditationsAdapter;
 import com.tuxan.holytime.adapter.MeditationsLoader;
@@ -28,6 +30,7 @@ import com.tuxan.holytime.utils.Utils;
 import java.io.IOException;
 import java.util.List;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Response;
@@ -36,12 +39,14 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
     private static final String LOG_TAG = "MeditationsFragment";
     static final String FRAGMENT_TYPE = "FRAGMENT_TYPE";
-    private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
 
     private final int CURRENT_LOADER_ID = 0;
     private final int FAVORITE_LOADER_ID = 1;
 
     private int fragmentType;
+
+    @BindView(R.id.tv_empty_msg)
+    TextView mTvEmptyMsg;
 
     @BindView(R.id.rv_meditations)
     RecyclerView mRecyclerView;
@@ -49,8 +54,11 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    @BindInt(R.integer.meditations_row)
+    int meditationsRow;
+
     MeditationsAdapter mMeditationsAdapter;
-    LinearLayoutManager mLinearLayoutManager;
+    StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     EndlessRecyclerViewScrollListener mEndlessScrollListener;
     SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
 
@@ -76,12 +84,14 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
             fragmentType = args.getInt(FRAGMENT_TYPE);
         }
 
+        meditationsRow = getResources().getInteger(R.integer.meditations_row);
+
         mMeditationsAdapter = new MeditationsAdapter(getActivity());
         mMeditationsAdapter.setHasStableIds(true);
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(meditationsRow, StaggeredGridLayoutManager.VERTICAL);
 
         if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST) {
-            mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mLinearLayoutManager) {
+            mEndlessScrollListener = new EndlessRecyclerViewScrollListener(mStaggeredGridLayoutManager) {
 
                 @Override
                 public boolean isLoading() {
@@ -130,19 +140,16 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
         // to fix transition issue
         mMeditationsAdapter.setContext(getActivity());
 
+        mStaggeredGridLayoutManager.setSpanCount(meditationsRow);
+
         mRecyclerView.setAdapter(mMeditationsAdapter);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
 
         if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST)
             mRecyclerView.addOnScrollListener(mEndlessScrollListener);
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
-
-        if (savedInstanceState != null) {
-            int lastPosition = savedInstanceState.getInt(SCROLL_POSITION_KEY);
-            mLinearLayoutManager.scrollToPosition(lastPosition);
-        }
 
         return view;
     }
@@ -159,13 +166,13 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
         mSwipeRefreshLayout.setOnRefreshListener(null);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(SCROLL_POSITION_KEY, mLinearLayoutManager.findFirstCompletelyVisibleItemPosition());
-    }
-
     private void loadMeditationsFromApi(final int page) {
+
+        if (!Utils.isNetworkConnected(getActivity()))
+        {
+            showNoInternetAccessToast();
+            return;
+        }
 
         mMeditationsAdapter.setIsLoading(true);
 
@@ -182,10 +189,12 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
                     if (result.isSuccessful()) {
                         return result.body().getItems();
+                    } else {
+                        showNoInternetAccessToast();
                     }
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(LOG_TAG, e.getMessage());
                 }
 
                 return null;
@@ -200,6 +209,10 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
         }.execute();
     }
 
+    private void showNoInternetAccessToast() {
+        Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new MeditationsLoader(getActivity(), MeditationProvider.Meditations.meditationList, Utils.getCurrentWeekNumber(), id != CURRENT_LOADER_ID);
@@ -212,6 +225,15 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
                 mEndlessScrollListener != null && mEndlessScrollListener.getCurrentPage() == 0;
 
         mMeditationsAdapter.swapCursor(data, resetApiCursor);
+
+        if (data != null && data.getCount() > 0)
+        {
+            mTvEmptyMsg.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            mTvEmptyMsg.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
 
         if (mSwipeRefreshLayout.isRefreshing())
             mSwipeRefreshLayout.setRefreshing(false);

@@ -20,4 +20,7 @@
     <dimen name="margin_left_detail_title">60dp</dimen>
     <dimen name="margin_right_detail_title">16dp</dimen>
     <dimen name="margin_bottom_detail_title">16dp</dimen>
+
+    <!-- list -->
+    <integer name="meditations_row">1</integer>
 </resources>

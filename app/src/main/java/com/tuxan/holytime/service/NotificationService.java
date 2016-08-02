@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -29,7 +28,7 @@ import com.tuxan.holytime.utils.Utils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class NotificationService extends IntentService /*implements ActivityCompat.OnRequestPermissionsResultCallback*/ {
+public class NotificationService extends IntentService {
 
     private static final String LOG_TAG = "NotificationService";
 

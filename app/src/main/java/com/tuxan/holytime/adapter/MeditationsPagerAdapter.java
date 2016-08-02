@@ -23,8 +23,9 @@ public class MeditationsPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case CURRENT_LIST: return MeditationsFragment.newInstance(position);
-            case FAVORITE_LIST: return MeditationsFragment.newInstance(position);
+            case CURRENT_LIST:
+            case FAVORITE_LIST:
+                return MeditationsFragment.newInstance(position);
         }
 
         return null;

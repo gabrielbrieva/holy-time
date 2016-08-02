@@ -42,4 +42,6 @@
         <p>Biblicamente el Sábado comienza con el atardecer del Viernes. Entonces de acuerdo a tu ubicación, Holy Time te notificará el comienzo de cada Sábado para que puedas meditar.</p>
         ]]>
     </string>
+    <string name="empty_msg">Sin Meditaciones</string>
+    <string name="no_internet_connection">Sin Conexión a Internet</string>
 </resources>

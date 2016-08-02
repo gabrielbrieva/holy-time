@@ -16,6 +16,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tuxan.holytime.adapter.MeditationLoader;
 import com.tuxan.holytime.api.APIService;
@@ -44,6 +46,8 @@ import retrofit2.Response;
 
 public class MeditationFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         AppBarLayout.OnOffsetChangedListener {
+
+    private static final String LOG_TAG = "MeditationFragment";
 
     public static final String MEDITATION_ID_KEY = "MEDITATION_ID_KEY";
     public static final String MEDITATION_TITLE_KEY = "MEDITATION_TITLE_KEY";
@@ -313,36 +317,39 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     }
 
     private void loadFromAPI() {
-        if (Utils.isNetworkConnected(getActivity())) {
-            new AsyncTask<Void, Void, MeditationContent>() {
-                @Override
-                protected MeditationContent doInBackground(Void... params) {
-
-                    APIService apiService = APIServiceFactory.createService(getString(R.string.api_key));
-
-                    try {
-                        Response<MeditationContent> result = apiService.getContentDetail(mMeditationId).execute();
-
-                        if (result.isSuccessful()) {
-                            return result.body();
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(MeditationContent meditationContent) {
-                    if (meditationContent != null) {
-                        mMeditationContent = meditationContent;
-                        fillMeditationContent();
-                    }
-                }
-            }.execute();
+        if (!Utils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        new AsyncTask<Void, Void, MeditationContent>() {
+            @Override
+            protected MeditationContent doInBackground(Void... params) {
+
+                APIService apiService = APIServiceFactory.createService(getString(R.string.api_key));
+
+                try {
+                    Response<MeditationContent> result = apiService.getContentDetail(mMeditationId).execute();
+
+                    if (result.isSuccessful()) {
+                        return result.body();
+                    }
+
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, e.getMessage());
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(MeditationContent meditationContent) {
+                if (meditationContent != null) {
+                    mMeditationContent = meditationContent;
+                    fillMeditationContent();
+                }
+            }
+        }.execute();
     }
 
     @Override

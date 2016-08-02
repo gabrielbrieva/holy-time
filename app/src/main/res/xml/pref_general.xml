@@ -6,14 +6,16 @@
             android:defaultValue="true"
             android:key="@string/pref_notification_enabled_key"
             android:summary="@string/pref_summary_notification"
-            android:title="@string/pref_title_notification" />
+            android:title="@string/pref_title_notification"
+            android:contentDescription="@string/pref_summary_notification"/>
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="@string/pref_notification_vibrate_key"
             android:summary="@string/pref_summary_notification_vibrate"
             android:title="@string/pref_title_notification_vibrate"
-            android:dependency="@string/pref_notification_enabled_key" />
+            android:dependency="@string/pref_notification_enabled_key"
+            android:contentDescription="@string/pref_summary_notification_vibrate"/>
 
         <ListPreference
             android:defaultValue="WHITE"
