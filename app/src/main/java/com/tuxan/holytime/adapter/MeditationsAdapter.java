@@ -225,9 +225,12 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (resetApiCursor)
             mApiCursor = new MatrixCursor(MeditationsLoader.ResumeQuery.PROJECTION);
 
+        if (mDbCursor != null && !mDbCursor.isClosed())
+            mDbCursor.close();
+
         mDbCursor = newCursor;
 
-        mCursor = new MergeCursor(new Cursor[]{ newCursor, mApiCursor });
+        mCursor = new MergeCursor(new Cursor[]{ mDbCursor, mApiCursor });
 
         notifyDataSetChanged();
     }
@@ -256,12 +259,6 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(view);
 
             ButterKnife.bind(this, view);
-
-            /*Typeface titleTypeFace = Typeface.createFromAsset(mContext.getAssets(), "RobotoSlab-Bold.ttf");
-            Typeface typeFace = Typeface.createFromAsset(mContext.getAssets(), "RobotoSlab-Regular.ttf");
-
-            titleView.setTypeface(titleTypeFace);
-            textView.setTypeface(typeFace);*/
         }
     }
 

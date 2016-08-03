@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/main_title_holy"
                     android:textColor="@color/mainTitleCollapsed"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/main_title_size"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -120,9 +120,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/main_title_time"
                     android:textColor="@color/mainTitleCollapsed"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/main_title_size"
                     android:paddingLeft="5dp"
-                    android:paddingStart="5dp"
                     android:textStyle="bold" />
 
             </android.support.v7.widget.Toolbar>
@@ -165,7 +164,7 @@
             android:layout_height="wrap_content"
             android:text="@string/main_title_holy"
             android:textColor="@color/mainTitleHoly"
-            android:textSize="20sp"
+            android:textSize="@dimen/main_title_size"
             android:textStyle="bold"
             android:gravity="top"
             android:layout_gravity="top" />
@@ -176,7 +175,7 @@
             android:layout_height="@dimen/main_title_time_height"
             android:text="@string/main_title_time"
             android:textColor="@color/mainTitleTime"
-            android:textSize="20sp"
+            android:textSize="@dimen/main_title_size"
             android:textStyle="bold"
             android:layout_gravity="bottom"
             android:gravity="bottom"

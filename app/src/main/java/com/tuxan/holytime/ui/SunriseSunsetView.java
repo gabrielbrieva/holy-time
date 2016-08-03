@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Region;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -65,12 +66,12 @@ public class SunriseSunsetView extends View {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SunriseSunsetView);
 
             try {
-                horizonColor = typedArray.getColor(R.styleable.SunriseSunsetView_horizonColor, 0xff000000);
-                timelineColor = typedArray.getColor(R.styleable.SunriseSunsetView_timelineColor, 0xff000000);
-                taglineColor = typedArray.getColor(R.styleable.SunriseSunsetView_taglineColor, 0xff000000);
-                nightColor = typedArray.getColor(R.styleable.SunriseSunsetView_nightColor, 0xff000000);
-                dayColor = typedArray.getColor(R.styleable.SunriseSunsetView_dayColor, 0xff000000);
-                sunColor = typedArray.getColor(R.styleable.SunriseSunsetView_sunColor, 0xff000000);
+                horizonColor = typedArray.getColor(R.styleable.SunriseSunsetView_horizonColor, ContextCompat.getColor(context, R.color.ssvHorizonColor));
+                timelineColor = typedArray.getColor(R.styleable.SunriseSunsetView_timelineColor, ContextCompat.getColor(context, R.color.ssvTimelineColor));
+                taglineColor = typedArray.getColor(R.styleable.SunriseSunsetView_taglineColor, ContextCompat.getColor(context, R.color.ssvTaglineColor));
+                nightColor = typedArray.getColor(R.styleable.SunriseSunsetView_nightColor, ContextCompat.getColor(context, R.color.ssvNightColor));
+                dayColor = typedArray.getColor(R.styleable.SunriseSunsetView_dayColor, ContextCompat.getColor(context, R.color.ssvDayColor));
+                sunColor = typedArray.getColor(R.styleable.SunriseSunsetView_sunColor, ContextCompat.getColor(context, R.color.ssvSunColor));
             } finally {
                 typedArray.recycle();
             }

@@ -25,28 +25,26 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <TextView
+                android:id="@+id/tv_meditation_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_meditation_date"
-                style="@style/HolyTime.DetailBody"
+                style="@style/HolyTime.DetailBody.Gray"
                 android:layout_marginBottom="15dp"
-                android:alpha="0.6"
                 tools:text="19/07/2016"/>
 
             <TextView
+                android:id="@+id/tv_meditation_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_meditation_content"
                 style="@style/HolyTime.DetailBody"
                 tools:text="Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed to float in the middle of an immense dark sphere, whose upper half was strewn with silver. Looking down into the dark gulf below, I could see a ruddy light streaming through a rift in the clouds."
                  />
 
             <TextView
+                android:id="@+id/tv_meditation_author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_meditation_author"
-                style="@style/HolyTime.DetailBody"
-                android:alpha="0.6"
+                style="@style/HolyTime.DetailBody.Gray"
                 tools:text="Author - author" />
 
         </LinearLayout>
@@ -65,7 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
+            app:titleEnabled="false"
+            android:background="@color/detail_toolbar_color">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,7 +74,6 @@
                 android:paddingTop="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:background="#5affddaf"
                 android:transitionName="@string/meditation_container_share_element" >
 
                 <TextView
@@ -87,7 +85,7 @@
                     android:layout_marginTop="?attr/actionBarSize"
                     android:layout_marginBottom="16dp"
                     android:transitionName="@string/meditation_title_share_element"
-                    tools:text="Titulo"/>
+                    tools:text="Title" />
 
                 <TextView
                     android:id="@+id/tv_meditation_verse"
@@ -123,14 +121,7 @@
                 app:layout_collapseMode="pin"
                 />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/tbDetail"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="top"
-                app:layout_collapseMode="pin"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            <include layout="@layout/toolbar_detail" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

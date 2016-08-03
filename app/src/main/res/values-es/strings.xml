@@ -44,4 +44,5 @@
     </string>
     <string name="empty_msg">Sin Meditaciones</string>
     <string name="no_internet_connection">Sin Conexión a Internet</string>
+    <string name="next_friday_sunset_info">\'El próximo Sábado comenzará el\' dd \'de\' MMMM, yyyy \'a las\' HH:mm</string>
 </resources>

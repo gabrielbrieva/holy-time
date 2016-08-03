@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false"
-            android:background="#5affddaf">
+            android:background="@color/detail_toolbar_color">
 
             <LinearLayout
                 android:layout_width="@dimen/detail_card_max_width"
@@ -31,19 +31,19 @@
                 android:paddingTop="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:transitionName="@string/meditation_container_share_element"
-                android:paddingBottom="64dp">
+                android:paddingBottom="@dimen/overlap_top"
+                android:transitionName="@string/meditation_container_share_element" >
 
                 <TextView
                     android:id="@+id/tv_detail_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/HolyTime.DetailTitle"
+                    android:gravity="center"
                     android:layout_marginTop="?attr/actionBarSize"
                     android:layout_marginBottom="16dp"
                     android:transitionName="@string/meditation_title_share_element"
-                    tools:text="Titulo"
-                    android:layout_gravity="center_horizontal" />
+                    tools:text="Title" />
 
                 <TextView
                     android:id="@+id/tv_meditation_verse"
@@ -73,14 +73,7 @@
                 app:layout_collapseMode="pin"
                 />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/tbDetail"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="top"
-                app:layout_collapseMode="pin"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            <include layout="@layout/toolbar_detail" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -91,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
         android:paddingBottom="?attr/actionBarSize"
-        app:behavior_overlapTop="64dp"
+        app:behavior_overlapTop="@dimen/overlap_top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.CardView
@@ -111,9 +104,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_meditation_date"
-                    style="@style/HolyTime.DetailBody"
+                    style="@style/HolyTime.DetailBody.Gray"
                     android:layout_marginBottom="15dp"
-                    android:alpha="0.6"
                     tools:text="19/07/2016"/>
 
                 <TextView
@@ -128,8 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_meditation_author"
-                    style="@style/HolyTime.DetailBody"
-                    android:alpha="0.6"
+                    style="@style/HolyTime.DetailBody.Gray"
                     tools:text="Author - author" />
 
             </LinearLayout>

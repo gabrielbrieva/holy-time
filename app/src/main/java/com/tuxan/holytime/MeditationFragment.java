@@ -54,7 +54,7 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     public static final String MEDITATION_VERSE_KEY = "MEDITATION_VERSE_KEY";
     private static final String MEDITATION_CONTENT_KEY = "MEDITATION_CONTENT_KEY";
 
-    private final int LOADER_ID = 1;
+    private final int LOADER_ID = 2;
 
     @BindView(R.id.tbDetail)
     Toolbar mToolbar;
@@ -82,11 +82,6 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
 
     @BindView(R.id.tv_meditation_author)
     TextView mTvMeditationAuthor;
-
-
-    @BindDimen(R.dimen.margin_left_detail_title) int titleLeft;
-    @BindDimen(R.dimen.margin_right_detail_title) int titleRight;
-    @BindDimen(R.dimen.margin_bottom_detail_title) int titleBottom;
 
     String mMeditationId;
     String mMeditationTitle;

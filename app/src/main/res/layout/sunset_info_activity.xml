@@ -22,18 +22,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp">
 
             <com.tuxan.holytime.ui.SunriseSunsetView
                 android:id="@+id/sv_plot"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                app:horizonColor="#32000000"
-                app:timelineColor="#32000000"
-                app:taglineColor="#14000000"
-                app:sunColor="#ffcc00"
-                app:dayColor="#62a5e4ff"
-                app:nightColor="#6d302873" />
+                android:layout_height="100dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -85,8 +80,14 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/tv_next_holytime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Next Shabbat will start July 15, 2016 at 18:00"/>
+
     </LinearLayout>
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar_settings" />
 
 </RelativeLayout>

@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class SunsetInfoActivity extends AppCompatActivity {
 
-    @BindView(R.id.tbDetail)
+    @BindView(R.id.tbSettings)
     Toolbar mToolbar;
 
     @BindView(R.id.tv_sunrise)
@@ -35,13 +35,18 @@ public class SunsetInfoActivity extends AppCompatActivity {
     @BindView(R.id.sv_plot)
     SunriseSunsetView mSunriseSunsetView;
 
+    @BindView(R.id.tv_next_holytime)
+    TextView mTvNextHolyTime;
+
     SimpleDateFormat formater;
+    SimpleDateFormat nextFridayFormater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         formater = new SimpleDateFormat("HH:mm");
+        nextFridayFormater = new SimpleDateFormat(getString(R.string.next_friday_sunset_info));
 
         setContentView(R.layout.sunset_info_activity);
 
@@ -84,5 +89,18 @@ public class SunsetInfoActivity extends AppCompatActivity {
         mTvSunrise.setText(calculator.getOfficialSunriseForDate(Calendar.getInstance()));
         mTvSunset.setText(calculator.getOfficialSunsetForDate(Calendar.getInstance()));
         mSunriseSunsetView.setSunriseSunsetCalculator(calculator);
+
+        Calendar nextFriday = Calendar.getInstance();
+        nextFriday.setFirstDayOfWeek(Calendar.SUNDAY);
+
+        int currentWeek = nextFriday.get(Calendar.WEEK_OF_YEAR);
+
+        nextFriday.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        nextFriday.set(Calendar.HOUR_OF_DAY, 12);
+        nextFriday.set(Calendar.WEEK_OF_YEAR, currentWeek);
+
+        nextFriday = calculator.getOfficialSunsetCalendarForDate(nextFriday);
+
+        mTvNextHolyTime.setText(nextFridayFormater.format(nextFriday.getTime()));
     }
 }

@@ -16,12 +16,9 @@
             android:id="@+id/tv_date_month"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Month 00"
             android:gravity="center_horizontal"
-            android:textColor="@android:color/white"
-            android:background="@color/colorPrimaryDark"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            style="@style/HolyTime.ListItemDate"
+            tools:text="Month 00" />
 
         <LinearLayout
             android:id="@+id/ll_shared_container"
@@ -37,20 +34,20 @@
                 android:id="@+id/tv_meditation_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Title"
                 android:layout_marginBottom="3dp"
                 android:gravity="center_horizontal"
+                style="@style/HolyTime.ListItemTitle"
                 android:transitionName="@string/meditation_title_share_element"
-                style="@style/HolyTime.ListItemTitle"/>
+                tools:text="Title" />
 
             <TextView
                 android:id="@+id/tv_meditation_verse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Content extract extract extract extract extract extract extract extract extract extract extract extract extract extract extract extract extract extract"
-                android:transitionName="@string/meditation_verse_share_element"
+                android:layout_marginBottom="10dp"
                 style="@style/HolyTime.ListItemVerse"
-                android:layout_marginBottom="10dp"/>
+                android:transitionName="@string/meditation_verse_share_element"
+                tools:text="Content extract extract extract extract extract extract extract extract extract extract extract extract extract extract extract extract extract extract" />
 
         </LinearLayout>
 

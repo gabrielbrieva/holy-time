@@ -21,6 +21,13 @@
     <style name="AppTheme.Meditation" parent="@style/AppTheme">
     </style>
 
+    <style name="HolyTime.ListItemDate" parent="@style/Base.TextAppearance.AppCompat">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+    </style>
+
     <style name="HolyTime.ListItemTitle" parent="@style/Base.TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
@@ -43,5 +50,9 @@
     <style name="HolyTime.DetailBody" parent="@style/Base.TextAppearance.AppCompat.Body1">
         <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingMultiplier">1.5</item>
+    </style>
+
+    <style name="HolyTime.DetailBody.Gray" parent="@style/HolyTime.DetailBody">
+        <item name="android:textColor">@color/textGray</item>
     </style>
 </resources>

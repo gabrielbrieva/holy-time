@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 
 public class AboutActivity extends AppCompatActivity {
 
-    @BindView(R.id.tbDetail)
+    @BindView(R.id.tbSettings)
     Toolbar mToolbar;
 
     @BindView(R.id.tv_about)

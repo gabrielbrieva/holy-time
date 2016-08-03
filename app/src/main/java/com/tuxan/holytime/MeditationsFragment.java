@@ -121,12 +121,6 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
             }
         };
 
-        if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST) {
-            getLoaderManager().restartLoader(CURRENT_LOADER_ID, null, this);
-        } else if (fragmentType == MeditationsPagerAdapter.FAVORITE_LIST) {
-            getLoaderManager().restartLoader(FAVORITE_LOADER_ID, null, this);
-        }
-
     }
 
     @Nullable
@@ -145,6 +139,12 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
         mRecyclerView.setAdapter(mMeditationsAdapter);
         mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
 
+        if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST) {
+            getLoaderManager().restartLoader(CURRENT_LOADER_ID, null, this);
+        } else if (fragmentType == MeditationsPagerAdapter.FAVORITE_LIST) {
+            getLoaderManager().restartLoader(FAVORITE_LOADER_ID, null, this);
+        }
+
         if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST)
             mRecyclerView.addOnScrollListener(mEndlessScrollListener);
 
@@ -157,6 +157,7 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         mRecyclerView.setAdapter(null);
         mRecyclerView.setLayoutManager(null);
 
@@ -194,7 +195,8 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
                     }
 
                 } catch (IOException e) {
-                    Log.e(LOG_TAG, e.getMessage());
+                    if (e != null)
+                        Log.e(LOG_TAG, e.getMessage());
                 }
 
                 return null;

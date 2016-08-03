@@ -26,6 +26,7 @@
     <!-- Sunrise and Sunset Info -->
     <string name="sunrise_sunset_info_title">Sunrise and Sunset</string>
     <string name="sunrise_sunset_info">Sunrise and Sunset calculated based on your current location.</string>
+    <string name="next_friday_sunset_info">\'Next Sabbath will start\' MMMM dd, yyyy \'at\' HH:mm</string>
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
     <string name="location_permission">Permission required to access your current location and calculate sunset time.</string>
