@@ -33,11 +33,10 @@ The list/grid of meditations content is loaded from device DB and the older cont
 * Custom collapsible main title and content of AppBarLayout.
 
 ### Screenshots
-[[ /screenshots/main.jpg | height = 100px ]]
-![Alt text](/screenshots/main.jpg?raw=true "Main")
-![Alt text](/screenshots/notification.jpg?raw=true "Notification")
-![Alt text](/screenshots/settings.jpg?raw=true "Settings")
-![Alt text](/screenshots/sunrise_sunset_info.jpg?raw=true "Custom View")
-![Alt text](/screenshots/tablet_main.jpg?raw=true "Main on Tablets")
-![Alt text](/screenshots/tablet_detail.jpg?raw=true "Details on Tablets")
-![Alt text](/screenshots/tablet_detail_collapsed.jpg?raw=true "Details on Tablets")
+<img src="/screenshots/main.jpg" alt="Main" width="300px" >
+<img src="/screenshots/notification.jpg" alt="Notification" width="300px" >
+<img src="/screenshots/settings.jpg" alt="Settings" width="300px" >
+<img src="/screenshots/sunrise_sunset_info.jpg" alt="Custom View" width="300px" >
+<img src="/screenshots/tablet_main.jpg" alt="Main on Tablets" width="500px" >
+<img src="/screenshots/tablet_detail.jpg" alt="Details on Tablets" width="500px" >
+<img src="/screenshots/tablet_detail_collapsed.jpg" alt="Details on Tablets" width="500px" >
