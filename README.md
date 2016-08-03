@@ -8,7 +8,7 @@ Biblically the Sabbath begins and ends with sunset. So depends on your location,
 ## Technical Specs
 
 ### Meditations Data
-This app sync the latest 10 week meditation content from http://holytime.gabriel.brieva.cl/api using a DummyAuthenticator and SyncAdapter.
+This app sync the latest 10 week meditation content from http://holytime.gabrielbrieva.cl/api using a DummyAuthenticator and SyncAdapter.
 The list/grid of meditations content is loaded from device DB and the older content is loaded from the API using a endless technique.
 
 ### Libraries
