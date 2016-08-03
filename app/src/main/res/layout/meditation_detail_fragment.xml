@@ -63,8 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false"
-            android:background="@color/detail_toolbar_color">
+            app:titleEnabled="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,6 +73,7 @@
                 android:paddingTop="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
+                android:background="@color/detail_toolbar_color"
                 android:transitionName="@string/meditation_container_share_element" >
 
                 <TextView
