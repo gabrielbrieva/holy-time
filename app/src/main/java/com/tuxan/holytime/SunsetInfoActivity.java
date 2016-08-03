@@ -90,17 +90,26 @@ public class SunsetInfoActivity extends AppCompatActivity {
         mTvSunset.setText(calculator.getOfficialSunsetForDate(Calendar.getInstance()));
         mSunriseSunsetView.setSunriseSunsetCalculator(calculator);
 
-        Calendar nextFriday = Calendar.getInstance();
-        nextFriday.setFirstDayOfWeek(Calendar.SUNDAY);
+        Calendar currentCal = Calendar.getInstance();
+        currentCal.setFirstDayOfWeek(Calendar.SUNDAY);
+        int currentDay = currentCal.get(Calendar.DAY_OF_WEEK);
 
-        int currentWeek = nextFriday.get(Calendar.WEEK_OF_YEAR);
+        Calendar sunsetCal = calculator.getOfficialSunsetCalendarForDate(currentCal);
 
-        nextFriday.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-        nextFriday.set(Calendar.HOUR_OF_DAY, 12);
-        nextFriday.set(Calendar.WEEK_OF_YEAR, currentWeek);
+        if (currentDay == Calendar.FRIDAY && currentCal.getTimeInMillis() >= sunsetCal.getTimeInMillis() ||
+                currentDay == Calendar.SATURDAY && currentCal.getTimeInMillis() <= sunsetCal.getTimeInMillis()) {
+            mTvNextHolyTime.setText(R.string.sunrise_sunset_info_is_holy_time);
+        } else {
+            Calendar nextFriday = currentCal;
 
-        nextFriday = calculator.getOfficialSunsetCalendarForDate(nextFriday);
+            int currentWeek = nextFriday.get(Calendar.WEEK_OF_YEAR);
+            nextFriday.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+            nextFriday.set(Calendar.HOUR_OF_DAY, 12);
+            nextFriday.set(Calendar.WEEK_OF_YEAR, currentWeek);
 
-        mTvNextHolyTime.setText(nextFridayFormater.format(nextFriday.getTime()));
+            nextFriday = calculator.getOfficialSunsetCalendarForDate(nextFriday);
+
+            mTvNextHolyTime.setText(nextFridayFormater.format(nextFriday.getTime()));
+        }
     }
 }

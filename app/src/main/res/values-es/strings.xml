@@ -18,7 +18,6 @@
     <string name="sunrise_sunset_info">El horario de amanecer y atardecer está basado en tu ubicación actual.</string>
     <string name="sunrise_sunset_info_title">Amanecer y Atardecer</string>
     <string name="sunset">Atardecer</string>
-    <string name="swipe_instruction"></string>
     <string name="title_activity_settings">Configuraciones</string>
     <string name="about_title">Acerca de Holy Time</string>
     <string name="action_favorite">Favoritas</string>
@@ -45,4 +44,5 @@
     <string name="empty_msg">Sin Meditaciones</string>
     <string name="no_internet_connection">Sin Conexión a Internet</string>
     <string name="next_friday_sunset_info">\'El próximo Sábado comenzará el\' dd \'de\' MMMM, yyyy \'a las\' HH:mm</string>
+    <string name="sunrise_sunset_info_is_holy_time">Es Tiempo Santo</string>
 </resources>
