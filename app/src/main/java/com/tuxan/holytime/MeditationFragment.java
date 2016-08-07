@@ -27,19 +27,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tuxan.holytime.adapter.MeditationLoader;
 import com.tuxan.holytime.api.APIService;
 import com.tuxan.holytime.api.APIServiceFactory;
 import com.tuxan.holytime.data.dto.MeditationContent;
 import com.tuxan.holytime.data.provider.MeditationColumns;
 import com.tuxan.holytime.data.provider.MeditationProvider;
+import com.tuxan.holytime.utils.FirebaseAnalyticsProxy;
 import com.tuxan.holytime.utils.Utils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Response;
@@ -91,6 +92,8 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     int titleCollapsedSize = 45;
 
+    private FirebaseAnalyticsProxy mFirebaseAnalyticsProxy;
+
     public MeditationFragment() {
         setHasOptionsMenu(true);
     }
@@ -103,6 +106,8 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.mFirebaseAnalyticsProxy = new FirebaseAnalyticsProxy(getActivity());
 
         Bundle arguments = getArguments();
         if (arguments != null && savedInstanceState == null) {
@@ -228,6 +233,13 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.meditation_detail_url) + mMeditationContent.getId());
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_title)));
+
+            Bundle event = new Bundle();
+            event.putString(FirebaseAnalytics.Param.ITEM_ID, mMeditationContent.getId());
+            event.putString(FirebaseAnalytics.Param.ITEM_NAME, mMeditationContent.getTitle());
+
+            mFirebaseAnalyticsProxy.LogEvent(FirebaseAnalytics.Event.SHARE, event);
+
         } else if (item.getItemId() == R.id.action_favorite){
 
             if (mMeditationContent == null)
@@ -254,6 +266,9 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
                 getActivity().getContentResolver().insert(MeditationProvider.Meditations.meditationList, v);
 
                 mMeditationContent.setFavorite(true);
+
+                mFirebaseAnalyticsProxy.LogSelectMeditationActionEvent(mMeditationContent.getId(), mMeditationTitle, FirebaseAnalyticsProxy.ActionCategory.DO_FAVORITE);
+
             } else {
 
                 v.put(MeditationColumns.IS_FAVORITE, mMeditationContent.isFavorite() ? 0 : 1);
@@ -267,10 +282,13 @@ public class MeditationFragment extends Fragment implements LoaderManager.Loader
             if (result != null && !result.isClosed())
                 result.close();
 
-            if (mMeditationContent.isFavorite())
+            if (mMeditationContent.isFavorite()) {
                 item.setIcon(R.drawable.ic_favorite);
-            else
+                mFirebaseAnalyticsProxy.LogSelectMeditationActionEvent(mMeditationContent.getId(), mMeditationTitle, FirebaseAnalyticsProxy.ActionCategory.DO_FAVORITE);
+            } else {
                 item.setIcon(R.drawable.ic_favorite_border);
+                mFirebaseAnalyticsProxy.LogSelectMeditationActionEvent(mMeditationContent.getId(), mMeditationTitle, FirebaseAnalyticsProxy.ActionCategory.NO_FAVORITE);
+            }
         }
 
         return super.onOptionsItemSelected(item);

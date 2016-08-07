@@ -17,10 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tuxan.holytime.adapter.MeditationsPagerAdapter;
 import com.tuxan.holytime.preferences.SettingsActivity;
 import com.tuxan.holytime.receiver.HolyTimeReceiver;
 import com.tuxan.holytime.sync.MeditationSyncAdapter;
+import com.tuxan.holytime.utils.FirebaseAnalyticsProxy;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -70,9 +72,13 @@ public class MeditationsActivity extends AppCompatActivity implements
 
     private boolean mIsValleyVisible = true;
 
+    private FirebaseAnalyticsProxy mFirebaseAnalyticsProxy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFirebaseAnalyticsProxy = new FirebaseAnalyticsProxy(this);
 
         // starting notification service
         HolyTimeReceiver.start(this);
@@ -82,6 +88,9 @@ public class MeditationsActivity extends AppCompatActivity implements
         if (savedInstanceState != null){
             mIsValleyVisible = savedInstanceState.getBoolean(IS_VALLEY_VISIBLE);
         } else {
+            // logging to analytics the opened app
+            mFirebaseAnalyticsProxy.LogEvent(FirebaseAnalytics.Event.APP_OPEN, null);
+
             MeditationSyncAdapter.initializeSyncAdapter(this);
         }
 
@@ -114,6 +123,7 @@ public class MeditationsActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.action_settings) {
+            mFirebaseAnalyticsProxy.LogGoToEvent("MeditationsActivity", "SettingsActivity");
             startActivity(new Intent(this, SettingsActivity.class));
         }
 

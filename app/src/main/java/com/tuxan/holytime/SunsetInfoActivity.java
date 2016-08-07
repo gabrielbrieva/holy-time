@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.tuxan.holytime.ui.SunriseSunsetView;
+import com.tuxan.holytime.utils.FirebaseAnalyticsProxy;
 import com.tuxan.holytime.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -41,9 +42,16 @@ public class SunsetInfoActivity extends AppCompatActivity {
     SimpleDateFormat formater;
     SimpleDateFormat nextFridayFormater;
 
+    private FirebaseAnalyticsProxy mFirebaseAnalyticsProxy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFirebaseAnalyticsProxy = new FirebaseAnalyticsProxy(this);
+
+        if (savedInstanceState == null)
+            mFirebaseAnalyticsProxy.LogGoToEvent("SettingsActivity", "SunsetInfoActivity");
 
         formater = new SimpleDateFormat("HH:mm");
         nextFridayFormater = new SimpleDateFormat(getString(R.string.next_friday_sunset_info));

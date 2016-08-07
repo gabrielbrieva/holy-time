@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.tuxan.holytime.MeditationFragment;
 import com.tuxan.holytime.R;
+import com.tuxan.holytime.utils.FirebaseAnalyticsProxy;
 import com.tuxan.holytime.utils.Utils;
 import com.tuxan.holytime.data.dto.MeditationContent;
 import com.tuxan.holytime.data.provider.MeditationProvider;
@@ -44,11 +45,14 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private MatrixCursor mApiCursor;
     protected Context mContext;
 
+    private FirebaseAnalyticsProxy mFirebaseAnalyticsProxy;
+
     SimpleDateFormat mDateFormater = new SimpleDateFormat("MMM");
 
     public MeditationsAdapter(Context context) {
         this.mApiCursor = new MatrixCursor(MeditationsLoader.ResumeQuery.PROJECTION);
         this.mContext = context;
+        this.mFirebaseAnalyticsProxy = new FirebaseAnalyticsProxy(context);
     }
 
     public void setContext(Context context) {
@@ -113,6 +117,9 @@ public class MeditationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.putExtra(MeditationFragment.MEDITATION_TITLE_KEY, getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.TITLE));
                     intent.putExtra(MeditationFragment.MEDITATION_VERSE_KEY, getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.VERSE));
+
+                    mFirebaseAnalyticsProxy.LogSelectMeditationActionEvent(meditationId,
+                            getMeditationData(viewHolder.getAdapterPosition(), MeditationsLoader.ResumeQuery.TITLE), FirebaseAnalyticsProxy.ActionCategory.FROM_MEDITATIONS_LIST);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && view != null) {
 
