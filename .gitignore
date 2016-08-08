@@ -38,7 +38,7 @@ captures/
 .idea/libraries
 
 # Keystore files
-*.jks
+#*.jks
 
 *apikey.xml
 /app/src/main/res/values/apikey.xml
