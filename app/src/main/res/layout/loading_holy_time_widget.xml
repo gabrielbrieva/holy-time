@@ -1,0 +1,18 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin">
+
+    <TextView
+        android:id="@+id/tv_loading_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Loading ..."
+        tools:text="Loading ..."
+        android:textColor="@color/date_widget"
+        android:background="@drawable/no_holy_time_widget"/>
+
+</RelativeLayout>
