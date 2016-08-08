@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.tuxan.holytime.service.NotificationService;
+import com.tuxan.holytime.widget.HolyTimeWidget;
 
 public class HolyTimeReceiver extends BroadcastReceiver {
 
@@ -24,10 +25,11 @@ public class HolyTimeReceiver extends BroadcastReceiver {
         Log.d(LOG_TAG, "onReceive broadcast intent: " + action);
 
         switch (action) {
-            case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_TIME_CHANGED:
             case Intent.ACTION_TIMEZONE_CHANGED:
             case Intent.ACTION_DATE_CHANGED:
+            case Intent.ACTION_BOOT_COMPLETED:
+                notifyWidget(context);
                 start(context);
                 break;
         }
@@ -37,6 +39,10 @@ public class HolyTimeReceiver extends BroadcastReceiver {
         Intent i = new Intent(context, NotificationService.class);
         i.setAction(NotificationService.ACTION_SCHEDULE_NOTIFICATION_SERVICE);
         context.startService(i);
+    }
+
+    public static void notifyWidget(Context context) {
+        context.sendBroadcast(new Intent(HolyTimeWidget.ACTION_DATA_UPDATED).setPackage(context.getPackageName()));
     }
 
 }

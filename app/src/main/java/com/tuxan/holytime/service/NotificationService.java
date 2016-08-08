@@ -23,6 +23,7 @@ import com.permissioneverywhere.PermissionResponse;
 import com.tuxan.holytime.R;
 import com.tuxan.holytime.data.provider.MeditationColumns;
 import com.tuxan.holytime.data.provider.MeditationProvider;
+import com.tuxan.holytime.receiver.HolyTimeReceiver;
 import com.tuxan.holytime.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -164,6 +165,9 @@ public class NotificationService extends IntentService {
     }
 
     private void handleShowNotification(Intent intent) {
+
+        HolyTimeReceiver.notifyWidget(this);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean notificationEnabled = prefs.getBoolean(getString(R.string.pref_notification_enabled_key), true);

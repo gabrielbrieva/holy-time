@@ -26,7 +26,6 @@
     <!-- Sunrise and Sunset Info -->
     <string name="sunrise_sunset_info_title">Sunrise and Sunset</string>
     <string name="sunrise_sunset_info">Sunrise and Sunset calculated based on your current location.</string>
-    <string name="next_friday_sunset_info">\'Next Sabbath will start\' MMMM dd, yyyy \'at\' HH:mm</string>
     <string name="sunrise_sunset_info_is_holy_time">It\'s Holy Time</string>
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
@@ -82,4 +81,8 @@
     <string name="sync_topic" translatable="false">sync</string>
     <string name="empty_msg">Meditations not found</string>
     <string name="no_internet_connection">No Internet Connection</string>
+
+    <!-- Widget -->
+    <string name="widget_is_not_sabbath_yet">It\'s not Sabbath yet</string>
+    <string name="next_friday_sunset_info">\'Next Sabbath will start\' MMMM dd, yyyy \'at\' HH:mm</string>
 </resources>

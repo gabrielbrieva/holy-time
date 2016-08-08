@@ -3,6 +3,7 @@ package com.tuxan.holytime.utils;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -14,6 +15,8 @@ public class FirebaseAnalyticsProxy {
         DO_FAVORITE,
         NO_FAVORITE
     }
+
+    private static final String LOG_TAG = "FirebaseAnalyticsProxy";
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -42,6 +45,8 @@ public class FirebaseAnalyticsProxy {
     public void LogEvent(@NonNull String name, Bundle params) {
         if (mFirebaseAnalytics == null)
             return;
+
+        Log.d(LOG_TAG, "Logging name: " + name + ", params: " + ((params != null) ? params.toString() : "null"));
 
         mFirebaseAnalytics.logEvent(name, params);
     }

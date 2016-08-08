@@ -25,4 +25,8 @@
     <color name="ssvDayColor">#62a5e4ff</color>
     <color name="ssvNightColor">#6d302873</color>
 
+    <!-- Widget colors -->
+    <color name="empty_widget">#b3000000</color>
+    <color name="date_widget">@android:color/white</color>
+    <color name="title_widget">#cc000000</color>
 </resources>

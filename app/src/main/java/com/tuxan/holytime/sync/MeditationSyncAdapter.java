@@ -7,6 +7,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
@@ -16,12 +17,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.tuxan.holytime.R;
+import com.tuxan.holytime.receiver.HolyTimeReceiver;
 import com.tuxan.holytime.utils.Utils;
 import com.tuxan.holytime.api.APIService;
 import com.tuxan.holytime.api.APIServiceFactory;
 import com.tuxan.holytime.data.dto.MeditationContent;
 import com.tuxan.holytime.data.provider.MeditationColumns;
 import com.tuxan.holytime.data.provider.MeditationProvider;
+import com.tuxan.holytime.widget.HolyTimeWidget;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -127,6 +130,8 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
 
         if (deletedItems > 0)
             Log.d(LOG_TAG, deletedItems + " old meditations was deleted by MeditationSyncAdapter");
+
+        HolyTimeReceiver.notifyWidget(getContext());
     }
 
     /**

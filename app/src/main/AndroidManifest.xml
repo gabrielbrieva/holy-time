@@ -3,8 +3,7 @@
     package="com.tuxan.holytime">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +16,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <receiver
             android:name=".receiver.HolyTimeReceiver"
             android:enabled="true"
@@ -34,30 +32,25 @@
 
         <service android:name=".service.FcmService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".service.FcmIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".service.NotificationService"
             android:enabled="true"
-            android:exported="false"
-            > <!-- android:process=":HolyTimeNotificationService" -->
+            android:exported="false"> <!-- android:process=":HolyTimeNotificationService" -->
 
             <intent-filter>
                 <action android:name="com.tuxan.holytime.action.START_SCHEDULE_NOTIFICATION_SERVICE" />
                 <action android:name="com.tuxan.holytime.action.SCHEDULE_NEXT_NOTIFICATION" />
                 <action android:name="com.tuxan.holytime.action.SHOW_NOTIFICATION" />
             </intent-filter>
-
         </service>
-
         <service android:name=".sync.MeditationSyncAuthSrv">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -67,7 +60,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
         <service
             android:name=".sync.MeditationSyncSrv"
             android:exported="true">
@@ -95,7 +87,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".preferences.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -105,7 +96,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MeditationsActivity" />
         </activity>
-
         <activity
             android:name=".MeditationActivity"
             android:parentActivityName=".MeditationsActivity"
@@ -133,26 +123,38 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MeditationsActivity" />
         </activity>
-
         <activity
             android:name=".AboutActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SunsetInfoActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".widget.HolyTimeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.tuxan.holytime.action.ACTION_DATA_UPDATED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/holy_time_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".widget.HolyTimeWidgetService"
+            android:exported="false">
+        </service>
 
     </application>
 
