@@ -23,6 +23,7 @@ The list/grid of meditations content is loaded from device DB and the older cont
 
 * Android Support Design Library.
 * FCM (Firebase Cloud Message): Each time a meditation content is updated, the HolyTime server send a message to FCM to notify all devices subscribed to topic "sync" about this change.
+* Firebase Analytics: Many of application interactions trigger EventLogs to Firebase Analytics.
 * Compat Notifications: Showing notifications on Android Wear too.
 
 ## UI
@@ -31,6 +32,7 @@ The list/grid of meditations content is loaded from device DB and the older cont
 * Simple transition between activities.
 * A custom view to represent sunrise and sunset times.
 * Custom collapsible main title and content of AppBarLayout.
+* Widget added to show the current Meditation title if is Holy Time, if is not is showed when will be Holy Time instead.
 
 ### Screenshots
 <img src="/screenshots/main.jpg" alt="Main" width="300px" >
