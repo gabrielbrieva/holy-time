@@ -70,7 +70,7 @@
         <item>Green</item>
         <item>Blue</item>
     </string-array>
-    <string-array name="pref_notification_color_values">
+    <string-array name="pref_notification_color_values" translatable="false">
         <item>WHITE</item>
         <item>RED</item>
         <item>GREEN</item>

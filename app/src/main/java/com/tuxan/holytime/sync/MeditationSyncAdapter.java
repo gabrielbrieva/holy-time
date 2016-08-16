@@ -85,6 +85,8 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
         int newItems = 0;
         int updatedItems = 0;
 
+        List<ContentValues> newContents = new ArrayList<>();
+
         for (MeditationContent m : meditations) {
 
             meditationsId.add(m.getId());
@@ -98,24 +100,31 @@ public class MeditationSyncAdapter extends AbstractThreadedSyncAdapter {
             v.put(MeditationColumns.BODY, m.getBody());
             v.put(MeditationColumns.WEEK_NUMBER, m.getWeekNumber());
 
-            Cursor result = mContentResolver.query(MeditationProvider.Meditations.byId(m.getId()),
-                    new String[]{ MeditationColumns._ID },
-                    null,
-                    null,
-                    null);
+            Cursor result = null;
 
-            // insert or update each meditation result
-            if (result == null || result.getCount() == 0) {
-                mContentResolver.insert(MeditationProvider.Meditations.meditationList, v);
-                newItems++;
-            } else {
-                v.remove(MeditationColumns._ID);
-                updatedItems += mContentResolver.update(MeditationProvider.Meditations.byId(m.getId()), v, null, null);
+            try {
+                result = mContentResolver.query(MeditationProvider.Meditations.byId(m.getId()),
+                        new String[]{MeditationColumns._ID},
+                        null,
+                        null,
+                        null);
+
+                // insert or update each meditation result
+                if (result == null || result.getCount() == 0) {
+                    newContents.add(v);
+                } else {
+                    v.remove(MeditationColumns._ID);
+                    updatedItems += mContentResolver.update(MeditationProvider.Meditations.byId(m.getId()), v, null, null);
+                }
+
+            } finally {
+                if (result != null)
+                    result.close();
             }
-
-            if (result != null)
-                result.close();
         }
+
+        if (newContents.size() > 0)
+            newItems = mContentResolver.bulkInsert(MeditationProvider.Meditations.meditationList, newContents.toArray(new ContentValues[newContents.size()]));
 
         if (newItems > 0)
             Log.d(LOG_TAG, newItems + " New Meditation Synchronized (inserted)");

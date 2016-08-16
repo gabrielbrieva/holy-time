@@ -162,7 +162,7 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
         mRecyclerView.setLayoutManager(null);
 
         if (fragmentType == MeditationsPagerAdapter.CURRENT_LIST)
-            mRecyclerView.removeOnScrollListener(mEndlessScrollListener);
+            mRecyclerView.clearOnScrollListeners();
 
         mSwipeRefreshLayout.setOnRefreshListener(null);
     }
@@ -228,8 +228,7 @@ public class MeditationsFragment extends Fragment implements LoaderManager.Loade
 
         mMeditationsAdapter.swapCursor(data, resetApiCursor);
 
-        if (data != null && data.getCount() > 0)
-        {
+        if (data != null && data.getCount() > 0) {
             mTvEmptyMsg.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
         } else {
