@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.permissioneverywhere.PermissionEverywhere;
@@ -24,6 +25,7 @@ import com.tuxan.holytime.R;
 import com.tuxan.holytime.data.provider.MeditationColumns;
 import com.tuxan.holytime.data.provider.MeditationProvider;
 import com.tuxan.holytime.receiver.HolyTimeReceiver;
+import com.tuxan.holytime.ui.CalculatorByLocation;
 import com.tuxan.holytime.utils.Utils;
 
 import java.text.SimpleDateFormat;

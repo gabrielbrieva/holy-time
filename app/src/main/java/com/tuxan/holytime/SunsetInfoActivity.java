@@ -2,6 +2,8 @@ package com.tuxan.holytime;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,8 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.LocationSettingsStates;
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+import com.tuxan.holytime.ui.CalculatorByLocation;
 import com.tuxan.holytime.ui.SunriseSunsetView;
 import com.tuxan.holytime.utils.FirebaseAnalyticsProxy;
 import com.tuxan.holytime.utils.Utils;
@@ -44,6 +49,8 @@ public class SunsetInfoActivity extends AppCompatActivity {
 
     private FirebaseAnalyticsProxy mFirebaseAnalyticsProxy;
 
+    private CalculatorByLocation mSunsetCalculator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,15 +71,84 @@ public class SunsetInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.sunrise_sunset_info_title);
 
+        mSunsetCalculator = new CalculatorByLocation(this) {
+
+            @Override
+            public void onLocationSettingEnabled() {
+                requestPermission();
+            }
+
+            @Override
+            public void onConnected() {
+                mSunsetCalculator.checkSettings(SunsetInfoActivity.this);
+            }
+
+            @Override
+            public void onCalculatorCreated(SunriseSunsetCalculator calculator) {
+                initTime(calculator);
+            }
+
+            @Override
+            public void onConnectionError() {
+                Toast.makeText(SunsetInfoActivity.this, "Impossible get current location", Toast.LENGTH_LONG).show();
+                SunsetInfoActivity.this.finish();
+            }
+        };
+
+        mSunsetCalculator.connect();
+    }
+
+    private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION }, 0);
             } else {
-                initTime(Utils.getSunriseSunsetCalculator(this));
+                mSunsetCalculator.createCalculator();
             }
         } else {
-            initTime(Utils.getSunriseSunsetCalculator(this));
+            mSunsetCalculator.createCalculator();
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 0) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mSunsetCalculator.createCalculator();
+            } else {
+                Toast.makeText(SunsetInfoActivity.this, "Impossible get current location", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+        switch (requestCode) {
+            case CalculatorByLocation.REQUEST_CHECK_SETTINGS:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        // All required changes were successfully made
+                        requestPermission();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        // The user was asked to change settings, but chose not to
+                        mSunsetCalculator.onConnectionError();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        mSunsetCalculator.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -83,14 +159,6 @@ public class SunsetInfoActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 0 && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            initTime(Utils.getSunriseSunsetCalculator(this));
-        }
     }
 
     private void initTime(SunriseSunsetCalculator calculator) {

@@ -49,11 +49,13 @@ public class Utils {
     }
 
     public static SunriseSunsetCalculator getSunriseSunsetCalculator(Context context) {
+
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             android.location.Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            return new SunriseSunsetCalculator(new Location(loc.getLatitude(), loc.getLongitude()), TimeZone.getDefault());
+            if (loc != null)
+                return new SunriseSunsetCalculator(new Location(loc.getLatitude(), loc.getLongitude()), TimeZone.getDefault());
         }
 
         return null;
