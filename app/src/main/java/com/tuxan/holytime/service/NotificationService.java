@@ -99,7 +99,7 @@ public class NotificationService extends IntentService {
 
         Intent intent = new Intent(this, NotificationService.class);
         intent.setAction(ACTION_SCHEDULE_NEXT_NOTIFICATION);
-        PendingIntent alarmIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent alarmIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
@@ -119,6 +119,12 @@ public class NotificationService extends IntentService {
         if (dayOfWeek == Calendar.FRIDAY) {
 
             SunriseSunsetCalculator calculator = Utils.getSunriseSunsetCalculator(this);
+
+            if (calculator == null) {
+                Log.d(LOG_TAG, "SunriseSunsetCalculator instance is null");
+                return;
+            }
+
             Calendar sunset = calculator.getOfficialSunsetCalendarForDate(c);
 
             if (c.getTimeInMillis() <= sunset.getTimeInMillis()) {

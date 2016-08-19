@@ -2,8 +2,6 @@ package com.tuxan.holytime;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +12,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.LocationSettingsStates;
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
-import com.tuxan.holytime.ui.CalculatorByLocation;
 import com.tuxan.holytime.ui.SunriseSunsetView;
 import com.tuxan.holytime.utils.FirebaseAnalyticsProxy;
 import com.tuxan.holytime.utils.Utils;
@@ -49,7 +45,7 @@ public class SunsetInfoActivity extends AppCompatActivity {
 
     private FirebaseAnalyticsProxy mFirebaseAnalyticsProxy;
 
-    private CalculatorByLocation mSunsetCalculator;
+    //private CalculatorByLocation mSunsetCalculator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +67,7 @@ public class SunsetInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.sunrise_sunset_info_title);
 
-        mSunsetCalculator = new CalculatorByLocation(this) {
+        /*mSunsetCalculator = new CalculatorByLocation(this) {
 
             @Override
             public void onLocationSettingEnabled() {
@@ -80,7 +76,7 @@ public class SunsetInfoActivity extends AppCompatActivity {
 
             @Override
             public void onConnected() {
-                mSunsetCalculator.checkSettings(SunsetInfoActivity.this);
+                checkSettings(SunsetInfoActivity.this);
             }
 
             @Override
@@ -95,19 +91,20 @@ public class SunsetInfoActivity extends AppCompatActivity {
             }
         };
 
-        mSunsetCalculator.connect();
+        mSunsetCalculator.connect();*/
+        requestPermission();
     }
 
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION }, 0);
-            } else {
-                mSunsetCalculator.createCalculator();
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+                return;
             }
-        } else {
-            mSunsetCalculator.createCalculator();
         }
+
+        initTime(Utils.getSunriseSunsetCalculator(this));
+        //mSunsetCalculator.createCalculator();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -115,15 +112,16 @@ public class SunsetInfoActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 0) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mSunsetCalculator.createCalculator();
+                initTime(Utils.getSunriseSunsetCalculator(this));
+                //mSunsetCalculator.createCalculator();
             } else {
-                Toast.makeText(SunsetInfoActivity.this, "Impossible get current location", Toast.LENGTH_LONG).show();
+                Toast.makeText(SunsetInfoActivity.this, getString(R.string.unable_to_get_location), Toast.LENGTH_LONG).show();
                 finish();
             }
         }
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
@@ -139,15 +137,16 @@ public class SunsetInfoActivity extends AppCompatActivity {
                         mSunsetCalculator.onConnectionError();
                         break;
                     default:
+                        mSunsetCalculator.onConnectionError();
                         break;
                 }
                 break;
         }
-    }
+    }*/
 
     @Override
     protected void onStop() {
-        mSunsetCalculator.disconnect();
+        //mSunsetCalculator.disconnect();
         super.onStop();
     }
 
@@ -162,6 +161,13 @@ public class SunsetInfoActivity extends AppCompatActivity {
     }
 
     private void initTime(SunriseSunsetCalculator calculator) {
+
+        if (calculator == null) {
+            Toast.makeText(SunsetInfoActivity.this, getString(R.string.enable_location), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         mTvSunrise.setText(calculator.getOfficialSunriseForDate(Calendar.getInstance()));
         mTvSunset.setText(calculator.getOfficialSunsetForDate(Calendar.getInstance()));
         mSunriseSunsetView.setSunriseSunsetCalculator(calculator);

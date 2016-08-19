@@ -2,10 +2,12 @@ package com.tuxan.holytime.utils;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.text.SpannableStringBuilder;
 
@@ -19,6 +21,9 @@ import java.util.TimeZone;
  * Utilities class ...
  */
 public class Utils {
+
+    private static final String PREF_LAT_KEY = "PREF_LAT_KEY";
+    private static final String PREF_LON_KEY = "PREF_LON_KEY";
 
     public static final String API_BASE_URL = "http://holytime.gabrielbrieva.cl/api/";
 
@@ -53,9 +58,22 @@ public class Utils {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
             android.location.Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (loc != null)
+            if (loc != null) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putFloat(PREF_LAT_KEY, (float)loc.getLatitude());
+                editor.putFloat(PREF_LON_KEY, (float)loc.getLongitude());
+                editor.commit();
+
                 return new SunriseSunsetCalculator(new Location(loc.getLatitude(), loc.getLongitude()), TimeZone.getDefault());
+            } else {
+                if (prefs.contains(PREF_LAT_KEY) && prefs.contains(PREF_LON_KEY)) {
+                    return new SunriseSunsetCalculator(new Location(prefs.getFloat(PREF_LAT_KEY, 0), prefs.getFloat(PREF_LON_KEY, 0)), TimeZone.getDefault());
+                }
+            }
         }
 
         return null;
