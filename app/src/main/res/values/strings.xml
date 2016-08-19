@@ -85,4 +85,8 @@
     <!-- Widget -->
     <string name="widget_is_not_sabbath_yet">It\'s not Sabbath yet</string>
     <string name="next_friday_sunset_info">\'Next Sabbath will start\' MMMM dd, yyyy \'at\' HH:mm</string>
+
+    <!-- Location messages -->
+    <string name="enable_location">You must enable device location</string>
+    <string name="unable_to_get_location">Impossible to get current location</string>
 </resources>

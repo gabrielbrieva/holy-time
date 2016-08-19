@@ -47,4 +47,6 @@
     <string name="next_friday_sunset_info">\'El próximo Sábado comenzará el\' dd \'de\' MMMM, yyyy \'a las\' HH:mm</string>
     <string name="sunrise_sunset_info_is_holy_time">Es Tiempo Santo</string>
     <string name="widget_is_not_sabbath_yet">Todavía no es Sábado</string>
+    <string name="enable_location">Debes habilitar la ubicación del dispositivo</string>
+    <string name="unable_to_get_location">Imposible acceder a la ubicación del dispositivo</string>
 </resources>
